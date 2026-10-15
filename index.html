@@ -6,7 +6,7 @@
 <title>ZooTodo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&display=swap" rel="stylesheet">
 <style>
 /* ---------- Theme: Зоопарк (default) ---------- */
 :root {
@@ -21,7 +21,7 @@
   --side-muted: #8fa198;
   --accent: #c9a24a;
   --brand: linear-gradient(135deg, #d47a1f, #b65a12);
-  --display: Fraunces, serif;
+  --display: Lora, Georgia, serif;
   --side-art:
     radial-gradient(circle at 15% 105%, rgba(212,122,31,.18), transparent 45%),
     radial-gradient(circle at 110% 0%, rgba(47,138,88,.22), transparent 50%);
@@ -49,7 +49,7 @@
   --side-muted: #8b92c6;
   --accent: #8ad8ff;
   --brand: linear-gradient(135deg, #5b4bd6, #b8467f);
-  --display: "Space Grotesk", Manrope, sans-serif;
+  --display: Unbounded, Manrope, sans-serif;
   --side-art:
     radial-gradient(1px 1px at 24px 36px, rgba(255,255,255,.75), transparent),
     radial-gradient(1px 1px at 96px 128px, rgba(255,255,255,.55), transparent),
@@ -68,6 +68,35 @@
   --long: #b8467f;       --long-bg: #f8e6ef;        /* галактика */
 
   --shadow: 0 1px 2px rgba(22,26,51,.06), 0 4px 16px rgba(22,26,51,.06);
+}
+
+/* ---------- Theme: RPG-бестиарий ---------- */
+[data-theme="rpg"] {
+  --bg: #f3ece0;
+  --surface: #fffdf8;
+  --ink: #2a1f17;
+  --muted: #7a6b5c;
+  --line: #e4d8c4;
+  --side: #22160f;
+  --side-2: #352419;
+  --side-ink: #f2e6d4;
+  --side-muted: #b09a80;
+  --accent: #d4a63c;
+  --brand: linear-gradient(135deg, #a52a3a, #5e1420);
+  --display: "Cormorant SC", Lora, serif;
+  --side-art:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0 2px, transparent 2px 9px),
+    radial-gradient(circle at 10% 105%, rgba(224,98,42,.28), transparent 45%),
+    radial-gradient(circle at 110% -5%, rgba(212,166,60,.22), transparent 50%);
+
+  --urgent: #e0622a;     --urgent-bg: #fdeee4;      /* феникс */
+  --important: #a52a3a;  --important-bg: #f7e3e5;   /* дракон */
+  --unpleasant: #6f9a1f; --unpleasant-bg: #eef5df;  /* слизень */
+  --regular: #8a6d2f;    --regular-bg: #f5eedf;     /* гоблин */
+  --quick: #77706a;      --quick-bg: #efedeb;       /* крыса */
+  --long: #4b6a8a;       --long-bg: #e6edf4;        /* голем */
+
+  --shadow: 0 1px 2px rgba(42,31,23,.06), 0 4px 16px rgba(42,31,23,.07);
 }
 
 * { box-sizing: border-box; }
@@ -155,16 +184,19 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .legend-row .dot { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; }
 .legend-row svg.ico { width: 17px; height: 17px; }
 
-.theme-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 12px; background: rgba(255,255,255,.05); }
-.theme-switch button {
-  border: 0; background: none; color: var(--side-muted); border-radius: 9px; padding: 8px;
-  display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600;
-  transition: background .15s, color .15s;
+.theme-btn {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.05); color: var(--side-ink);
+  border-radius: 12px; padding: 8px 12px 8px 8px; transition: background .15s;
 }
-.theme-switch button:hover { color: var(--side-ink); }
-.theme-switch button.on { background: var(--side-2); color: var(--side-ink); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
-.theme-switch button.on svg.ico { color: var(--accent); }
-.theme-switch svg.ico { width: 18px; height: 18px; }
+.theme-btn:hover { background: rgba(255,255,255,.08); }
+.theme-btn .brand-mark { flex: none; width: 30px; height: 30px; border-radius: 8px; }
+.theme-btn .brand-mark svg.ico { width: 18px; height: 18px; }
+.theme-btn .label { flex: 1; min-width: 0; }
+.theme-btn small { display: block; font-size: 11px; color: var(--side-muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
+.theme-btn b { display: block; font-size: 13.5px; font-weight: 600; }
+.theme-btn .chev { width: 16px; height: 16px; color: var(--side-muted); transform: rotate(-90deg); transition: transform .15s; }
+.theme-btn[aria-expanded="true"] .chev { transform: rotate(90deg); }
 
 /* ---------- Main ---------- */
 .main { padding: 40px clamp(16px, 4vw, 56px) 64px; max-width: 920px; width: 100%; }
@@ -292,6 +324,11 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   background-color: var(--cbg);
 }
 
+/* rpg: sigil-like rim on group icons, engraved headings */
+[data-theme="rpg"] .group-icon { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 35%, transparent); }
+[data-theme="rpg"] .head h2 { font-weight: 700; letter-spacing: .5px; }
+[data-theme="rpg"] .brand h1 { font-weight: 700; font-size: 23px; letter-spacing: .5px; }
+
 /* ---------- Mobile bar ---------- */
 .mbar { display: none; }
 
@@ -336,7 +373,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <button aria-label="Добавить проект"><svg class="ico"><use href="#i-plus"/></svg></button>
     </form>
     <div class="legend" id="legend"></div>
-    <div class="theme-switch" id="themeSwitch" role="radiogroup" aria-label="Оформление"></div>
+    <button type="button" class="theme-btn" id="themeBtn" aria-haspopup="menu" aria-expanded="false"></button>
   </aside>
 
   <main class="main">
@@ -360,7 +397,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 </div>
 
 <nav class="mbar">
-  <button class="brand-mark" id="mTheme" aria-label="Оформление" aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use id="mThemeIcon" href="#i-zoo-urgent"/></svg></button>
+  <button class="brand-mark" id="mTheme" aria-label="Вселенная" aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use id="mThemeIcon" href="#i-zoo-urgent"/></svg></button>
   <div class="sel">
     <select id="projSelect" aria-label="Проект"></select>
     <svg class="ico"><use href="#i-chev"/></svg>
@@ -463,6 +500,57 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <path d="M17.6 6.8c1.6 1 2.7 2.4 3.1 4M6.4 17.2c-1.6-1-2.7-2.4-3.1-4"/>
     </symbol>
 
+    <!-- ===== RPG-бестиарий ===== -->
+    <!-- Кубик d20 (логотип темы) -->
+    <symbol id="i-rpg-brand" viewBox="0 0 24 24">
+      <path d="M12 2.8 20 7.4v9.2L12 21.2 4 16.6V7.4z"/>
+      <path d="M12 7.4 16.6 15H7.4z"/>
+      <path d="M12 2.8v4.6M20 7.4l-3.4 7.6M4 7.4l3.4 7.6M7.4 15 12 21.2l4.6-6.2"/>
+    </symbol>
+    <!-- Феникс -->
+    <symbol id="i-rpg-urgent" viewBox="0 0 24 24">
+      <path d="M12 21c-3.3 0-5.5-2.3-5.5-5.3 0-2.6 1.6-4.1 2.6-5.6.4 1.2 1 2 1.9 2.4-.2-3.1 1-6.2 3.7-8.5-.2 2.6.8 4.4 2.2 5.9 1.3 1.4 2.1 3 2.1 5.4C19 18.7 16 21 12 21z"/>
+      <path d="M12 21c-1.5 0-2.5-1-2.5-2.4 0-1.5 1.2-2.4 2.1-3.6.9 1.4 2.9 2.2 2.9 3.8 0 1.3-1 2.2-2.5 2.2z"/>
+      <path d="M6.6 13.6C4.6 13.1 3.3 11.6 3 9.6c1.4.8 2.6 1 3.9.9M17.4 13.6c2-.5 3.3-2 3.6-4-1.4.8-2.6 1-3.9.9"/>
+    </symbol>
+    <!-- Дракон -->
+    <symbol id="i-rpg-important" viewBox="0 0 24 24">
+      <path d="M7 3.8 8.8 8M17 3.8 15.2 8"/>
+      <path d="M8.6 8C6.5 9 5.5 11 5.5 13c0 3.5 2.9 6.5 6.5 6.5s6.5-3 6.5-6.5c0-2-1-4-3.1-5-2-1-4.8-1-6.8 0z"/>
+      <path d="M5.6 11.4 2.8 10.3l2.8 3.6M18.4 11.4l2.8-1.1-2.8 3.6"/>
+      <path d="M8.8 11.8l1.8.6M15.2 11.8l-1.8.6" stroke-width="1.9"/>
+      <circle class="fill" cx="10.6" cy="16.2" r=".6"/><circle class="fill" cx="13.4" cy="16.2" r=".6"/>
+    </symbol>
+    <!-- Слизень -->
+    <symbol id="i-rpg-unpleasant" viewBox="0 0 24 24">
+      <path d="M4 18.5c0-5.5 3.6-11 8-11s8 5.5 8 11c0 .8-.6 1.3-1.4 1.3H5.4c-.8 0-1.4-.5-1.4-1.3z"/>
+      <circle class="fill" cx="9.6" cy="13.5" r="1"/><circle class="fill" cx="14.4" cy="13.5" r="1"/>
+      <path d="M10.5 16.5c1 .6 2 .6 3 0"/>
+      <path d="M8.2 10.6c.5-.9 1.2-1.6 2-2"/>
+      <circle cx="17.5" cy="4.8" r="1.2"/>
+    </symbol>
+    <!-- Гоблин -->
+    <symbol id="i-rpg-regular" viewBox="0 0 24 24">
+      <path d="M6.9 9.6 2.5 7.6l3.3 5M17.1 9.6l4.4-2-3.3 5"/>
+      <path d="M12 5c-3 0-5.3 2.5-5.3 6.2 0 4.3 2.4 7.8 5.3 7.8s5.3-3.5 5.3-7.8C17.3 7.5 15 5 12 5z"/>
+      <circle class="fill" cx="9.8" cy="11.3" r=".95"/><circle class="fill" cx="14.2" cy="11.3" r=".95"/>
+      <path d="M9.6 15.1c1.5 1 3.3 1 4.8 0M11 15.7v.8M13 15.7v.8"/>
+    </symbol>
+    <!-- Крыса -->
+    <symbol id="i-rpg-quick" viewBox="0 0 24 24">
+      <path d="M21 14.5c-1.2-2.6-3.6-4.7-6.8-4.7-3.4 0-6 2.1-7 5.2-.3.9.4 1.8 1.4 1.8h10.6c1.3 0 2.3-1 1.8-2.3z"/>
+      <path d="M12 10.1a2.2 2.2 0 1 1 3.6-.3"/>
+      <circle class="fill" cx="17.4" cy="12.6" r=".8"/>
+      <path d="M7.4 16.4C5 16.8 3.3 18.3 3 20.5M10.5 16.8v1.7M15.5 16.8v1.7"/>
+    </symbol>
+    <!-- Голем -->
+    <symbol id="i-rpg-long" viewBox="0 0 24 24">
+      <rect x="8.5" y="3.2" width="7" height="5.6" rx="1"/>
+      <circle class="fill" cx="10.6" cy="6" r=".85"/><circle class="fill" cx="13.4" cy="6" r=".85"/>
+      <path d="M6.2 10.4h11.6l1.4 6.4h-3.1l-.6 3.8H8.5l-.6-3.8H4.8z"/>
+      <path d="M12 11.6l-1.1 2.2 1.6 1.4"/>
+    </symbol>
+
     <!-- ===== UI ===== -->
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
@@ -509,6 +597,20 @@ const THEMES = {
       regular:    { name: 'Спутник',     plural: 'Спутники',    hint: 'Обычное — идёт по своей орбите' },
       quick:      { name: 'Метеор',      plural: 'Метеоры',     hint: 'Вспышка — дела на 5 минут' },
       long:       { name: 'Галактика',   plural: 'Галактики',   hint: 'Долгосрочное — масштаб на годы' },
+    },
+  },
+  rpg: {
+    label: 'RPG-бестиарий', hint: 'Задачи как монстры подземелья',
+    title: 'QuestLog', tagline: 'журнал заданий', brandIcon: 'rpg-brand',
+    swatch: 'linear-gradient(135deg, #a52a3a, #5e1420)',
+    pickWhat: 'монстра', absent: 'не встречаются',
+    cats: {
+      urgent:     { name: 'Феникс',  plural: 'Фениксы', hint: 'Срочное — всё горит' },
+      important:  { name: 'Дракон',  plural: 'Драконы', hint: 'Важное — главный босс дня' },
+      unpleasant: { name: 'Слизень', plural: 'Слизни',  hint: 'Неприятное — липко, но надо' },
+      regular:    { name: 'Гоблин',  plural: 'Гоблины', hint: 'Обычное — рядовой противник' },
+      quick:      { name: 'Крыса',   plural: 'Крысы',   hint: 'Мелкий моб — на 5 минут' },
+      long:       { name: 'Голем',   plural: 'Големы',  hint: 'Долгосрочное — медленно, но верно' },
     },
   },
 };
@@ -582,9 +684,8 @@ function renderTheme() {
   $('brandTag').textContent = th.tagline;
   $('brandIcon').setAttribute('href', `#i-${th.brandIcon}`);
   $('mThemeIcon').setAttribute('href', `#i-${th.brandIcon}`);
-  $('themeSwitch').innerHTML = Object.entries(THEMES).map(([id, t]) =>
-    `<button type="button" role="radio" aria-checked="${id === state.theme}" class="${id === state.theme ? 'on' : ''}" data-theme-pick="${id}">${svg(t.brandIcon)}${t.label}</button>`
-  ).join('');
+  $('themeBtn').innerHTML =
+    `<span class="brand-mark">${svg(th.brandIcon)}</span><span class="label"><small>Вселенная</small><b>${th.label}</b></span>${chev}`;
 }
 
 function render() {
@@ -734,10 +835,6 @@ $('projTitle').addEventListener('dblclick', () => {
   if (name && name.trim()) { p.name = name.trim(); commit(); }
 });
 
-$('themeSwitch').addEventListener('click', (e) => {
-  const b = e.target.closest('[data-theme-pick]');
-  if (b) setTheme(b.dataset.themePick);
-});
 
 /* ---------- Dropdown menu ---------- */
 let menuCtx = null;
@@ -806,16 +903,18 @@ document.addEventListener('keydown', (e) => {
 addEventListener('resize', closeMenu);
 addEventListener('scroll', closeMenu, true);
 
-$('mTheme').addEventListener('click', (e) => {
+function themeMenu(e) {
   openMenu(e.currentTarget, {
-    title: 'Оформление',
+    title: 'Вселенная',
     current: state.theme,
     onPick: setTheme,
     items: Object.entries(THEMES).map(([id, t]) => ({
       id, name: t.label, hint: t.hint, iconHtml: svg(t.brandIcon), style: `background:${t.swatch};color:#fff`,
     })),
   });
-});
+}
+$('themeBtn').addEventListener('click', themeMenu);
+$('mTheme').addEventListener('click', themeMenu);
 
 $('pickBtn').addEventListener('click', (e) => {
   catMenu(e.currentTarget, ui.newCat, (k) => { ui.newCat = k; render(); $('taskInput').focus(); });
