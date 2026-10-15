@@ -6,10 +6,11 @@
 <title>ZooTodo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600&family=Rubik:ital,wght@0,500;0,700;1,800;1,900&family=Oswald:wght@500;600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700;800;900&family=Cormorant+SC:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600&family=Rubik:ital,wght@0,500;0,700;1,800;1,900&family=Oswald:wght@500;600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ---------- Theme: Зоопарк (default) ---------- */
-:root {
+/* also on [data-theme="zoo"] so the library tile keeps zoo colours under another theme */
+:root, [data-theme="zoo"] {
   --bg: #f4f1eb;
   --surface: #ffffff;
   --on-ink: #ffffff;     /* text on --ink fills */
@@ -262,6 +263,38 @@
   --quick: #1a7f37;      --quick-bg: rgba(26,127,55,.08);
   --long: #9a6700;       --long-bg: rgba(154,103,0,.08);
   color-scheme: light;
+}
+
+/* ---------- Theme: Необрутализм (толстая обводка, жёсткие тени, стикеры) ---------- */
+[data-theme="brutal"] {
+  --bg: #fff3dc;
+  --surface: #ffffff;
+  --ink: #111111;
+  --on-ink: #ffffff;
+  --on-c: #111111;
+  --muted: #4f4a42;
+  --line: #111111;
+  --side: #ffcf3a;
+  --side-2: #ffffff;
+  --side-ink: #111111;
+  --side-muted: #3d3a33;
+  --accent: #111111;
+  --brand: #ffffff;
+  --display: Unbounded, Manrope, sans-serif;
+  --side-art: none;
+  --b: 3px solid #111111;
+  --hard: 5px 5px 0 #111111;
+  --hard-sm: 3px 3px 0 #111111;
+
+  --urgent: #ff5d5d;     --urgent-bg: #ffe1e1;      /* горит */
+  --important: #ffcf3a;  --important-bg: #fff3c7;   /* звезда */
+  --unpleasant: #b794ff; --unpleasant-bg: #efe6ff;  /* туча */
+  --regular: #5ab0ff;    --regular-bg: #e0f0ff;     /* дело */
+  --quick: #44e08a;      --quick-bg: #dcf9e8;       /* минутка */
+  --long: #ff94d1;       --long-bg: #ffe4f3;        /* марафон */
+
+  --radius: 12px;
+  --shadow: var(--hard);
 }
 
 /* ---------- Theme: Кубический мир (пиксельные блоки, светлый) ---------- */
@@ -934,6 +967,87 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 @media (max-width: 1000px) { .sh-status .sh-dim { display: none; } }
 .sh-hash { color: var(--long); }
 
+/* ---------- Brutal: thick outlines, hard offset shadows, colour stickers ---------- */
+[data-theme="brutal"] body {
+  font-family: Manrope, sans-serif;
+  background-image: radial-gradient(#e6d6b8 1.2px, transparent 1.2px); background-size: 18px 18px;
+}
+[data-theme="brutal"] svg.ico:not(.tp svg), .tp[data-theme="brutal"] svg.ico { stroke-width: 2.3; }
+[data-theme="brutal"] .tinted { color: var(--ink); background: var(--c); box-shadow: inset 0 0 0 2.5px var(--ink); }
+[data-theme="brutal"] .side { border-right: var(--b); }
+[data-theme="brutal"] .brand-mark { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 3px var(--ink), var(--hard-sm); border-radius: 10px; }
+[data-theme="brutal"] .brand .brand-mark { transform: rotate(-4deg); }
+[data-theme="brutal"] .brand h1 { font-weight: 900; font-size: 20px; letter-spacing: -.5px; }
+[data-theme="brutal"] .brand small { font-weight: 600; }
+[data-theme="brutal"] .side-label { font-family: var(--display); font-weight: 800; color: var(--ink); }
+[data-theme="brutal"] .proj { border: 3px solid transparent; }
+[data-theme="brutal"] .proj:hover { background: rgba(255,255,255,.45); }
+[data-theme="brutal"] .proj.active { background: #fff; border-color: var(--ink); box-shadow: var(--hard-sm); }
+[data-theme="brutal"] .proj.active::before { display: none; }
+[data-theme="brutal"] .proj-badge { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 2.5px var(--ink); }
+[data-theme="brutal"] .proj.active .proj-badge { background: var(--urgent); color: var(--ink); }
+[data-theme="brutal"] .proj-count { font-family: var(--display); font-weight: 800; color: var(--ink); }
+[data-theme="brutal"] .add-proj input { background: transparent; border: 3px dashed var(--ink); color: var(--ink); font-weight: 600; }
+[data-theme="brutal"] .add-proj button { background: var(--ink); color: var(--side); }
+[data-theme="brutal"] .legend { background: #fff; border: var(--b); box-shadow: var(--hard-sm); }
+[data-theme="brutal"] .legend-row { color: var(--muted); }
+[data-theme="brutal"] .legend-row b { font-weight: 800; }
+[data-theme="brutal"] .theme-btn { background: var(--ink); color: var(--side); border: var(--b); }
+[data-theme="brutal"] .theme-btn:hover { background: #2a2a2a; }
+[data-theme="brutal"] .theme-btn small, [data-theme="brutal"] .theme-btn .chev { color: rgba(255,207,58,.7); }
+[data-theme="brutal"] .theme-btn b { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 12px; }
+[data-theme="brutal"] .theme-btn .brand-mark { box-shadow: inset 0 0 0 2.5px var(--ink); }
+
+[data-theme="brutal"] .head h2 {
+  display: inline-block; font-weight: 900; font-size: clamp(30px, 4.4vw, 44px); letter-spacing: -1.5px; line-height: 1.15;
+  background: var(--quick); border: var(--b); border-radius: 10px; padding: 0 12px; box-shadow: var(--hard-sm); transform: rotate(-1.5deg);
+}
+[data-theme="brutal"] .head p { margin-top: 10px; font-weight: 600; }
+[data-theme="brutal"] .stripe { height: 16px; border: var(--b); border-radius: 999px; background: #fff; margin: 22px 0 24px; }
+[data-theme="brutal"] .composer { border: var(--b); box-shadow: var(--hard); border-radius: 14px; }
+[data-theme="brutal"] .composer input { font-weight: 500; }
+[data-theme="brutal"] .cat-btn { color: var(--ink); background: var(--c); box-shadow: inset 0 0 0 3px var(--ink); }
+[data-theme="brutal"] .composer .go { background: var(--ink); color: #fff; font-family: var(--display); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .3px; }
+[data-theme="brutal"] .composer .go:hover { opacity: 1; background: #333; }
+[data-theme="brutal"] .composer .go:active, [data-theme="brutal"] .cat-btn:active { transform: translate(2px, 2px); }
+[data-theme="brutal"] .chip { border: 2.5px solid var(--ink); color: var(--ink); background: #fff; font-weight: 700; }
+[data-theme="brutal"] .chip em { font-family: var(--display); font-weight: 800; font-size: 11px; opacity: 1; }
+[data-theme="brutal"] .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+[data-theme="brutal"] .chip.on[class*="k-"] { background: var(--c); color: var(--ink); border-color: var(--ink); box-shadow: var(--hard-sm); }
+[data-theme="brutal"] .group-icon { border-radius: 9px; }
+[data-theme="brutal"] .group-icon.k-urgent, [data-theme="brutal"] .legend-row.k-urgent .dot { transform: rotate(-6deg); }
+[data-theme="brutal"] .group-icon.k-quick, [data-theme="brutal"] .legend-row.k-quick .dot { transform: rotate(5deg); }
+[data-theme="brutal"] .group-head h3 { font-family: var(--display); font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: -.2px; }
+[data-theme="brutal"] .group-head small { font-weight: 600; color: var(--muted); }
+[data-theme="brutal"] .group-head .n { font-family: var(--display); font-weight: 800; color: var(--ink); background: var(--c); border: 2.5px solid var(--ink); border-radius: 8px; padding: 0 9px; }
+[data-theme="brutal"] .tasks { gap: 12px; }
+[data-theme="brutal"] .task { border: var(--b); border-radius: 12px; box-shadow: var(--hard); overflow: visible; }
+[data-theme="brutal"] .task::before { display: none; }
+[data-theme="brutal"] .task:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+[data-theme="brutal"] .task-title { font-weight: 600; }
+[data-theme="brutal"] .check { width: 26px; height: 26px; border-radius: 7px; border: var(--b); background: #fff; color: var(--ink); }
+[data-theme="brutal"] .check svg.ico { stroke-width: 3.2; }
+[data-theme="brutal"] .task.done .check { background: var(--c); }
+[data-theme="brutal"] .task.done .task-title { text-decoration: line-through 3px var(--c); }
+[data-theme="brutal"] .tag { color: var(--ink); background: var(--c); border: 2.5px solid var(--ink); border-radius: 999px; }
+[data-theme="brutal"] .del { color: var(--ink); }
+[data-theme="brutal"] .menu { border: var(--b); box-shadow: var(--hard); border-radius: 12px; }
+[data-theme="brutal"] .done-toggle { color: var(--ink); font-family: var(--display); font-weight: 800; }
+[data-theme="brutal"] .empty h4 { font-weight: 900; }
+[data-theme="brutal"] .toast {
+  color: var(--ink); background: var(--c); border: var(--b); border-radius: 12px; box-shadow: var(--hard);
+  text-transform: none; letter-spacing: 0; font-size: 14px; font-weight: 700; transform: rotate(1.5deg);
+}
+[data-theme="brutal"] .toast[hidden] { transform: translateY(12px) rotate(1.5deg); }
+[data-theme="brutal"] .toast b { font-family: var(--display); font-weight: 900; color: var(--ink); }
+[data-theme="brutal"] .toast .tinted { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: #fff; flex: none; }
+[data-theme="brutal"] .toast span:not(.tinted) { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+[data-theme="brutal"] .lib-panel { border: var(--b); box-shadow: 8px 8px 0 var(--ink); }
+[data-theme="brutal"] .lib-done { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 13px; }
+.tp[data-theme="brutal"] .tp-logo { color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.tp[data-theme="brutal"] .tp-row { border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.tp[data-theme="brutal"] .tp-ck { border-radius: 3px; border-color: var(--ink); }
+
 /* ---------- Blocks: pixel sky and ground, bevelled grey GUI, hotbar filters ---------- */
 [data-theme="blocks"] body {
   font-family: "Pixelify Sans", Manrope, sans-serif;
@@ -1237,6 +1351,18 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   [data-theme="grid"] .mbar button:not(.brand-mark) { border-radius: 50%; }
   [data-theme="grid"] .mbar button#mAdd { background: transparent; color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange), 0 0 12px -2px var(--orange); }
   [data-theme="cyber"] .mbar { border-top: 1px solid var(--pink); box-shadow: 0 -8px 24px -12px var(--pink); }
+  [data-theme="brutal"] .main { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
+  [data-theme="brutal"] .head h2 { font-size: 30px; }
+  [data-theme="brutal"] .mbar {
+    left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); padding: 8px;
+    background: var(--side); border: var(--b); border-radius: 18px; box-shadow: var(--hard);
+  }
+  [data-theme="brutal"] .mbar select { background: #fff; color: var(--ink); border: var(--b); border-radius: 12px; font-weight: 700; }
+  [data-theme="brutal"] .mbar .sel svg.ico { color: var(--ink); }
+  [data-theme="brutal"] .mbar button { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 3px var(--ink); border-radius: 12px; }
+  [data-theme="brutal"] .mbar button#mAdd { background: var(--ink); color: var(--side); }
+  [data-theme="brutal"] .mbar button.brand-mark { background: #fff; color: var(--ink); }
+  [data-theme="brutal"] .toast { left: 16px; right: 16px; bottom: calc(96px + env(safe-area-inset-bottom)); }
   .stat b { font-size: 15px; }
 }
 </style>
@@ -1517,6 +1643,22 @@ svg.ico .fill { fill: currentColor; stroke: none; }
     <symbol id="i-glass-quick" viewBox="0 0 24 24"><path d="M13 2.8 5.5 13.5h6L11 21.2l7.5-10.7h-6z"/></symbol>
     <symbol id="i-glass-long" viewBox="0 0 24 24"><path d="M2.5 19.5 9 8.5l3.5 5.5 2.5-3.5 6.5 9z"/><path d="M14.5 5.5V3l3 1.2-3 1.3"/></symbol>
 
+    <!-- ===== Необрутализм ===== -->
+    <!-- Календарь с галочкой (логотип темы) -->
+    <symbol id="i-brutal-brand" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M3.5 9.5h17M8 2.8v3.4M16 2.8v3.4M8.6 15l2.3 2.2 4.6-4.5"/></symbol>
+    <!-- Горит -->
+    <symbol id="i-brutal-urgent" viewBox="0 0 24 24"><path class="fill" d="M13 2 5 13.5h6L10 22l9-12h-6.5z"/></symbol>
+    <!-- Звезда -->
+    <symbol id="i-brutal-important" viewBox="0 0 24 24"><path class="fill" d="m12 2.8 2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol>
+    <!-- Туча -->
+    <symbol id="i-brutal-unpleasant" viewBox="0 0 24 24"><path d="M7 16.5a4.5 4.5 0 1 1 1.3-8.8A5.5 5.5 0 0 1 19 9.5a3.5 3.5 0 0 1-.5 7z"/><path d="m10.5 19-1.2 2.5M14.5 19l-1.2 2.5"/></symbol>
+    <!-- Дело -->
+    <symbol id="i-brutal-regular" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+    <!-- Минутка -->
+    <symbol id="i-brutal-quick" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.5 1.5M10 2.5h4"/></symbol>
+    <!-- Марафон -->
+    <symbol id="i-brutal-long" viewBox="0 0 24 24"><path d="M6.5 3h11M6.5 21h11M7.5 3c0 5 4.5 6 4.5 9s-4.5 4-4.5 9M16.5 3c0 5-4.5 6-4.5 9s4.5 4 4.5 9"/><path class="fill" d="M9.5 18.5 12 16l2.5 2.5z"/></symbol>
+
     <!-- ===== Хакер ===== -->
     <!-- Терминал (логотип темы) -->
     <symbol id="i-hacker-brand" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="m7 10 3 2.5L7 15M12.5 15H17"/></symbol>
@@ -1700,6 +1842,20 @@ const THEMES = {
       regular:    { name: 'Обычное',      plural: 'Обычное',      hint: 'Повседневные дела' },
       quick:      { name: 'На 5 минут',   plural: 'На 5 минут',   hint: 'Займёт пару минут' },
       long:       { name: 'Долгосрочное', plural: 'Долгосрочное', hint: 'Большие цели по шагам' },
+    },
+  },
+  brutal: {
+    preview: 'radial-gradient(#e6d6b8 1px, transparent 1px) 0 0 / 10px 10px, #fff3dc',
+    label: 'Необрутализм', hint: 'Толстая обводка, жёсткие тени и стикеры',
+    title: 'ДЕЛАЙ!', tagline: 'без лишних слов', brandIcon: 'brutal-brand',
+    pickWhat: 'стикер', absent: 'нет', notify: 'sticker',
+    cats: {
+      urgent:     { name: 'Горит',   plural: 'Горит',    hint: 'Срочное — сделать прямо сегодня' },
+      important:  { name: 'Звезда',  plural: 'Звёзды',   hint: 'Важное — но не горит' },
+      unpleasant: { name: 'Туча',    plural: 'Тучи',     hint: 'Неприятное — никто не хочет, но надо' },
+      regular:    { name: 'Дело',    plural: 'Дела',     hint: 'Обычное — повседневная работа' },
+      quick:      { name: 'Минутка', plural: 'Минутки',  hint: 'На 5 минут' },
+      long:       { name: 'Марафон', plural: 'Марафоны', hint: 'Долгосрочное — бежим по кусочку' },
     },
   },
   hacker: {
@@ -2079,6 +2235,8 @@ function showToast(t, r) {
   if (theme().notify === 'banner') {
     el.innerHTML = `<span class="g-app">${svg('check')}</span>`
       + `<div class="g-txt"><b>Задача выполнена</b><span>${esc(t.title)} · ${cat(t.cat).name}</span></div><span class="g-when">сейчас</span>`;
+  } else if (theme().notify === 'sticker') {
+    el.innerHTML = `<span class="tinted">${icon(t.cat)}</span><b>Готово!</b><span>${esc(t.title)}</span>`;
   } else if (game === 'coast') {
     el.innerHTML = `<span class="splash-1">Миссия пройдена!</span><span class="splash-2">$${fmt(r.cr)}</span><span class="splash-3">Уважение +${r.xp}</span>`;
   } else if (game === 'hacker') {
