@@ -297,6 +297,38 @@
   --shadow: var(--hard);
 }
 
+/* ---------- Theme: Симулятор жизни (небо, лужайка, кристалл настроения) ---------- */
+[data-theme="life"] {
+  --bg: #eaf5fd;
+  --surface: #ffffff;
+  --ink: #1d3557;
+  --on-ink: #ffffff;
+  --on-c: #ffffff;
+  --muted: #6b7f99;
+  --line: #dbe7f3;
+  --side: rgba(255,255,255,.9);
+  --side-2: #e3f1ff;
+  --side-ink: #1d3557;
+  --side-muted: #6b7f99;
+  --accent: #2f8ff0;
+  --brand: linear-gradient(180deg, #effde9, #d3f3c4);
+  --display: Unbounded, Manrope, sans-serif;
+  --side-art: none;
+  --green: #3fbf3f;
+  --green-2: #1f9a2f;
+  --soft: #f3f8fd;
+
+  --urgent: #ff5a3c;     --urgent-bg: #ffe9e4;      /* пожар */
+  --important: #2f8ff0;  --important-bg: #e3f0fe;   /* карьера */
+  --unpleasant: #9b7b4a; --unpleasant-bg: #f3ece1;  /* грязная посуда */
+  --regular: #26b5a8;    --regular-bg: #def5f2;     /* быт */
+  --quick: #f5a623;      --quick-bg: #fff2dc;       /* перекус */
+  --long: #a55eea;       --long-bg: #f1e6fd;        /* мечта */
+
+  --radius: 16px;
+  --shadow: 0 6px 20px rgba(29,53,87,.1);
+}
+
 /* ---------- Theme: Кубический мир (пиксельные блоки, светлый) ---------- */
 [data-theme="blocks"] {
   --bg: #a9a9a9;
@@ -1048,6 +1080,99 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .tp[data-theme="brutal"] .tp-row { border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
 .tp[data-theme="brutal"] .tp-ck { border-radius: 3px; border-color: var(--ink); }
 
+/* ---------- Life: sky and lawn, white panels, mood crystal, needs and action queue ---------- */
+[data-theme="life"] body { background: linear-gradient(180deg, #bfe6ff, #e8f7ff 58%, #d9f2d0 58%, #c4e8b5) fixed; }
+[data-theme="life"] .side { background: var(--side); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 4px 0 24px rgba(29,53,87,.1); }
+[data-theme="life"] .brand-mark { box-shadow: inset 0 0 0 2px #9fe08a; }
+[data-theme="life"] .brand h1 { font-weight: 700; font-size: 20px; letter-spacing: .5px; }
+[data-theme="life"] .proj:hover { background: var(--soft); }
+[data-theme="life"] .proj.active { background: linear-gradient(180deg, #e3f1ff, #d2e8ff); box-shadow: inset 0 0 0 2px var(--accent); }
+[data-theme="life"] .proj.active::before { left: auto; right: 12px; top: 50%; bottom: auto; width: 12px; height: 20px; border-radius: 0; margin-top: -10px;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: linear-gradient(110deg, #b6ff9e, var(--green) 50%, var(--green-2) 51%); }
+[data-theme="life"] .proj.active .proj-count { margin-right: 18px; }
+[data-theme="life"] .proj-badge { border-radius: 50%; color: #fff; font-family: var(--display); background: linear-gradient(135deg, #ffb04a, #f57f17); }
+[data-theme="life"] .proj-list li:nth-child(3n+1) .proj-badge { background: linear-gradient(135deg, #5aa8f5, #1c6fd1); }
+[data-theme="life"] .proj-list li:nth-child(3n+2) .proj-badge { background: linear-gradient(135deg, #ffb04a, #f57f17); }
+[data-theme="life"] .proj-list li:nth-child(3n) .proj-badge { background: linear-gradient(135deg, #c89bff, #a55eea); }
+[data-theme="life"] .proj.active .proj-badge { color: #fff; }
+[data-theme="life"] .add-proj input { background: var(--soft); border: 2px dashed #b8cbe0; color: var(--ink); }
+[data-theme="life"] .add-proj button { background: linear-gradient(180deg, #5fd85f, #2bab2b); color: #fff; box-shadow: 0 3px 0 #1f8a2a; }
+[data-theme="life"] .legend { background: var(--soft); }
+[data-theme="life"] .legend-row .dot { border-radius: 50%; }
+[data-theme="life"] .theme-btn { background: var(--soft); border: 0; }
+[data-theme="life"] .theme-btn:hover { background: #e3eef9; }
+[data-theme="life"] .account button:hover { background: var(--soft); }
+[data-theme="life"] .main {
+  margin: 18px; width: auto; padding: 28px clamp(16px, 3vw, 36px) 40px; border-radius: 24px; align-self: start;
+  background: rgba(255,255,255,.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 10px 30px rgba(29,53,87,.12);
+}
+[data-theme="life"] .head h2 { font-weight: 700; letter-spacing: -.5px; }
+[data-theme="life"] .stripe { height: 8px; border-radius: 99px; background: var(--line); }
+[data-theme="life"] .composer { background: var(--soft); border: 0; box-shadow: none; }
+[data-theme="life"] .cat-btn { background: #fff; box-shadow: inset 0 0 0 2px var(--c); border-radius: 12px; }
+[data-theme="life"] .composer .go { background: linear-gradient(180deg, #5fd85f, #2bab2b); color: #fff; font-weight: 800; border-radius: 12px; box-shadow: 0 3px 0 #1f8a2a; }
+[data-theme="life"] .composer .go:active { transform: translateY(2px); box-shadow: 0 1px 0 #1f8a2a; }
+[data-theme="life"] .chip { border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font-weight: 700; }
+[data-theme="life"] .chip.on { background: var(--accent); color: #fff; box-shadow: 0 3px 0 #1c6fd1; }
+[data-theme="life"] .chip.on[class*="k-"] { box-shadow: 0 3px 0 color-mix(in srgb, var(--c) 70%, #000); }
+[data-theme="life"] .tinted { color: #fff; background: var(--c); }
+[data-theme="life"] .group-icon { border-radius: 50%; box-shadow: 0 3px 0 color-mix(in srgb, var(--c) 70%, #000); }
+[data-theme="life"] .group-head .n { color: var(--c); font-weight: 800; }
+[data-theme="life"] .task { border: 0; border-radius: 14px; box-shadow: 0 2px 0 var(--line), inset 0 0 0 1px var(--line); align-items: flex-start; }
+[data-theme="life"] .task::before { display: none; }
+[data-theme="life"] .task:hover { box-shadow: 0 4px 0 var(--line), inset 0 0 0 1px var(--line), 0 8px 20px rgba(29,53,87,.08); }
+[data-theme="life"] .task-title { font-weight: 600; }
+[data-theme="life"] .check { border-radius: 7px; }
+[data-theme="life"] .tag { border-radius: 999px; }
+[data-theme="life"] .menu { border: 0; border-radius: 16px; box-shadow: 0 16px 40px rgba(29,53,87,.22); }
+[data-theme="life"] .menu .mi { border-radius: 50%; }
+[data-theme="life"] .job-meta { display: flex; align-items: center; gap: 8px; margin-top: 5px; font-size: 12px; flex-wrap: wrap; }
+.lf-pay { font-weight: 800; color: var(--green-2); background: #eefbea; border-radius: 8px; padding: 1px 8px; }
+.lf-gain { font-weight: 600; color: var(--muted); }
+
+/* HUD: action queue, mood crystal, simoleons, needs */
+[data-theme="life"] .hud { display: block; margin-top: 16px; }
+.lf-hud { display: grid; gap: 12px; background: var(--soft); border-radius: 18px; padding: 12px 14px; }
+.lf-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lf-queue { display: flex; align-items: center; gap: 8px; }
+.lf-q { position: relative; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--c); box-shadow: inset 0 0 0 3px var(--c), 0 3px 8px rgba(0,0,0,.1); }
+.lf-q svg.ico { width: 18px; height: 18px; }
+.lf-q:first-child { width: 46px; height: 46px; }
+.lf-q:first-child::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 3px solid var(--c); border-right-color: transparent; border-bottom-color: transparent; animation: lf-spin 1.6s linear infinite; }
+@keyframes lf-spin { to { transform: rotate(360deg); } }
+.lf-queue small { font-size: 12px; font-weight: 700; color: var(--muted); margin-left: 2px; }
+.lf-mood { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 14px; padding: 7px 12px; box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--pb) 55%, #fff); }
+.lf-mood b { display: block; font-size: 14px; color: color-mix(in srgb, var(--pb) 65%, #000); }
+.lf-mood small { display: block; font-size: 12px; color: var(--muted); font-weight: 600; }
+.lf-bob { width: 16px; height: 26px; flex: none; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  background: linear-gradient(110deg, color-mix(in srgb, var(--pb) 45%, #fff), var(--pb) 50%, color-mix(in srgb, var(--pb) 70%, #000) 51%);
+  filter: drop-shadow(0 3px 6px var(--pb)); animation: lf-bob 2.6s ease-in-out infinite; }
+@keyframes lf-bob { 50% { transform: translateY(-3px) scaleX(-1); } }
+.lf-money { margin-left: auto; font: 700 17px var(--display); color: var(--green-2); background: #eefbea; padding: 6px 12px; border-radius: 12px; white-space: nowrap; }
+.lf-needs { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 7px 16px; }
+.lf-need { display: grid; grid-template-columns: 86px 1fr; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; }
+.lf-need span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lf-bar { height: 9px; border-radius: 99px; background: #dfe8f1; overflow: hidden; }
+.lf-bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #8be86b, #3fbf3f); transition: width .4s; }
+.lf-bar i.mid { background: linear-gradient(90deg, #ffe26b, #f5b623); }
+.lf-bar i.low { background: linear-gradient(90deg, #ff9d7a, #ff5a3c); }
+.lf-skill { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.lf-skill .lf-bar { flex: 1; max-width: 260px; }
+.lf-skill .lf-bar i { background: linear-gradient(90deg, #8ec5ff, #2f8ff0); }
+.lf-skill b { color: var(--ink); }
+
+/* moodlet toast */
+[data-theme="life"] .toast {
+  color: var(--ink); background: #fff; border: 0; border-radius: 16px; padding: 10px 16px 10px 10px;
+  box-shadow: 0 10px 30px rgba(29,53,87,.25), inset 0 0 0 2px #9fe08a; text-transform: none; letter-spacing: 0; font-size: 13.5px;
+}
+[data-theme="life"] .toast b { color: var(--ink); display: block; font-size: 14px; }
+[data-theme="life"] .toast em { font-style: normal; color: var(--green-2); font-weight: 800; margin-left: 6px; }
+[data-theme="life"] .toast small { display: block; color: var(--muted); font-weight: 600; font-size: 12px; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lf-mi { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(180deg, #8be86b, #3fbf3f); color: #fff; display: grid; place-items: center; flex: none; }
+.lf-mi svg.ico { width: 22px; height: 22px; stroke-width: 2.2; }
+@media (prefers-reduced-motion: reduce) { .lf-bob, .lf-q:first-child::after { animation: none; } }
+
 /* ---------- Blocks: pixel sky and ground, bevelled grey GUI, hotbar filters ---------- */
 [data-theme="blocks"] body {
   font-family: "Pixelify Sans", Manrope, sans-serif;
@@ -1363,6 +1488,18 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   [data-theme="brutal"] .mbar button#mAdd { background: var(--ink); color: var(--side); }
   [data-theme="brutal"] .mbar button.brand-mark { background: #fff; color: var(--ink); }
   [data-theme="brutal"] .toast { left: 16px; right: 16px; bottom: calc(96px + env(safe-area-inset-bottom)); }
+  [data-theme="life"] .main { margin: 10px 10px 0; width: auto; padding: 20px 14px calc(110px + env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0; }
+  [data-theme="life"] .lf-mood small, [data-theme="life"] .lf-queue small { display: none; }
+  [data-theme="life"] .mbar {
+    left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); padding: 8px; border-radius: 22px;
+    background: rgba(255,255,255,.92); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(29,53,87,.25);
+  }
+  [data-theme="life"] .mbar select { background: var(--soft); border: 0; border-radius: 15px; color: var(--ink); }
+  [data-theme="life"] .mbar .sel svg.ico { color: var(--muted); }
+  [data-theme="life"] .mbar button { border-radius: 15px; background: var(--soft); color: var(--muted); }
+  [data-theme="life"] .mbar button#mAdd { background: linear-gradient(180deg, #5fd85f, #2bab2b); color: #fff; box-shadow: 0 3px 0 #1f8a2a; }
+  [data-theme="life"] .mbar button.brand-mark { background: var(--brand); }
+  [data-theme="life"] .toast { left: 12px; right: 12px; bottom: calc(92px + env(safe-area-inset-bottom)); }
   .stat b { font-size: 15px; }
 }
 </style>
@@ -1659,6 +1796,24 @@ svg.ico .fill { fill: currentColor; stroke: none; }
     <!-- Марафон -->
     <symbol id="i-brutal-long" viewBox="0 0 24 24"><path d="M6.5 3h11M6.5 21h11M7.5 3c0 5 4.5 6 4.5 9s-4.5 4-4.5 9M16.5 3c0 5-4.5 6-4.5 9s4.5 4 4.5 9"/><path class="fill" d="M9.5 18.5 12 16l2.5 2.5z"/></symbol>
 
+    <!-- ===== Симулятор жизни ===== -->
+    <!-- Кристалл настроения (логотип темы) -->
+    <symbol id="i-life-brand" viewBox="0 0 24 24"><g stroke="none"><path d="M12 1.5 18.5 12 12 22.5 5.5 12z" fill="#3fbf3f"/><path d="M12 1.5V12H5.5z" fill="#b6ff9e"/><path d="M12 12h6.5L12 22.5z" fill="#1f9a2f"/></g></symbol>
+    <!-- Пожар -->
+    <symbol id="i-life-urgent" viewBox="0 0 24 24"><path d="M12 21c-3.6 0-6-2.4-6-5.6 0-3.3 2.4-5.2 3.6-7.4.6 1.7 1.5 2.6 2.6 3 0-2.8 1.2-5.3 3.4-7 .2 3 1.6 4.5 2.6 6 .9 1.3 1.8 2.9 1.8 5.1 0 3.5-2.4 5.9-8 5.9z"/></symbol>
+    <!-- Карьера -->
+    <symbol id="i-life-important" viewBox="0 0 24 24"><rect x="3" y="7.5" width="18" height="12" rx="2.5"/><path d="M8.5 7.5V5.5a1.5 1.5 0 0 1 1.5-1.5h4a1.5 1.5 0 0 1 1.5 1.5v2M3 13h18"/></symbol>
+    <!-- Грязная посуда -->
+    <symbol id="i-life-unpleasant" viewBox="0 0 24 24"><ellipse cx="12" cy="14" rx="8.5" ry="4.5"/><path d="M8 9.5c0-1.5 1-2 1-3.5M12 9c0-1.5 1-2 1-3.5M16 9.5c0-1.5 1-2 1-3.5"/></symbol>
+    <!-- Быт -->
+    <symbol id="i-life-regular" viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></symbol>
+    <!-- Перекус -->
+    <symbol id="i-life-quick" viewBox="0 0 24 24"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16M9 3.5c0 1.5 1 1.5 1 3M12.5 3.5c0 1.5 1 1.5 1 3"/></symbol>
+    <!-- Мечта -->
+    <symbol id="i-life-long" viewBox="0 0 24 24"><path d="M7.5 4h9v5a4.5 4.5 0 0 1-9 0z"/><path d="M7.5 6H4.5a3 3 0 0 0 3 4.5M16.5 6h3a3 3 0 0 1-3 4.5M12 13.5V17M8.5 20h7M10 17h4v3h-4z"/></symbol>
+    <!-- Улыбка (мудлет) -->
+    <symbol id="i-life-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 14c.9 1.4 2.1 2 3.5 2s2.6-.6 3.5-2"/><circle class="fill" cx="9" cy="10" r="1.1"/><circle class="fill" cx="15" cy="10" r="1.1"/></symbol>
+
     <!-- ===== Хакер ===== -->
     <!-- Терминал (логотип темы) -->
     <symbol id="i-hacker-brand" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="m7 10 3 2.5L7 15M12.5 15H17"/></symbol>
@@ -1884,6 +2039,21 @@ const THEMES = {
       regular:    { name: 'Кирка',     plural: 'Кирки',     hint: 'Обычное — копаем потихоньку',          done: 'Блок добыт' },
       quick:      { name: 'Факел',     plural: 'Факелы',    hint: 'Быстро — поставил и пошёл',            done: 'Факел зажжён' },
       long:       { name: 'Постройка', plural: 'Постройки', hint: 'Долгосрочное — замок по блоку в день', done: 'Постройка завершена' },
+    },
+  },
+  life: {
+    preview: 'linear-gradient(#bfe6ff, #e8f7ff 58%, #c4e8b5 58%)',
+    label: 'Симулятор жизни', hint: 'Настроение, потребности и очередь действий',
+    title: 'LIFE', tagline: 'симулятор дел', brandIcon: 'life-brand',
+    pickWhat: 'занятие', absent: 'не запланированы', game: 'life',
+    placeholder: 'Что нужно сделать?', addLabel: 'В очередь',
+    cats: {
+      urgent:     { name: 'Пожар',          plural: 'Пожар',          need: 'Срочность', hint: 'Срочное — тушим немедленно' },
+      important:  { name: 'Карьера',        plural: 'Карьера',        need: 'Карьера',   hint: 'Важное — путь к повышению' },
+      unpleasant: { name: 'Грязная посуда', plural: 'Грязная посуда', need: 'Порядок',   hint: 'Неприятное — само не помоется' },
+      regular:    { name: 'Быт',            plural: 'Быт',            need: 'Рутина',    hint: 'Обычное — повседневные дела' },
+      quick:      { name: 'Перекус',        plural: 'Перекусы',       need: 'Мелочи',    hint: 'Быстро — на 5 минут' },
+      long:       { name: 'Мечта',          plural: 'Мечты',          need: 'Мечта',     hint: 'Долгосрочное — цель жизни' },
     },
   },
   coast: {
@@ -2177,6 +2347,31 @@ function hudHtml(alarms, openCount, doneCount) {
         <span class="sh-dim">${openCount} open · ${doneCount} done · streak ${streak()}d</span>
         <span class="sh-xp">lvl ${level} <b>${'█'.repeat(filled)}</b><i>${'░'.repeat(8 - filled)}</i> ${into}/${XP_PER_LEVEL}</span></div>`;
   }
+  if (theme().game === 'life') {
+    const open = (active()?.tasks || []).filter((x) => !x.done);
+    const queue = open.slice().sort((a, b) => ORDER.indexOf(a.cat) - ORDER.indexOf(b.cat)).slice(0, 3);
+    // mood follows how many urgent things are on fire
+    const [mood, moodHint, pb] = alarms === 0 ? ['Счастливый', 'всё под контролем', '#3fbf3f']
+      : alarms < 3 ? ['Сосредоточенный', `горит: ${alarms}`, '#e8b100'] : ['Напряжённый', `горит: ${alarms}`, '#ff5a3c'];
+    const needs = ORDER.map((k) => {
+      const v = Math.max(8, 100 - open.filter((x) => x.cat === k).length * 22);
+      const label = state.plainNames ? cat(k).name : theme().cats[k].need;
+      return `<div class="lf-need k-${k}" title="${cat(k).name}: открыто ${open.filter((x) => x.cat === k).length}"><span>${label}</span>
+        <span class="lf-bar"><i class="${v < 40 ? 'low' : v < 70 ? 'mid' : ''}" style="width:${v}%"></i></span></div>`;
+    }).join('');
+    return `<div class="lf-hud">
+      <div class="lf-top">
+        <div class="lf-queue">${queue.map((x) => `<span class="lf-q k-${x.cat}" title="${esc(x.title)}">${icon(x.cat)}</span>`).join('')}
+          <small>${queue.length ? 'очередь действий' : 'очередь пуста'}</small></div>
+        <div class="lf-mood" style="--pb:${pb}"><span class="lf-bob"></span><div><b>${mood}</b><small>${moodHint}</small></div></div>
+        <span class="lf-money" title="Симолеоны">§ ${fmt(credits)}</span>
+      </div>
+      <div class="lf-needs">${needs}</div>
+      <div class="lf-skill"><span>Навык «Организация» <b>${level}</b></span>
+        <span class="lf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${XP_PER_LEVEL}" aria-valuenow="${into}"><i style="width:${(into / XP_PER_LEVEL) * 100}%"></i></span>
+        <span>Серия <b>${streak()} дн.</b></span></div>
+    </div>`;
+  }
   if (theme().game === 'blocks') {
     const full = Math.round(health / 10);
     const hearts = Array.from({ length: 10 }, (_, i) => svg(i < full ? 'blocks-heart' : 'blocks-heart-empty')).join('');
@@ -2215,6 +2410,7 @@ function jobMetaHtml(t) {
   const r = REWARDS[t.cat];
   if (theme().game === 'hacker') return `<div class="job-meta">reward: <em>+${r.xp} xp</em> · priority => ${r.threat}</div>`;
   if (theme().game === 'blocks') return `<div class="job-meta">+${r.xp} XP</div>`;
+  if (theme().game === 'life') return `<div class="job-meta"><span class="lf-pay">§ ${fmt(r.cr)}</span><span class="lf-gain">+${r.xp} к навыку</span></div>`;
   if (theme().game === 'coast') {
     return `<div class="job-meta"><span class="pay">+$${fmt(r.cr)}</span><span class="resp">Уважение +${r.xp}</span></div>`;
   }
@@ -2237,6 +2433,9 @@ function showToast(t, r) {
       + `<div class="g-txt"><b>Задача выполнена</b><span>${esc(t.title)} · ${cat(t.cat).name}</span></div><span class="g-when">сейчас</span>`;
   } else if (theme().notify === 'sticker') {
     el.innerHTML = `<span class="tinted">${icon(t.cat)}</span><b>Готово!</b><span>${esc(t.title)}</span>`;
+  } else if (game === 'life') {
+    el.innerHTML = `<span class="lf-mi">${svg('life-smile')}</span><div><b>Продуктивность!<em>+${r.xp} к навыку</em></b>`
+      + `<small>Выполнено: «${esc(t.title)}» · § ${fmt(r.cr)}</small></div>`;
   } else if (game === 'coast') {
     el.innerHTML = `<span class="splash-1">Миссия пройдена!</span><span class="splash-2">$${fmt(r.cr)}</span><span class="splash-3">Уважение +${r.xp}</span>`;
   } else if (game === 'hacker') {
