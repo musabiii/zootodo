@@ -6,7 +6,7 @@
 <title>ZooTodo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Rubik:ital,wght@0,500;0,700;1,800;1,900&family=Oswald:wght@500;600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600&family=Rubik:ital,wght@0,500;0,700;1,800;1,900&family=Oswald:wght@500;600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ---------- Theme: Зоопарк (default) ---------- */
 :root {
@@ -134,6 +134,36 @@
   --radius: 2px;
   --shadow: 0 0 0 1px rgba(255,255,255,.03);
   color-scheme: dark;
+}
+
+/* ---------- Theme: Кубический мир (пиксельные блоки, светлый) ---------- */
+[data-theme="blocks"] {
+  --bg: #a9a9a9;
+  --surface: #c6c6c6;
+  --ink: #3f3f3f;
+  --on-ink: #ffffff;
+  --on-c: #ffffff;
+  --muted: #5e5e5e;
+  --line: #555555;
+  --side: #3a3a3a;
+  --side-2: #5a5a5a;
+  --side-ink: #ffffff;
+  --side-muted: #c4c4c4;
+  --accent: #5fa832;
+  --brand: #8b8b8b;
+  --display: "Press Start 2P", monospace;
+  --side-art:
+    conic-gradient(from 90deg at 50% 50%, #3a3a3a 25%, #343434 0 50%, #3f3f3f 0 75%, #363636 0) 0 0 / 24px 24px;
+
+  --urgent: #d93a2b;     --urgent-bg: #e8c4c0;      /* динамит */
+  --important: #1a9b92;  --important-bg: #bfe6e2;   /* алмаз */
+  --unpleasant: #3f7a27; --unpleasant-bg: #c6dcb8;  /* зомби */
+  --regular: #6b4a2b;    --regular-bg: #dccbb5;     /* кирка */
+  --quick: #c98a0e;      --quick-bg: #ecdcb0;       /* факел */
+  --long: #5a6f8a;       --long-bg: #c8d0db;        /* постройка */
+
+  --radius: 0px;
+  --shadow: none;
 }
 
 /* ---------- Theme: Западное побережье (90-е, закат, тёмный) ---------- */
@@ -557,6 +587,95 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .stat::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
 .stat::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
 
+/* ---------- Blocks: pixel sky and ground, bevelled grey GUI, hotbar filters ---------- */
+[data-theme="blocks"] body {
+  font-family: "Pixelify Sans", Manrope, sans-serif;
+  background: linear-gradient(#4f82dd, #6f9fec 55%, #8db8f5) fixed;
+}
+[data-theme="blocks"] input, [data-theme="blocks"] select, [data-theme="blocks"] .menu { font-family: "Pixelify Sans", Manrope, sans-serif; }
+[data-theme="blocks"] body::before {
+  content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 84px; pointer-events: none; z-index: 0;
+  background:
+    linear-gradient(#5fa832 0 12px, #4c8a28 12px 16px, transparent 16px),
+    conic-gradient(from 90deg at 50% 50%, #8b5a2b 25%, #7a4f25 0 50%, #8b5a2b 0 75%, #966233 0) 0 16px / 16px 16px;
+}
+[data-theme="blocks"] .app { position: relative; z-index: 1; }
+[data-theme="blocks"] .side { border-right: 3px solid #000; }
+/* bevelled GUI panel */
+[data-theme="blocks"] .composer, [data-theme="blocks"] .task, [data-theme="blocks"] .menu, [data-theme="blocks"] .auth-card {
+  background: #c6c6c6; border: 3px solid; border-color: #fff #555 #555 #fff; border-radius: 0; box-shadow: 0 0 0 2px #000;
+}
+[data-theme="blocks"] .task::before { display: none; }
+[data-theme="blocks"] .task:hover { box-shadow: 0 0 0 2px #000; }
+[data-theme="blocks"] .task-title { font-size: 16px; color: #3f3f3f; }
+/* inset inventory slot */
+[data-theme="blocks"] .composer input, [data-theme="blocks"] .check, [data-theme="blocks"] .group-icon,
+[data-theme="blocks"] .cat-btn, [data-theme="blocks"] .tag, [data-theme="blocks"] .legend .dot, [data-theme="blocks"] .auth input {
+  background: #8b8b8b; border: 3px solid; border-color: #373737 #fff #fff #373737; border-radius: 0; color: #fff; text-shadow: 1px 1px 0 #3f3f3f;
+}
+[data-theme="blocks"] .composer input { padding: 10px; }
+[data-theme="blocks"] .composer input::placeholder, [data-theme="blocks"] .auth input::placeholder { color: #e0e0e0; }
+[data-theme="blocks"] .check { width: 24px; height: 24px; }
+[data-theme="blocks"] .task.done .check { background: #6cc12a; border-color: #2f5e10 #b8f28c #b8f28c #2f5e10; }
+[data-theme="blocks"] .group-icon { width: 40px; height: 40px; }
+[data-theme="blocks"] .group-icon svg.ico, [data-theme="blocks"] .legend .dot svg.ico { width: 24px; height: 24px; }
+[data-theme="blocks"] .tag { font-size: 13px; padding: 3px 7px; }
+[data-theme="blocks"] .cat-btn { font-size: 15px; font-weight: 500; }
+/* stone button */
+[data-theme="blocks"] .composer .go, [data-theme="blocks"] .auth-go {
+  background: #7d7d7d; border: 3px solid; border-color: #aaa #3a3a3a #3a3a3a #aaa; border-radius: 0; box-shadow: 0 0 0 2px #000;
+  color: #fff; text-shadow: 2px 2px 0 #3f3f3f; font-family: var(--display); font-size: 11px; text-transform: uppercase;
+}
+[data-theme="blocks"] .composer .go:hover { background: #8f8f8f; opacity: 1; }
+/* blocky outlined type */
+[data-theme="blocks"] .head h2 { font-family: var(--display); font-weight: 400; font-size: clamp(22px, 4vw, 30px); color: #fff; text-shadow: 3px 3px 0 #3f3f3f; text-transform: uppercase; letter-spacing: 1px; }
+[data-theme="blocks"] .head p { font-family: var(--display); font-size: 9px; color: #fff; text-shadow: 2px 2px 0 #3f3f3f; text-transform: uppercase; line-height: 1.7; }
+[data-theme="blocks"] .brand h1 { font-family: var(--display); font-weight: 400; font-size: 15px; text-shadow: 2px 2px 0 #000; }
+[data-theme="blocks"] .group-head h3 { font-family: var(--display); font-weight: 400; font-size: 11px; color: #fff; text-shadow: 2px 2px 0 #3f3f3f; text-transform: uppercase; }
+[data-theme="blocks"] .group-head small, [data-theme="blocks"] .done-toggle, [data-theme="blocks"] .empty div { color: #fff; text-shadow: 1px 1px 0 #3f3f3f; font-size: 14px; }
+[data-theme="blocks"] .group-head .n { font-family: var(--display); font-size: 10px; color: #fff; text-shadow: 2px 2px 0 #3f3f3f; }
+[data-theme="blocks"] .empty h4 { font-family: var(--display); font-weight: 400; font-size: 14px; color: #fff; text-shadow: 2px 2px 0 #3f3f3f; }
+[data-theme="blocks"] .stripe { height: 8px; border: 2px solid #000; border-radius: 0; }
+[data-theme="blocks"] .brand-mark, [data-theme="blocks"] .mbar button.brand-mark {
+  border-radius: 0; background: #8b8b8b; border: 3px solid; border-color: #373737 #fff #fff #373737; box-shadow: none;
+}
+[data-theme="blocks"] .brand-mark svg.ico { width: 26px; height: 26px; }
+[data-theme="blocks"] .proj, [data-theme="blocks"] .proj-badge, [data-theme="blocks"] .add-proj input, [data-theme="blocks"] .add-proj button,
+[data-theme="blocks"] .theme-btn, [data-theme="blocks"] .legend { border-radius: 0; }
+[data-theme="blocks"] .menu button { border-radius: 0; }
+[data-theme="blocks"] .menu button:hover, [data-theme="blocks"] .menu button:focus-visible { background: #b0b0b0; }
+/* filters become a hotbar: icon slots with a count in the corner */
+[data-theme="blocks"] .filters { gap: 0; flex-wrap: nowrap; width: max-content; max-width: 100%; background: #000; border: 2px solid #000; overflow-x: auto; }
+[data-theme="blocks"] .chip {
+  position: relative; flex: 0 0 auto; width: 54px; height: 54px; padding: 0; justify-content: center; border-radius: 0;
+  background: #8b8b8b; border: 3px solid; border-color: #373737 #c6c6c6 #c6c6c6 #373737; color: #fff;
+}
+[data-theme="blocks"] .chip svg.ico { width: 30px; height: 30px; }
+[data-theme="blocks"] .chip .chip-name { display: none; }
+[data-theme="blocks"] .chip[data-filter="all"] svg.ico { display: none; }
+[data-theme="blocks"] .chip[data-filter="all"] .chip-name { display: inline; font-family: var(--display); font-size: 9px; text-shadow: 1px 1px 0 #3f3f3f; }
+[data-theme="blocks"] .chip em { position: absolute; right: 2px; bottom: 1px; font-family: var(--display); font-size: 9px; color: #fff; opacity: 1; text-shadow: 1px 1px 0 #3f3f3f; }
+[data-theme="blocks"] .chip.on, [data-theme="blocks"] .chip.on[class*="k-"] { background: #8b8b8b; color: #fff; outline: 3px solid #fff; outline-offset: -1px; z-index: 1; box-shadow: none; }
+
+/* HUD: hearts = project progress, green bar + number = experience level */
+.mc-hud { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.mc-hearts { display: flex; gap: 2px; }
+.mc-hearts svg.ico { width: 18px; height: 16px; }
+.mc-lvl { display: grid; justify-items: center; gap: 4px; }
+.mc-lvl b { font-family: "Press Start 2P", monospace; font-weight: 400; font-size: 13px; color: #80ff20; text-shadow: 2px 2px 0 #1e3d06; }
+.mc-xp { width: 160px; height: 10px; background: #2a2a2a; border: 2px solid #111; position: relative; }
+.mc-xp i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(#a2f05a, #6cc12a); transition: width .4s; }
+[data-theme="blocks"] .hud { display: block; margin: 14px 0 -6px; }
+[data-theme="blocks"] .job-meta { display: flex; margin-top: 4px; font-family: "Press Start 2P", monospace; font-size: 8px; color: #3d8a12; }
+/* "achievement get" toast */
+[data-theme="blocks"] .toast {
+  top: 20px; bottom: auto; right: 20px; gap: 12px; padding: 10px 14px; text-transform: none; letter-spacing: 0;
+  background: #212121; border: 3px solid; border-color: #555 #111 #111 #555; box-shadow: 0 0 0 2px #000; color: #fff;
+}
+[data-theme="blocks"] .toast svg.ico { width: 30px; height: 30px; }
+.ach b { display: block; font-family: "Press Start 2P", monospace; font-weight: 400; font-size: 9px; color: #ffff55; line-height: 1.6; text-transform: uppercase; }
+.ach span { display: block; font-family: "Pixelify Sans", sans-serif; font-size: 15px; color: #fff; }
+
 /* ---------- West Coast: sunset city, outlined game type, black HUD boxes ---------- */
 [data-theme="coast"] body {
   /* one long purple ↔ orange sunset gradient that slowly drifts across the whole screen */
@@ -717,6 +836,22 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .mbar button.ghost { background: var(--side-2); color: var(--side-muted); }
   .mbar button.brand-mark { background: var(--brand); color: #fff; }
   .toast { left: 16px; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); }
+  [data-theme="blocks"] body::before { display: none; }
+  [data-theme="blocks"] .mbar {
+    background:
+      linear-gradient(#5fa832 0 8px, #4c8a28 8px 11px, transparent 11px),
+      conic-gradient(from 90deg at 50% 50%, #8b5a2b 25%, #7a4f25 0 50%, #8b5a2b 0 75%, #966233 0) 0 11px / 16px 16px;
+    padding-top: 18px; box-shadow: none;
+  }
+  [data-theme="blocks"] .mbar select { background: #7d7d7d; border: 3px solid; border-color: #aaa #3a3a3a #3a3a3a #aaa; border-radius: 0; box-shadow: 0 0 0 2px #000; text-shadow: 1px 1px 0 #3f3f3f; font-family: "Pixelify Sans", sans-serif; font-size: 16px; }
+  [data-theme="blocks"] .mbar button { border-radius: 0; background: #7d7d7d; color: #fff; border: 3px solid; border-color: #aaa #3a3a3a #3a3a3a #aaa; box-shadow: 0 0 0 2px #000; }
+  [data-theme="blocks"] .mbar button#mAdd { background: #5fa832; border-color: #9ee06a #2f5e10 #2f5e10 #9ee06a; }
+  [data-theme="blocks"] .filters { width: 100%; }
+  [data-theme="blocks"] .chip { flex: 1 1 0; width: auto; min-width: 0; height: auto; aspect-ratio: 1; }
+  [data-theme="blocks"] .chip svg.ico { width: 26px; height: 26px; }
+  [data-theme="blocks"] .toast { left: 16px; right: 16px; top: auto; bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .mc-xp { width: 120px; }
+  .mc-hearts svg.ico { width: 15px; height: 13px; }
   [data-theme="coast"] body::before { bottom: calc(60px + env(safe-area-inset-bottom)); }
   [data-theme="coast"] body::after { bottom: calc(110px + env(safe-area-inset-bottom)); width: 200px; height: 200px; margin-left: -100px; }
   [data-theme="coast"] .mbar { background: linear-gradient(transparent, rgba(0,0,0,.92) 30%); box-shadow: none; }
@@ -994,6 +1129,26 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <path d="M2.5 21h19M4 21V11.5h4.5V21M8.5 21V4.5h5.5V21M14 21v-8h3V8.5h3.5V21"/>
       <path d="M10.6 8h2.3M10.6 11h2.3M10.6 14h2.3M5.7 14.5h1.1M18 12h1M18 15h1"/>
     </symbol>
+    <!-- ===== Кубический мир (пиксель-арт) ===== -->
+    <!-- Блок травы (логотип темы) -->
+    <symbol id="i-blocks-brand" viewBox="0 0 12 12"><g stroke="none" shape-rendering="crispEdges"><rect x="0" y="0" width="12" height="1" fill="#5fa832"/><rect x="0" y="1" width="1" height="1" fill="#5fa832"/><rect x="1" y="1" width="1" height="1" fill="#4c8a28"/><rect x="2" y="1" width="3" height="1" fill="#5fa832"/><rect x="5" y="1" width="1" height="1" fill="#4c8a28"/><rect x="6" y="1" width="2" height="1" fill="#5fa832"/><rect x="8" y="1" width="1" height="1" fill="#4c8a28"/><rect x="9" y="1" width="3" height="1" fill="#5fa832"/><rect x="0" y="2" width="2" height="1" fill="#5fa832"/><rect x="2" y="2" width="1" height="1" fill="#4c8a28"/><rect x="3" y="2" width="6" height="1" fill="#5fa832"/><rect x="9" y="2" width="1" height="1" fill="#4c8a28"/><rect x="10" y="2" width="2" height="1" fill="#5fa832"/><rect x="0" y="3" width="1" height="1" fill="#6e4520"/><rect x="1" y="3" width="1" height="1" fill="#5fa832"/><rect x="2" y="3" width="1" height="1" fill="#6e4520"/><rect x="3" y="3" width="2" height="1" fill="#5fa832"/><rect x="5" y="3" width="1" height="1" fill="#6e4520"/><rect x="6" y="3" width="1" height="1" fill="#5fa832"/><rect x="7" y="3" width="1" height="1" fill="#6e4520"/><rect x="8" y="3" width="2" height="1" fill="#5fa832"/><rect x="10" y="3" width="1" height="1" fill="#6e4520"/><rect x="11" y="3" width="1" height="1" fill="#5fa832"/><rect x="0" y="4" width="1" height="1" fill="#8b5a2b"/><rect x="1" y="4" width="1" height="1" fill="#6e4520"/><rect x="2" y="4" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="4" width="1" height="1" fill="#6e4520"/><rect x="5" y="4" width="3" height="1" fill="#8b5a2b"/><rect x="8" y="4" width="1" height="1" fill="#6e4520"/><rect x="9" y="4" width="2" height="1" fill="#8b5a2b"/><rect x="11" y="4" width="1" height="1" fill="#6e4520"/><rect x="0" y="5" width="3" height="1" fill="#8b5a2b"/><rect x="3" y="5" width="1" height="1" fill="#a0703a"/><rect x="4" y="5" width="2" height="1" fill="#8b5a2b"/><rect x="6" y="5" width="1" height="1" fill="#6e4520"/><rect x="7" y="5" width="3" height="1" fill="#8b5a2b"/><rect x="10" y="5" width="1" height="1" fill="#a0703a"/><rect x="11" y="5" width="1" height="1" fill="#8b5a2b"/><rect x="0" y="6" width="1" height="1" fill="#8b5a2b"/><rect x="1" y="6" width="1" height="1" fill="#6e4520"/><rect x="2" y="6" width="7" height="1" fill="#8b5a2b"/><rect x="9" y="6" width="1" height="1" fill="#6e4520"/><rect x="10" y="6" width="2" height="1" fill="#8b5a2b"/><rect x="0" y="7" width="3" height="1" fill="#8b5a2b"/><rect x="3" y="7" width="1" height="1" fill="#6e4520"/><rect x="4" y="7" width="1" height="1" fill="#8b5a2b"/><rect x="5" y="7" width="1" height="1" fill="#a0703a"/><rect x="6" y="7" width="6" height="1" fill="#8b5a2b"/><rect x="0" y="8" width="1" height="1" fill="#a0703a"/><rect x="1" y="8" width="6" height="1" fill="#8b5a2b"/><rect x="7" y="8" width="1" height="1" fill="#6e4520"/><rect x="8" y="8" width="3" height="1" fill="#8b5a2b"/><rect x="11" y="8" width="1" height="1" fill="#6e4520"/><rect x="0" y="9" width="2" height="1" fill="#8b5a2b"/><rect x="2" y="9" width="1" height="1" fill="#6e4520"/><rect x="3" y="9" width="5" height="1" fill="#8b5a2b"/><rect x="8" y="9" width="1" height="1" fill="#a0703a"/><rect x="9" y="9" width="3" height="1" fill="#8b5a2b"/><rect x="0" y="10" width="4" height="1" fill="#8b5a2b"/><rect x="4" y="10" width="1" height="1" fill="#6e4520"/><rect x="5" y="10" width="5" height="1" fill="#8b5a2b"/><rect x="10" y="10" width="1" height="1" fill="#6e4520"/><rect x="11" y="10" width="1" height="1" fill="#8b5a2b"/><rect x="0" y="11" width="1" height="1" fill="#6e4520"/><rect x="1" y="11" width="5" height="1" fill="#8b5a2b"/><rect x="6" y="11" width="1" height="1" fill="#a0703a"/><rect x="7" y="11" width="5" height="1" fill="#8b5a2b"/></g></symbol>
+    <!-- Динамит -->
+    <symbol id="i-blocks-urgent" viewBox="0 0 12 12"><g stroke="none" shape-rendering="crispEdges"><rect x="0" y="0" width="12" height="1" fill="#d93a2b"/><rect x="0" y="1" width="1" height="1" fill="#d93a2b"/><rect x="1" y="1" width="1" height="1" fill="#a3261b"/><rect x="2" y="1" width="1" height="1" fill="#d93a2b"/><rect x="3" y="1" width="1" height="1" fill="#a3261b"/><rect x="4" y="1" width="1" height="1" fill="#d93a2b"/><rect x="5" y="1" width="1" height="1" fill="#a3261b"/><rect x="6" y="1" width="1" height="1" fill="#d93a2b"/><rect x="7" y="1" width="1" height="1" fill="#a3261b"/><rect x="8" y="1" width="1" height="1" fill="#d93a2b"/><rect x="9" y="1" width="1" height="1" fill="#a3261b"/><rect x="10" y="1" width="1" height="1" fill="#d93a2b"/><rect x="11" y="1" width="1" height="1" fill="#a3261b"/><rect x="0" y="2" width="12" height="1" fill="#d93a2b"/><rect x="0" y="3" width="12" height="1" fill="#e8e8e8"/><rect x="0" y="4" width="1" height="1" fill="#e8e8e8"/><rect x="1" y="4" width="3" height="1" fill="#222"/><rect x="4" y="4" width="1" height="1" fill="#e8e8e8"/><rect x="5" y="4" width="1" height="1" fill="#222"/><rect x="6" y="4" width="1" height="1" fill="#e8e8e8"/><rect x="7" y="4" width="1" height="1" fill="#222"/><rect x="8" y="4" width="1" height="1" fill="#e8e8e8"/><rect x="9" y="4" width="3" height="1" fill="#222"/><rect x="0" y="5" width="2" height="1" fill="#e8e8e8"/><rect x="2" y="5" width="1" height="1" fill="#222"/><rect x="3" y="5" width="2" height="1" fill="#e8e8e8"/><rect x="5" y="5" width="3" height="1" fill="#222"/><rect x="8" y="5" width="2" height="1" fill="#e8e8e8"/><rect x="10" y="5" width="1" height="1" fill="#222"/><rect x="11" y="5" width="1" height="1" fill="#e8e8e8"/><rect x="0" y="6" width="2" height="1" fill="#e8e8e8"/><rect x="2" y="6" width="1" height="1" fill="#222"/><rect x="3" y="6" width="2" height="1" fill="#e8e8e8"/><rect x="5" y="6" width="1" height="1" fill="#222"/><rect x="6" y="6" width="1" height="1" fill="#e8e8e8"/><rect x="7" y="6" width="1" height="1" fill="#222"/><rect x="8" y="6" width="2" height="1" fill="#e8e8e8"/><rect x="10" y="6" width="1" height="1" fill="#222"/><rect x="11" y="6" width="1" height="1" fill="#e8e8e8"/><rect x="0" y="7" width="12" height="1" fill="#e8e8e8"/><rect x="0" y="8" width="12" height="1" fill="#d93a2b"/><rect x="0" y="9" width="1" height="1" fill="#d93a2b"/><rect x="1" y="9" width="1" height="1" fill="#a3261b"/><rect x="2" y="9" width="1" height="1" fill="#d93a2b"/><rect x="3" y="9" width="1" height="1" fill="#a3261b"/><rect x="4" y="9" width="1" height="1" fill="#d93a2b"/><rect x="5" y="9" width="1" height="1" fill="#a3261b"/><rect x="6" y="9" width="1" height="1" fill="#d93a2b"/><rect x="7" y="9" width="1" height="1" fill="#a3261b"/><rect x="8" y="9" width="1" height="1" fill="#d93a2b"/><rect x="9" y="9" width="1" height="1" fill="#a3261b"/><rect x="10" y="9" width="1" height="1" fill="#d93a2b"/><rect x="11" y="9" width="1" height="1" fill="#a3261b"/><rect x="0" y="10" width="12" height="1" fill="#d93a2b"/><rect x="0" y="11" width="12" height="1" fill="#a3261b"/></g></symbol>
+    <!-- Алмаз -->
+    <symbol id="i-blocks-important" viewBox="0 0 12 12"><g stroke="none" shape-rendering="crispEdges"><rect x="3" y="1" width="6" height="1" fill="#1a8f87"/><rect x="2" y="2" width="1" height="1" fill="#1a8f87"/><rect x="3" y="2" width="1" height="1" fill="#4ee6dc"/><rect x="4" y="2" width="2" height="1" fill="#d9fffb"/><rect x="6" y="2" width="3" height="1" fill="#4ee6dc"/><rect x="9" y="2" width="1" height="1" fill="#1a8f87"/><rect x="1" y="3" width="1" height="1" fill="#1a8f87"/><rect x="2" y="3" width="1" height="1" fill="#4ee6dc"/><rect x="3" y="3" width="1" height="1" fill="#d9fffb"/><rect x="4" y="3" width="6" height="1" fill="#4ee6dc"/><rect x="10" y="3" width="1" height="1" fill="#1a8f87"/><rect x="0" y="4" width="1" height="1" fill="#1a8f87"/><rect x="1" y="4" width="10" height="1" fill="#4ee6dc"/><rect x="11" y="4" width="1" height="1" fill="#1a8f87"/><rect x="1" y="5" width="1" height="1" fill="#1a8f87"/><rect x="2" y="5" width="8" height="1" fill="#4ee6dc"/><rect x="10" y="5" width="1" height="1" fill="#1a8f87"/><rect x="2" y="6" width="1" height="1" fill="#1a8f87"/><rect x="3" y="6" width="6" height="1" fill="#4ee6dc"/><rect x="9" y="6" width="1" height="1" fill="#1a8f87"/><rect x="3" y="7" width="1" height="1" fill="#1a8f87"/><rect x="4" y="7" width="4" height="1" fill="#4ee6dc"/><rect x="8" y="7" width="1" height="1" fill="#1a8f87"/><rect x="4" y="8" width="1" height="1" fill="#1a8f87"/><rect x="5" y="8" width="2" height="1" fill="#4ee6dc"/><rect x="7" y="8" width="1" height="1" fill="#1a8f87"/><rect x="5" y="9" width="2" height="1" fill="#1a8f87"/></g></symbol>
+    <!-- Зомби -->
+    <symbol id="i-blocks-unpleasant" viewBox="0 0 12 12"><g stroke="none" shape-rendering="crispEdges"><rect x="0" y="0" width="12" height="1" fill="#2f5a1e"/><rect x="0" y="1" width="1" height="1" fill="#2f5a1e"/><rect x="1" y="1" width="1" height="1" fill="#5b9c3a"/><rect x="2" y="1" width="2" height="1" fill="#2f5a1e"/><rect x="4" y="1" width="2" height="1" fill="#5b9c3a"/><rect x="6" y="1" width="2" height="1" fill="#2f5a1e"/><rect x="8" y="1" width="1" height="1" fill="#5b9c3a"/><rect x="9" y="1" width="2" height="1" fill="#2f5a1e"/><rect x="11" y="1" width="1" height="1" fill="#5b9c3a"/><rect x="0" y="2" width="12" height="1" fill="#5b9c3a"/><rect x="0" y="3" width="1" height="1" fill="#5b9c3a"/><rect x="1" y="3" width="2" height="1" fill="#111"/><rect x="3" y="3" width="6" height="1" fill="#5b9c3a"/><rect x="9" y="3" width="2" height="1" fill="#111"/><rect x="11" y="3" width="1" height="1" fill="#5b9c3a"/><rect x="0" y="4" width="1" height="1" fill="#5b9c3a"/><rect x="1" y="4" width="2" height="1" fill="#111"/><rect x="3" y="4" width="6" height="1" fill="#5b9c3a"/><rect x="9" y="4" width="2" height="1" fill="#111"/><rect x="11" y="4" width="1" height="1" fill="#5b9c3a"/><rect x="0" y="5" width="5" height="1" fill="#5b9c3a"/><rect x="5" y="5" width="2" height="1" fill="#3f7a27"/><rect x="7" y="5" width="5" height="1" fill="#5b9c3a"/><rect x="0" y="6" width="5" height="1" fill="#5b9c3a"/><rect x="5" y="6" width="2" height="1" fill="#3f7a27"/><rect x="7" y="6" width="5" height="1" fill="#5b9c3a"/><rect x="0" y="7" width="12" height="1" fill="#5b9c3a"/><rect x="0" y="8" width="2" height="1" fill="#5b9c3a"/><rect x="2" y="8" width="7" height="1" fill="#2a4d1a"/><rect x="9" y="8" width="3" height="1" fill="#5b9c3a"/><rect x="0" y="9" width="12" height="1" fill="#5b9c3a"/><rect x="0" y="10" width="1" height="1" fill="#3f7a27"/><rect x="1" y="10" width="1" height="1" fill="#5b9c3a"/><rect x="2" y="10" width="1" height="1" fill="#3f7a27"/><rect x="3" y="10" width="1" height="1" fill="#5b9c3a"/><rect x="4" y="10" width="1" height="1" fill="#3f7a27"/><rect x="5" y="10" width="1" height="1" fill="#5b9c3a"/><rect x="6" y="10" width="1" height="1" fill="#3f7a27"/><rect x="7" y="10" width="1" height="1" fill="#5b9c3a"/><rect x="8" y="10" width="1" height="1" fill="#3f7a27"/><rect x="9" y="10" width="1" height="1" fill="#5b9c3a"/><rect x="10" y="10" width="1" height="1" fill="#3f7a27"/><rect x="11" y="10" width="1" height="1" fill="#5b9c3a"/><rect x="0" y="11" width="12" height="1" fill="#3f7a27"/></g></symbol>
+    <!-- Кирка -->
+    <symbol id="i-blocks-regular" viewBox="0 0 12 12"><g stroke="none" shape-rendering="crispEdges"><rect x="1" y="0" width="1" height="1" fill="#5f6368"/><rect x="2" y="0" width="7" height="1" fill="#b5bbc1"/><rect x="9" y="0" width="1" height="1" fill="#5f6368"/><rect x="0" y="1" width="1" height="1" fill="#5f6368"/><rect x="1" y="1" width="1" height="1" fill="#b5bbc1"/><rect x="4" y="1" width="2" height="1" fill="#8b5a2b"/><rect x="8" y="1" width="1" height="1" fill="#b5bbc1"/><rect x="9" y="1" width="1" height="1" fill="#5f6368"/><rect x="0" y="2" width="1" height="1" fill="#5f6368"/><rect x="4" y="2" width="2" height="1" fill="#8b5a2b"/><rect x="9" y="2" width="1" height="1" fill="#5f6368"/><rect x="4" y="3" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="4" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="5" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="6" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="7" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="8" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="9" width="2" height="1" fill="#8b5a2b"/><rect x="4" y="10" width="2" height="1" fill="#8b5a2b"/></g></symbol>
+    <!-- Факел -->
+    <symbol id="i-blocks-quick" viewBox="0 0 12 12"><g stroke="none" shape-rendering="crispEdges"><rect x="5" y="0" width="2" height="1" fill="#ffd23f"/><rect x="4" y="1" width="1" height="1" fill="#ffd23f"/><rect x="5" y="1" width="2" height="1" fill="#ff8a1a"/><rect x="7" y="1" width="1" height="1" fill="#ffd23f"/><rect x="4" y="2" width="1" height="1" fill="#ffd23f"/><rect x="5" y="2" width="2" height="1" fill="#ff8a1a"/><rect x="7" y="2" width="1" height="1" fill="#ffd23f"/><rect x="5" y="3" width="2" height="1" fill="#ffd23f"/><rect x="5" y="4" width="2" height="1" fill="#8b5a2b"/><rect x="5" y="5" width="2" height="1" fill="#8b5a2b"/><rect x="5" y="6" width="2" height="1" fill="#8b5a2b"/><rect x="5" y="7" width="2" height="1" fill="#8b5a2b"/><rect x="5" y="8" width="2" height="1" fill="#8b5a2b"/><rect x="5" y="9" width="2" height="1" fill="#8b5a2b"/><rect x="5" y="10" width="2" height="1" fill="#8b5a2b"/></g></symbol>
+    <!-- Постройка -->
+    <symbol id="i-blocks-long" viewBox="0 0 12 12"><g stroke="none" shape-rendering="crispEdges"><rect x="0" y="0" width="1" height="1" fill="#8d8d8d"/><rect x="2" y="0" width="1" height="1" fill="#8d8d8d"/><rect x="4" y="0" width="1" height="1" fill="#8d8d8d"/><rect x="7" y="0" width="1" height="1" fill="#8d8d8d"/><rect x="9" y="0" width="1" height="1" fill="#8d8d8d"/><rect x="11" y="0" width="1" height="1" fill="#8d8d8d"/><rect x="0" y="1" width="5" height="1" fill="#8d8d8d"/><rect x="7" y="1" width="5" height="1" fill="#8d8d8d"/><rect x="0" y="2" width="1" height="1" fill="#8d8d8d"/><rect x="1" y="2" width="1" height="1" fill="#6e6e6e"/><rect x="2" y="2" width="3" height="1" fill="#8d8d8d"/><rect x="7" y="2" width="3" height="1" fill="#8d8d8d"/><rect x="10" y="2" width="1" height="1" fill="#6e6e6e"/><rect x="11" y="2" width="1" height="1" fill="#8d8d8d"/><rect x="0" y="3" width="12" height="1" fill="#8d8d8d"/><rect x="0" y="4" width="2" height="1" fill="#8d8d8d"/><rect x="2" y="4" width="2" height="1" fill="#2b2b2b"/><rect x="4" y="4" width="4" height="1" fill="#8d8d8d"/><rect x="8" y="4" width="2" height="1" fill="#2b2b2b"/><rect x="10" y="4" width="2" height="1" fill="#8d8d8d"/><rect x="0" y="5" width="2" height="1" fill="#8d8d8d"/><rect x="2" y="5" width="2" height="1" fill="#2b2b2b"/><rect x="4" y="5" width="4" height="1" fill="#8d8d8d"/><rect x="8" y="5" width="2" height="1" fill="#2b2b2b"/><rect x="10" y="5" width="2" height="1" fill="#8d8d8d"/><rect x="0" y="6" width="12" height="1" fill="#8d8d8d"/><rect x="0" y="7" width="1" height="1" fill="#8d8d8d"/><rect x="1" y="7" width="1" height="1" fill="#6e6e6e"/><rect x="2" y="7" width="8" height="1" fill="#8d8d8d"/><rect x="10" y="7" width="1" height="1" fill="#6e6e6e"/><rect x="11" y="7" width="1" height="1" fill="#8d8d8d"/><rect x="0" y="8" width="5" height="1" fill="#8d8d8d"/><rect x="5" y="8" width="2" height="1" fill="#6b4423"/><rect x="7" y="8" width="5" height="1" fill="#8d8d8d"/><rect x="0" y="9" width="5" height="1" fill="#8d8d8d"/><rect x="5" y="9" width="2" height="1" fill="#6b4423"/><rect x="7" y="9" width="5" height="1" fill="#8d8d8d"/><rect x="0" y="10" width="5" height="1" fill="#8d8d8d"/><rect x="5" y="10" width="2" height="1" fill="#6b4423"/><rect x="7" y="10" width="5" height="1" fill="#8d8d8d"/><rect x="0" y="11" width="12" height="1" fill="#6e6e6e"/></g></symbol>
+    <!-- Сердце -->
+    <symbol id="i-blocks-heart" viewBox="0 0 7 6"><g stroke="none" shape-rendering="crispEdges"><rect x="1" y="0" width="2" height="1" fill="#8c1215"/><rect x="4" y="0" width="2" height="1" fill="#8c1215"/><rect x="0" y="1" width="1" height="1" fill="#8c1215"/><rect x="1" y="1" width="1" height="1" fill="#ffb3b3"/><rect x="2" y="1" width="1" height="1" fill="#e8262b"/><rect x="3" y="1" width="1" height="1" fill="#8c1215"/><rect x="4" y="1" width="2" height="1" fill="#e8262b"/><rect x="6" y="1" width="1" height="1" fill="#8c1215"/><rect x="0" y="2" width="1" height="1" fill="#8c1215"/><rect x="1" y="2" width="5" height="1" fill="#e8262b"/><rect x="6" y="2" width="1" height="1" fill="#8c1215"/><rect x="1" y="3" width="1" height="1" fill="#8c1215"/><rect x="2" y="3" width="3" height="1" fill="#e8262b"/><rect x="5" y="3" width="1" height="1" fill="#8c1215"/><rect x="2" y="4" width="1" height="1" fill="#8c1215"/><rect x="3" y="4" width="1" height="1" fill="#e8262b"/><rect x="4" y="4" width="1" height="1" fill="#8c1215"/><rect x="3" y="5" width="1" height="1" fill="#8c1215"/></g></symbol>
+    <!-- Пустое сердце -->
+    <symbol id="i-blocks-heart-empty" viewBox="0 0 7 6"><g stroke="none" shape-rendering="crispEdges"><rect x="1" y="0" width="2" height="1" fill="#1d0606"/><rect x="4" y="0" width="2" height="1" fill="#1d0606"/><rect x="0" y="1" width="1" height="1" fill="#1d0606"/><rect x="1" y="1" width="2" height="1" fill="#3a1010"/><rect x="3" y="1" width="1" height="1" fill="#1d0606"/><rect x="4" y="1" width="2" height="1" fill="#3a1010"/><rect x="6" y="1" width="1" height="1" fill="#1d0606"/><rect x="0" y="2" width="1" height="1" fill="#1d0606"/><rect x="1" y="2" width="5" height="1" fill="#3a1010"/><rect x="6" y="2" width="1" height="1" fill="#1d0606"/><rect x="1" y="3" width="1" height="1" fill="#1d0606"/><rect x="2" y="3" width="3" height="1" fill="#3a1010"/><rect x="5" y="3" width="1" height="1" fill="#1d0606"/><rect x="2" y="4" width="1" height="1" fill="#1d0606"/><rect x="3" y="4" width="1" height="1" fill="#3a1010"/><rect x="4" y="4" width="1" height="1" fill="#1d0606"/><rect x="3" y="5" width="1" height="1" fill="#1d0606"/></g></symbol>
+
     <!-- ===== Западное побережье ===== -->
     <!-- Пальма (логотип темы) -->
     <symbol id="i-coast-brand" viewBox="0 0 24 24">
@@ -1127,6 +1282,20 @@ const THEMES = {
       regular:    { name: 'Дрон',      plural: 'Дроны',      hint: 'Обычное — рутина на автопилоте',          done: 'Дрон вернулся на базу' },
       quick:      { name: 'Скрипт',    plural: 'Скрипты',    hint: 'Быстрое — запустил, и готово',            done: 'Скрипт отработал' },
       long:       { name: 'Мегаполис', plural: 'Мегаполисы', hint: 'Долгосрочное — строится годами',          done: 'Квартал достроен' },
+    },
+  },
+  blocks: {
+    label: 'Кубический мир', hint: 'Пиксельные блоки, опыт и достижения',
+    title: 'BLOCKS', tagline: 'задачи по блоку', brandIcon: 'blocks-brand',
+    swatch: 'linear-gradient(#5fa832 0 30%, #8b5a2b 30%)',
+    pickWhat: 'блок', absent: 'не найдены', game: 'blocks',
+    cats: {
+      urgent:     { name: 'Динамит',   plural: 'Динамит',   hint: 'Срочное — фитиль уже горит',           done: 'Взрыв предотвращён' },
+      important:  { name: 'Алмаз',     plural: 'Алмазы',    hint: 'Важное — то, ради чего копаем',        done: 'Алмаз добыт' },
+      unpleasant: { name: 'Зомби',     plural: 'Зомби',     hint: 'Неприятное — лезут из темноты',        done: 'Зомби побеждён' },
+      regular:    { name: 'Кирка',     plural: 'Кирки',     hint: 'Обычное — копаем потихоньку',          done: 'Блок добыт' },
+      quick:      { name: 'Факел',     plural: 'Факелы',    hint: 'Быстро — поставил и пошёл',            done: 'Факел зажжён' },
+      long:       { name: 'Постройка', plural: 'Постройки', hint: 'Долгосрочное — замок по блоку в день', done: 'Постройка завершена' },
     },
   },
   coast: {
@@ -1322,8 +1491,8 @@ function render() {
   $('stripe').innerHTML = ORDER.map((k) => `<span style="flex-grow:${counts[k]};background:var(--${k})"></span>`).join('');
 
   $('filters').innerHTML =
-    `<button class="chip ${ui.filter === 'all' ? 'on' : ''}" data-filter="all">${svg('all')}Все <em>${open.length}</em></button>` +
-    ORDER.map((k) => `<button class="chip k-${k} ${ui.filter === k ? 'on' : ''}" data-filter="${k}">${icon(k)}${cat(k).plural} <em>${counts[k]}</em></button>`).join('');
+    `<button class="chip ${ui.filter === 'all' ? 'on' : ''}" data-filter="all" title="Все">${svg('all')}<span class="chip-name">Все</span> <em>${open.length}</em></button>` +
+    ORDER.map((k) => `<button class="chip k-${k} ${ui.filter === k ? 'on' : ''}" data-filter="${k}" title="${cat(k).plural}">${icon(k)}<span class="chip-name">${cat(k).plural}</span> <em>${counts[k]}</em></button>`).join('');
 
   const shown = ORDER.filter((k) => ui.filter === 'all' || ui.filter === k);
   let html = shown.map((k) => {
@@ -1379,9 +1548,19 @@ function hudHtml(alarms, openCount, doneCount) {
   const { xp, credits } = state.stats;
   const level = Math.floor(xp / XP_PER_LEVEL) + 1;
   const into = xp % XP_PER_LEVEL;
+  // health = share of the current project that is done
+  const health = openCount + doneCount ? Math.round((doneCount / (openCount + doneCount)) * 100) : 100;
+  if (theme().game === 'blocks') {
+    const full = Math.round(health / 10);
+    const hearts = Array.from({ length: 10 }, (_, i) => svg(i < full ? 'blocks-heart' : 'blocks-heart-empty')).join('');
+    return `<div class="mc-hud">
+      <div class="mc-hearts" title="Проект выполнен на ${health}%">${hearts}</div>
+      <div class="mc-lvl" title="Уровень ${level}: ${into}/${XP_PER_LEVEL} XP"><b>${level}</b>
+        <div class="mc-xp" role="progressbar" aria-valuemin="0" aria-valuemax="${XP_PER_LEVEL}" aria-valuenow="${into}"><i style="width:${(into / XP_PER_LEVEL) * 100}%"></i></div></div>
+    </div>`;
+  }
   if (theme().game === 'coast') {
-    // health = share of the project done, armor = progress to the next respect level, stars = open urgent tasks
-    const health = openCount + doneCount ? Math.round((doneCount / (openCount + doneCount)) * 100) : 100;
+    // armor = progress to the next respect level, stars = open urgent tasks
     const stars = Math.min(alarms, 6);
     return `<div class="sa-hud">
       <div class="sa-clock sa-out">${clock()}</div>
@@ -1407,6 +1586,7 @@ function hudHtml(alarms, openCount, doneCount) {
 
 function jobMetaHtml(t) {
   const r = REWARDS[t.cat];
+  if (theme().game === 'blocks') return `<div class="job-meta">+${r.xp} XP</div>`;
   if (theme().game === 'coast') {
     return `<div class="job-meta"><span class="pay">+$${fmt(r.cr)}</span><span class="resp">Уважение +${r.xp}</span></div>`;
   }
@@ -1423,9 +1603,14 @@ let toastTimer;
 function showToast(t, r) {
   const el = $('toast');
   el.className = `toast k-${t.cat}`;
-  el.innerHTML = theme().game === 'coast'
-    ? `<span class="splash-1">Миссия пройдена!</span><span class="splash-2">$${fmt(r.cr)}</span><span class="splash-3">Уважение +${r.xp}</span>`
-    : `${icon(t.cat)}<span>${cat(t.cat).done || 'Выполнено'}</span><b>+${r.xp} XP · ¢ ${fmt(r.cr)}</b>`;
+  const game = theme().game;
+  if (game === 'coast') {
+    el.innerHTML = `<span class="splash-1">Миссия пройдена!</span><span class="splash-2">$${fmt(r.cr)}</span><span class="splash-3">Уважение +${r.xp}</span>`;
+  } else if (game === 'blocks') {
+    el.innerHTML = `${icon(t.cat)}<div class="ach"><b>Достижение получено!</b><span>${cat(t.cat).done} · +${r.xp} XP</span></div>`;
+  } else {
+    el.innerHTML = `${icon(t.cat)}<span>${cat(t.cat).done || 'Выполнено'}</span><b>+${r.xp} XP · ¢ ${fmt(r.cr)}</b>`;
+  }
   el.hidden = false;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { el.hidden = true; }, 2600);
