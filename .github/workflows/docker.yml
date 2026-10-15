@@ -3,6 +3,7 @@
 #   ghcr.io/<owner>/zootodo:1.2.3    — tags like v1.2.3
 #   ghcr.io/<owner>/zootodo:sha-...  — every published build
 # Pull requests only build the image, without pushing.
+# After a master build it triggers a Coolify deploy (secrets COOLIFY_WEBHOOK and COOLIFY_TOKEN).
 name: Docker image
 
 on:
@@ -22,6 +23,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      # job-level so the deploy step's `if` can see whether the secret is set
+      COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_WEBHOOK }}
     steps:
       - uses: actions/checkout@v4
 
@@ -58,3 +62,11 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Coolify pulls the fresh :latest and restarts the container; skipped until the secrets are set
+      - name: Deploy to Coolify
+        if: github.ref == 'refs/heads/master' && env.COOLIFY_WEBHOOK != ''
+        env:
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+        run: |
+          curl --fail-with-body -sS -H "Authorization: Bearer $COOLIFY_TOKEN" "$COOLIFY_WEBHOOK"

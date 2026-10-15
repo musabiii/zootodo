@@ -47,6 +47,13 @@ docker run -d -p 8000:8000 -v zootodo-data:/data ghcr.io/musabiii/zootodo:latest
 3. Storages: постоянный том с путём `/data`.
 4. Переменные окружения: `COOKIE_SECURE=1`, раз Coolify отдаёт сайт по HTTPS.
 
+Автодеплой для ресурса **Docker Image**: после сборки в `master` GitHub Actions вызывает вебхук Coolify, и тот перезапускает контейнер на свежем `latest`. Нужны два секрета в Settings → Secrets and variables → Actions:
+
+- `COOLIFY_WEBHOOK` — Deploy Webhook из вкладки **Webhooks** ресурса;
+- `COOLIFY_TOKEN` — API-токен с правом **deploy** (Keys & Tokens → API tokens).
+
+Пока секретов нет, шаг деплоя пропускается.
+
 ## Как устроена авторизация
 
 - Логин и пароль, пароль хранится как хеш `scrypt` с солью.
