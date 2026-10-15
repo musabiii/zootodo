@@ -24,6 +24,8 @@
   --elephant: #56668a;  --elephant-bg: #eaeef6;
   --mosquito: #7b52c9;  --mosquito-bg: #f0eafb;
   --cheetah: #d47a1f;   --cheetah-bg: #fbefe1;
+  --bear: #7a5233;      --bear-bg: #f1e8df;
+  --wolf: #3d7c86;      --wolf-bg: #e3f0f1;
 
   --radius: 14px;
   --shadow: 0 1px 2px rgba(28,35,32,.05), 0 4px 16px rgba(28,35,32,.05);
@@ -220,7 +222,9 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .a-mosquito { --c: var(--mosquito); --cbg: var(--mosquito-bg); }
 .a-cheetah  { --c: var(--cheetah);  --cbg: var(--cheetah-bg); }
 .tinted { color: var(--c); background: var(--cbg); }
-.chip.on.a-frog, .chip.on.a-elephant, .chip.on.a-mosquito, .chip.on.a-cheetah { background: var(--c); }
+.a-bear     { --c: var(--bear);     --cbg: var(--bear-bg); }
+.a-wolf     { --c: var(--wolf);     --cbg: var(--wolf-bg); }
+.chip.on[class*="a-"] { background: var(--c); }
 /* cheetah spots on its group icon */
 .group-icon.a-cheetah, .tag.a-cheetah {
   background-image: radial-gradient(circle at 20% 30%, rgba(212,122,31,.14) 2px, transparent 2.5px),
@@ -342,7 +346,22 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <path d="M10.9 15.6h2.2L12 16.9z"/>
       <circle class="fill" cx="12" cy="7.6" r=".6"/><circle class="fill" cx="9.6" cy="8.1" r=".5"/><circle class="fill" cx="14.4" cy="8.1" r=".5"/>
     </symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <!-- Медведь -->
+    <symbol id="i-bear" viewBox="0 0 24 24">
+      <path d="M5.4 8.7a2.6 2.6 0 1 1 3.3-3.6M18.6 8.7a2.6 2.6 0 1 0-3.3-3.6"/>
+      <path d="M12 5.2c-4.3 0-7.4 3.2-7.4 7.4 0 4.3 3.2 7.4 7.4 7.4s7.4-3.1 7.4-7.4c0-4.2-3.1-7.4-7.4-7.4z"/>
+      <ellipse cx="12" cy="15.3" rx="3.1" ry="2.5"/>
+      <ellipse class="fill" cx="12" cy="14.5" rx="1.2" ry=".8"/>
+      <circle class="fill" cx="9" cy="11.2" r=".95"/><circle class="fill" cx="15" cy="11.2" r=".95"/>
+    </symbol>
+    <!-- Волк -->
+    <symbol id="i-wolf" viewBox="0 0 24 24">
+      <path d="M5 3.5 8 7.7h8l3-4.2.6 7.5c0 1.5-.5 2.8-1.6 3.9l-4.5 4.6h-3L6 14.9C4.9 13.8 4.4 12.5 4.4 11z"/>
+      <path d="M9 11.6l1.3-.6M15 11.6l-1.3-.6" stroke-width="1.9"/>
+      <path d="M9.8 14l1.4 2.4M14.2 14l-1.4 2.4"/>
+      <path class="fill" d="M10.6 16.4h2.8L12 18.2z"/>
+    </symbol>
+    <symbol id="i-plus"viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
@@ -354,11 +373,14 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 <script>
 const ANIMALS = {
   cheetah:  { name: 'Гепард', plural: 'Гепарды', hint: 'Срочное — делаем первым делом' },
-  frog:     { name: 'Лягушка', plural: 'Лягушки', hint: 'Неприятное — съешь лягушку с утра' },
+  bear:     { name: 'Медведь', plural: 'Медведи', hint: 'Важное — требует сил и внимания' },
+  wolf:     { name: 'Волк', plural: 'Волки', hint: 'Обычное — рабочий ритм' },
+  frog:    { name: 'Лягушка', plural: 'Лягушки', hint: 'Неприятное — съешь лягушку с утра' },
   mosquito: { name: 'Комар', plural: 'Комары', hint: 'Мелочи на 5 минут' },
   elephant: { name: 'Слон', plural: 'Слоны', hint: 'Долгосрочное — едим по кусочку' },
 };
-const ORDER = ['cheetah', 'frog', 'mosquito', 'elephant'];
+const ORDER = ['cheetah', 'bear', 'frog', 'wolf', 'mosquito', 'elephant'];
+const DEFAULT_ANIMAL = 'wolf';
 const KEY = 'zootodo.v1';
 const uid = () => Math.random().toString(36).slice(2, 10);
 const icon = (id) => `<svg class="ico"><use href="#i-${id}"/></svg>`;
@@ -369,7 +391,9 @@ function seed() {
   const t = (title, animal, done = false) => ({ id: uid(), title, animal, done, created: Date.now() });
   const work = { id: uid(), name: 'Работа', tasks: [
     t('Отправить отчёт за квартал до 18:00', 'cheetah'),
+    t('Согласовать бюджет с директором', 'bear'),
     t('Позвонить недовольному клиенту', 'frog'),
+    t('Провести еженедельную планёрку', 'wolf'),
     t('Ответить на письмо бухгалтерии', 'mosquito'),
     t('Подготовить стратегию на следующий год', 'elephant'),
     t('Разобрать входящие', 'mosquito', true),
@@ -388,7 +412,7 @@ function seed() {
 
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch { state = seed(); }
-let ui = { filter: 'all', newAnimal: 'cheetah', showDone: false, editing: null };
+let ui = { filter: 'all', newAnimal: DEFAULT_ANIMAL, showDone: false, editing: null };
 
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
 const active = () => state.projects.find((p) => p.id === state.activeId) || state.projects[0];
@@ -610,6 +634,7 @@ $('composer').addEventListener('submit', (e) => {
   active().tasks.unshift({ id: uid(), title, animal: ui.newAnimal, done: false, created: Date.now() });
   $('taskInput').value = '';
   if (ui.filter !== 'all' && ui.filter !== ui.newAnimal) ui.filter = 'all';
+  ui.newAnimal = ui.filter === 'all' ? DEFAULT_ANIMAL : ui.filter;
   commit();
 });
 
@@ -617,7 +642,7 @@ $('filters').addEventListener('click', (e) => {
   const b = e.target.closest('[data-filter]');
   if (!b) return;
   ui.filter = ui.filter === b.dataset.filter ? 'all' : b.dataset.filter;
-  if (ui.filter !== 'all') ui.newAnimal = ui.filter;
+  ui.newAnimal = ui.filter === 'all' ? DEFAULT_ANIMAL : ui.filter;
   render();
 });
 
