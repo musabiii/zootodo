@@ -223,6 +223,8 @@
   --brand: #161b22;
   --display: var(--mono);
   --side-art: none;
+  --term: #010409;
+  --toast-bg: #0b1f12;
 
   --urgent: #ff7b72;     --urgent-bg: rgba(255,123,114,.12);    /* incident */
   --important: #d2a8ff;  --important-bg: rgba(210,168,255,.12); /* release */
@@ -234,6 +236,32 @@
   --radius: 6px;
   --shadow: none;
   color-scheme: dark;
+}
+/* light IDE, like a GitHub light editor */
+[data-theme="hacker"][data-mode="light"] {
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --ink: #1f2328;
+  --on-ink: #ffffff;
+  --on-c: #ffffff;
+  --muted: #656d76;
+  --line: #d0d7de;
+  --side: #ffffff;
+  --side-2: #eaeef2;
+  --side-ink: #1f2328;
+  --side-muted: #656d76;
+  --accent: #1a7f37;
+  --brand: #ffffff;
+  --term: #eaeef2;
+  --toast-bg: #dafbe1;
+
+  --urgent: #cf222e;     --urgent-bg: rgba(207,34,46,.08);
+  --important: #8250df;  --important-bg: rgba(130,80,223,.08);
+  --unpleasant: #bc4c00; --unpleasant-bg: rgba(188,76,0,.08);
+  --regular: #0969da;    --regular-bg: rgba(9,105,218,.08);
+  --quick: #1a7f37;      --quick-bg: rgba(26,127,55,.08);
+  --long: #9a6700;       --long-bg: rgba(154,103,0,.08);
+  color-scheme: light;
 }
 
 /* ---------- Theme: Кубический мир (пиксельные блоки, светлый) ---------- */
@@ -888,7 +916,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .sh-path { color: var(--regular); }
 .sh-status {
   position: fixed; left: 280px; right: 0; bottom: 0; z-index: 5; display: flex; align-items: stretch;
-  font-size: 12px; background: #010409; border-top: 1px solid var(--line); white-space: nowrap; overflow: hidden;
+  font-size: 12px; background: var(--term); border-top: 1px solid var(--line); white-space: nowrap; overflow: hidden;
 }
 .sh-status span { padding: 5px 10px; }
 .sh-mode { background: var(--accent); color: var(--on-ink); font-weight: 700; }
@@ -899,7 +927,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 [data-theme="hacker"] .toast, [data-theme="hacker"] .toast[hidden] { display: block; }
 [data-theme="hacker"] .toast {
   top: auto; bottom: 44px; right: 24px; max-width: 460px; padding: 10px 14px; text-transform: none; letter-spacing: 0;
-  font-size: 12.5px; line-height: 1.55; color: var(--ink); background: #0b1f12; border: 1px solid var(--accent); border-radius: 8px;
+  font-size: 12.5px; line-height: 1.55; color: var(--ink); background: var(--toast-bg); border: 1px solid var(--accent); border-radius: 8px;
   box-shadow: 0 0 0 4px rgba(63,185,80,.12);
 }
 .sh-ok { color: var(--accent); }
@@ -1171,7 +1199,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .sh-status { left: 0; bottom: calc(62px + env(safe-area-inset-bottom)); }
   [data-theme="hacker"] .tag span { display: inline; }
   [data-theme="hacker"] .toast { left: 12px; right: 12px; bottom: calc(100px + env(safe-area-inset-bottom)); max-width: none; }
-  [data-theme="hacker"] .mbar { background: #010409; border-top: 1px solid var(--line); box-shadow: none; }
+  [data-theme="hacker"] .mbar { background: var(--term); border-top: 1px solid var(--line); box-shadow: none; }
   [data-theme="hacker"] .mbar .sel::before { content: "cd"; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--accent); pointer-events: none; z-index: 1; }
   [data-theme="hacker"] .mbar select { padding-left: 38px; border-radius: 6px; background: var(--bg); border-color: var(--line); }
   [data-theme="hacker"] .mbar button { border-radius: 6px; background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); }
@@ -1677,7 +1705,7 @@ const THEMES = {
   hacker: {
     label: 'Хакер', hint: 'Терминал, git и подсветка кода',
     title: 'todo.sh', tagline: 'задачи в терминале', brandIcon: 'hacker-brand',
-    pickWhat: 'тип задачи', absent: 'не найдены', game: 'hacker',
+    pickWhat: 'тип задачи', absent: 'не найдены', game: 'hacker', modes: true,
     placeholder: 'todo add "что нужно сделать"', addLabel: '⏎ run',
     cats: {
       urgent:     { name: 'Инцидент',     plural: 'Инциденты',     code: 'incident', hint: 'Срочное — прод лежит, чиним сейчас', done: 'Инцидент закрыт' },
