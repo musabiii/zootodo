@@ -222,6 +222,7 @@
   --side-muted: #7d8590;
   --accent: #3fb950;
   --brand: #161b22;
+  --mono: "JetBrains Mono", "Fira Code", "IBM Plex Mono", "Source Code Pro", "Ubuntu Mono", ui-monospace, monospace;
   --display: var(--mono);
   --side-art: none;
   --term: #010409;
@@ -629,11 +630,6 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .lib-seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 12px; background: var(--bg); }
 .lib-seg button { border: 0; background: transparent; color: var(--muted); border-radius: 9px; padding: 8px 14px; font-weight: 600; font-size: 13.5px; }
 .lib-seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.18); }
-.lib-fonts { display: grid; gap: 8px; }
-.lib-font { text-align: left; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; }
-.lib-font span { font-size: 15px; }
-.lib-font small { color: var(--muted); font-size: 12px; }
-.lib-font.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
 .lib-done { border: 0; border-radius: 12px; padding: 11px 22px; background: var(--ink); color: var(--on-ink); font-weight: 700; }
 
 @media (max-width: 760px) {
@@ -2086,24 +2082,6 @@ const THEMES = {
   },
 };
 
-// Monospace fonts for the hacker theme; loaded from Google Fonts only when picked.
-const CODE_FONTS = [
-  ['JetBrains Mono', 'лигатуры, очень читаемый'],
-  ['Fira Code', 'самые известные лигатуры'],
-  ['IBM Plex Mono', 'строгий, без лигатур'],
-  ['Source Code Pro', 'нейтральный, без лигатур'],
-  ['Ubuntu Mono', 'узкий и компактный'],
-];
-const codeFont = () => (CODE_FONTS.some(([f]) => f === state.codeFont) ? state.codeFont : CODE_FONTS[0][0]);
-function ensureFont(name) {
-  if (name === 'JetBrains Mono' || document.querySelector(`link[data-font="${name}"]`)) return;  // JetBrains Mono is in the main stylesheet
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.dataset.font = name;
-  link.href = `https://fonts.googleapis.com/css2?family=${name.replace(/ /g, '+')}:wght@400;700&display=swap`;
-  document.head.appendChild(link);
-}
-
 // Game layer: every completed task pays out once; un-completing takes it back.
 const REWARDS = {
   urgent: { xp: 40, cr: 300, threat: 5 }, important: { xp: 75, cr: 800, threat: 4 },
@@ -2158,6 +2136,7 @@ function migrate(s) {
   s.theme = THEMES[s.theme] ? s.theme : 'zoo';
   s.stats = { ...newStats(), ...s.stats };
   s.plainNames = !!s.plainNames;
+  delete s.codeFont;
   if (!['auto', 'light', 'dark'].includes(s.appearance)) s.appearance = 'auto';
   for (const p of s.projects) for (const t of p.tasks) {
     if (t.animal) { t.cat = LEGACY[t.animal]; delete t.animal; }
@@ -2213,8 +2192,6 @@ function renderTheme() {
   $('brandTag').textContent = th.tagline;
   $('taskInput').placeholder = th.placeholder || 'Что нужно сделать?';
   document.querySelector('#composer .go').textContent = th.addLabel || 'Добавить';
-  document.documentElement.style.setProperty('--mono', `"${codeFont()}", ui-monospace, monospace`);
-  if (th.game === 'hacker') ensureFont(codeFont());
   document.documentElement.dataset.mode = resolvedMode();
   $('brandIcon').setAttribute('href', `#i-${th.brandIcon}`);
   $('mThemeIcon').setAttribute('href', `#i-${th.brandIcon}`);
@@ -2495,11 +2472,6 @@ function setAppearance(mode) {
   commit();
 }
 
-function setCodeFont(name) {
-  state.codeFont = name;
-  commit();
-}
-
 function setPlainNames(on) {
   if (state.plainNames === on) return;
   state.plainNames = on;
@@ -2647,19 +2619,12 @@ function themeSettingsHtml(t) {
   if (t.modes) {
     html += libSection('Оформление', libSeg('mode', APPEARANCES.map(([id, name]) => [id, name]), appearance()));
   }
-  if (t.game === 'hacker') {
-    html += libSection('Шрифт', `<div class="lib-fonts">${CODE_FONTS.map(([f, hint]) => {
-      ensureFont(f);
-      return `<button type="button" class="lib-font ${f === codeFont() ? 'on' : ''}" data-lib-set="font:${f}">
-        <span style="font-family:'${f}',monospace">Задача => готово !== 0</span><small>${f} · ${hint}</small></button>`;
-    }).join('')}</div>`);
-  }
   return html;
 }
 
 function renderLibrary() {
   const t = theme();
-  const features = [t.game && 'Опыт и награды', t.modes && 'Светлое и тёмное', t.game === 'hacker' && 'Выбор шрифта', t.plainCats && 'Стандартные названия']
+  const features = [t.game && 'Опыт и награды', t.modes && 'Светлое и тёмное', t.plainCats && 'Стандартные названия']
     .filter(Boolean);
   $('libBody').innerHTML = `
     <div class="lib-grid">${Object.entries(THEMES).map(([id, th]) => `
@@ -2718,7 +2683,6 @@ $('lib').addEventListener('click', (e) => {
     const value = rest.join(':');
     if (key === 'names') setPlainNames(value === 'plain');
     if (key === 'mode') setAppearance(value);
-    if (key === 'font') setCodeFont(value);
     return refreshLibrary(`[data-lib-set="${CSS.escape(el.dataset.libSet)}"]`);
   }
   if ('libClose' in el.dataset) return closeLibrary();
