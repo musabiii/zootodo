@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZooTodo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f1eb;
+  --surface: #ffffff;
+  --ink: #1c2320;
+  --muted: #6c736f;
+  --line: #e6e1d7;
+  --side: #16201b;
+  --side-2: #1f2b25;
+  --side-ink: #e8eee9;
+  --side-muted: #8fa198;
+  --accent: #c9a24a;
+
+  --frog: #2f8a58;      --frog-bg: #e6f3eb;
+  --elephant: #56668a;  --elephant-bg: #eaeef6;
+  --mosquito: #7b52c9;  --mosquito-bg: #f0eafb;
+  --cheetah: #d47a1f;   --cheetah-bg: #fbefe1;
+
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(28,35,32,.05), 0 4px 16px rgba(28,35,32,.05);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Manrope, system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+svg.ico { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+svg.ico .fill { fill: currentColor; stroke: none; }
+
+.app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+
+/* ---------- Sidebar ---------- */
+.side {
+  background: var(--side);
+  color: var(--side-ink);
+  padding: 24px 16px;
+  display: flex; flex-direction: column; gap: 20px;
+  position: sticky; top: 0; height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 105%, rgba(212,122,31,.18), transparent 45%),
+    radial-gradient(circle at 110% 0%, rgba(47,138,88,.22), transparent 50%);
+}
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 8px; }
+.brand-mark {
+  width: 38px; height: 38px; border-radius: 11px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--cheetah), #b65a12);
+  color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
+}
+.brand-mark svg.ico { width: 24px; height: 24px; }
+.brand h1 { font-family: Fraunces, serif; font-weight: 600; font-size: 22px; margin: 0; letter-spacing: .2px; }
+.brand small { display: block; color: var(--side-muted); font-size: 12px; margin-top: 1px; }
+
+.side-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--side-muted); padding: 0 10px; font-weight: 600; }
+.proj-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+.proj {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px; border-radius: 10px;
+  color: var(--side-ink); background: transparent; border: 0; width: 100%; text-align: left;
+  transition: background .15s;
+  position: relative;
+}
+.proj:hover { background: rgba(255,255,255,.05); }
+.proj.active { background: var(--side-2); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+.proj.active::before {
+  content: ""; position: absolute; left: -16px; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent);
+}
+.proj-badge {
+  width: 30px; height: 30px; border-radius: 8px; flex: none;
+  display: grid; place-items: center; font-weight: 700; font-size: 13px;
+  background: rgba(255,255,255,.07); color: var(--side-ink);
+}
+.proj.active .proj-badge { background: var(--accent); color: var(--side); }
+.proj-name { flex: 1; min-width: 0; font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.proj-count { font-size: 12px; color: var(--side-muted); font-variant-numeric: tabular-nums; }
+.proj-del {
+  opacity: 0; border: 0; background: none; color: var(--side-muted); padding: 2px; border-radius: 6px; display: grid;
+}
+.proj:hover .proj-del { opacity: 1; }
+.proj:hover .proj-count { display: none; }
+.proj-del:hover { color: #ff9b8a; }
+.proj-del svg.ico { width: 16px; height: 16px; }
+
+.add-proj { display: flex; gap: 6px; padding: 0 2px; }
+.add-proj input {
+  flex: 1; min-width: 0; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px; padding: 9px 12px; color: var(--side-ink); outline: none;
+}
+.add-proj input::placeholder { color: var(--side-muted); }
+.add-proj input:focus { border-color: var(--accent); }
+.add-proj button {
+  border: 0; border-radius: 10px; width: 38px; background: var(--accent); color: var(--side); display: grid; place-items: center;
+}
+
+.legend { margin-top: auto; display: grid; gap: 8px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,.04); }
+.legend-row { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--side-muted); }
+.legend-row b { color: var(--side-ink); font-weight: 600; }
+.legend-row .dot { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; }
+.legend-row svg.ico { width: 17px; height: 17px; }
+
+/* ---------- Main ---------- */
+.main { padding: 40px clamp(16px, 4vw, 56px) 64px; max-width: 920px; width: 100%; }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.head h2 { font-family: Fraunces, serif; font-weight: 600; font-size: clamp(28px, 4vw, 38px); margin: 0; letter-spacing: -.3px; cursor: text; }
+.head p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+.stripe { height: 4px; border-radius: 4px; margin: 20px 0 24px; display: flex; overflow: hidden; background: var(--line); }
+.stripe span { transition: flex-grow .3s; }
+
+.composer {
+  background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 10px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  border: 1px solid var(--line);
+}
+.composer input {
+  flex: 1 1 240px; min-width: 0; border: 0; outline: none; padding: 10px 8px; font-size: 15px; background: transparent;
+}
+.pick { display: flex; gap: 4px; background: var(--bg); padding: 4px; border-radius: 11px; }
+.pick button {
+  border: 0; background: transparent; border-radius: 8px; padding: 7px 10px;
+  display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; font-weight: 600;
+  transition: background .15s, color .15s;
+}
+.pick button span { display: none; }
+.pick button.on { background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.pick button.on span { display: inline; }
+.composer .go {
+  border: 0; border-radius: 10px; padding: 10px 18px; background: var(--ink); color: #fff; font-weight: 600;
+}
+.composer .go:hover { background: #2c3631; }
+
+.filters { display: flex; gap: 8px; margin: 22px 0 8px; flex-wrap: wrap; }
+.chip {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px 6px 10px;
+  display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted);
+}
+.chip svg.ico { width: 16px; height: 16px; }
+.chip em { font-style: normal; font-variant-numeric: tabular-nums; opacity: .7; }
+.chip.on { color: #fff; border-color: transparent; background: var(--ink); }
+
+.group { margin-top: 26px; }
+.group-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.group-icon { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; }
+.group-head h3 { margin: 0; font-size: 15px; font-weight: 700; }
+.group-head small { color: var(--muted); font-size: 12.5px; }
+.group-head .n { margin-left: auto; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+
+.tasks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.task {
+  background: var(--surface); border-radius: 12px; border: 1px solid var(--line);
+  display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; position: relative; overflow: hidden;
+  transition: box-shadow .15s, transform .15s;
+}
+.task::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--c); }
+.task:hover { box-shadow: var(--shadow); }
+.check {
+  width: 22px; height: 22px; border-radius: 50%; flex: none; border: 2px solid var(--c); background: transparent;
+  display: grid; place-items: center; padding: 0; color: #fff;
+}
+.check svg.ico { width: 14px; height: 14px; stroke-width: 2.6; opacity: 0; }
+.task.done .check { background: var(--c); }
+.task.done .check svg.ico { opacity: 1; }
+.task-title { flex: 1; min-width: 0; font-size: 15px; line-height: 1.4; word-break: break-word; }
+.task.done .task-title { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(0,0,0,.25); }
+.task-title input { width: 100%; border: 0; outline: none; border-bottom: 1px solid var(--c); padding: 2px 0; font-size: 15px; background: transparent; }
+.tag {
+  border: 0; border-radius: 8px; padding: 5px 9px; display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; color: var(--c); background: var(--cbg); flex: none;
+}
+.tag svg.ico { width: 16px; height: 16px; }
+.del { border: 0; background: none; color: var(--muted); opacity: 0; padding: 4px; border-radius: 6px; display: grid; }
+.task:hover .del { opacity: .8; }
+.del:hover { color: #c0392b; background: #fbecea; }
+.del svg.ico { width: 17px; height: 17px; }
+
+.done-toggle { margin-top: 28px; border: 0; background: none; color: var(--muted); font-weight: 600; font-size: 13px; display: flex; gap: 6px; align-items: center; padding: 0; }
+.done-toggle svg.ico { width: 16px; height: 16px; transition: transform .2s; }
+.done-toggle.open svg.ico { transform: rotate(90deg); }
+
+.empty { text-align: center; padding: 56px 16px; color: var(--muted); }
+.empty .animals { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.empty .animals div { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; }
+.empty .animals svg.ico { width: 24px; height: 24px; }
+.empty h4 { font-family: Fraunces, serif; font-weight: 600; color: var(--ink); font-size: 20px; margin: 0 0 4px; }
+
+/* per-animal colors */
+.a-frog     { --c: var(--frog);     --cbg: var(--frog-bg); }
+.a-elephant { --c: var(--elephant); --cbg: var(--elephant-bg); }
+.a-mosquito { --c: var(--mosquito); --cbg: var(--mosquito-bg); }
+.a-cheetah  { --c: var(--cheetah);  --cbg: var(--cheetah-bg); }
+.tinted { color: var(--c); background: var(--cbg); }
+.pick button.on { color: var(--c); }
+.chip.on.a-frog, .chip.on.a-elephant, .chip.on.a-mosquito, .chip.on.a-cheetah { background: var(--c); }
+/* cheetah spots on its group icon */
+.group-icon.a-cheetah, .tag.a-cheetah {
+  background-image: radial-gradient(circle at 20% 30%, rgba(212,122,31,.14) 2px, transparent 2.5px),
+                    radial-gradient(circle at 70% 75%, rgba(212,122,31,.14) 2px, transparent 2.5px);
+  background-size: 12px 12px;
+  background-color: var(--cbg);
+}
+
+/* ---------- Mobile bar ---------- */
+.mbar { display: none; }
+
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; }
+  .side { display: none; }
+  .main { padding: 24px 16px calc(96px + env(safe-area-inset-bottom)); }
+  .pick button.on span { display: none; }
+  .composer .go { flex: 1; }
+  .pick { flex: 1; justify-content: space-between; }
+  .pick button { flex: 1; justify-content: center; }
+  .del { opacity: .6; }
+  .tag span { display: none; }
+  .mbar {
+    display: flex; gap: 8px; align-items: center;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: var(--side); color: var(--side-ink);
+    box-shadow: 0 -6px 24px rgba(0,0,0,.12);
+  }
+  .mbar .brand-mark { width: 40px; height: 40px; flex: none; }
+  .mbar .sel { position: relative; flex: 1; min-width: 0; }
+  .mbar select {
+    appearance: none; -webkit-appearance: none; width: 100%;
+    background: var(--side-2); color: var(--side-ink); border: 1px solid rgba(255,255,255,.08);
+    border-radius: 11px; padding: 11px 36px 11px 14px; font-weight: 600; font-size: 15px; outline: none;
+  }
+  .mbar .sel svg.ico { position: absolute; right: 12px; top: 50%; transform: translateY(-50%) rotate(90deg); color: var(--side-muted); pointer-events: none; width: 16px; height: 16px; }
+  .mbar button { border: 0; width: 42px; height: 42px; border-radius: 11px; background: var(--accent); color: var(--side); display: grid; place-items: center; flex: none; }
+  .mbar button.ghost { background: var(--side-2); color: var(--side-muted); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="brand-mark"><svg class="ico"><use href="#i-cheetah"/></svg></div>
+      <div><h1>ZooTodo</h1><small>задачи по характеру</small></div>
+    </div>
+    <div class="side-label">Проекты</div>
+    <ul class="proj-list" id="projList"></ul>
+    <form class="add-proj" id="addProj">
+      <input id="projInput" placeholder="Новый проект…" maxlength="40">
+      <button aria-label="Добавить проект"><svg class="ico"><use href="#i-plus"/></svg></button>
+    </form>
+    <div class="legend" id="legend"></div>
+  </aside>
+
+  <main class="main">
+    <div class="head">
+      <div>
+        <h2 id="projTitle" title="Двойной клик — переименовать"></h2>
+        <p id="projSub"></p>
+      </div>
+    </div>
+    <div class="stripe" id="stripe"></div>
+
+    <form class="composer" id="composer">
+      <input id="taskInput" placeholder="Что нужно сделать?" maxlength="200" autocomplete="off">
+      <div class="pick" id="pick"></div>
+      <button class="go">Добавить</button>
+    </form>
+
+    <div class="filters" id="filters"></div>
+    <div id="list"></div>
+  </main>
+</div>
+
+<nav class="mbar">
+  <div class="brand-mark"><svg class="ico"><use href="#i-cheetah"/></svg></div>
+  <div class="sel">
+    <select id="projSelect" aria-label="Проект"></select>
+    <svg class="ico"><use href="#i-chev"/></svg>
+  </div>
+  <button class="ghost" id="mDel" aria-label="Удалить проект"><svg class="ico"><use href="#i-trash"/></svg></button>
+  <button id="mAdd" aria-label="Новый проект"><svg class="ico"><use href="#i-plus"/></svg></button>
+</nav>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Лягушка -->
+    <symbol id="i-frog" viewBox="0 0 24 24">
+      <path d="M5.2 9.3C3.8 10.5 3 12 3 13.8 3 17.8 7 20 12 20s9-2.2 9-6.2c0-1.8-.8-3.3-2.2-4.5"/>
+      <circle cx="7.8" cy="7.6" r="2.8"/><circle cx="16.2" cy="7.6" r="2.8"/>
+      <circle class="fill" cx="7.8" cy="7.6" r="1.1"/><circle class="fill" cx="16.2" cy="7.6" r="1.1"/>
+      <path d="M8 14.6c2.3 1.7 5.7 1.7 8 0"/>
+    </symbol>
+    <!-- Слон -->
+    <symbol id="i-elephant" viewBox="0 0 24 24">
+      <path d="M8 6.2C6.6 4.9 4.6 4.6 3.3 5.6 2 6.7 2 9.6 2.9 11.8c.7 1.7 2.4 2.7 4.6 2.6"/>
+      <path d="M16 6.2c1.4-1.3 3.4-1.6 4.7-.6 1.3 1.1 1.3 4 .4 6.2-.7 1.7-2.4 2.7-4.6 2.6"/>
+      <path d="M7.5 10c0-3.3 2-5.8 4.5-5.8s4.5 2.5 4.5 5.8v3.2c0 1.4-.8 2.3-1.8 2.9v3.3c0 .9-.6 1.4-1.3 1.4"/>
+      <path d="M7.5 10v3.2c0 1.4.8 2.3 1.8 2.9"/>
+      <circle class="fill" cx="10" cy="10.3" r=".95"/><circle class="fill" cx="14" cy="10.3" r=".95"/>
+    </symbol>
+    <!-- Комар -->
+    <symbol id="i-mosquito" viewBox="0 0 24 24">
+      <path d="M2.5 4.5 7 8.3"/>
+      <circle cx="8.3" cy="9.4" r="1.7"/>
+      <path d="M10 11l7.8 7.8" stroke-width="2.4"/>
+      <path d="M11.2 10.3c1-3.4 3.7-6.1 6.4-6.6 1.3-.2 1.6 1 .9 2-1.5 2.1-4 3.6-6.6 4.6"/>
+      <path d="M13.7 13c3-1.1 6.2-1 7.6.4.6.6.2 1.5-.8 1.6-2.4.2-5-.4-6.8-1.3"/>
+      <path d="M9.6 12.6 6 15.2l-1 3.6M12 14.5l-2.4 3.8.2 3.2M14.2 16.4 13.4 20l1.3 2"/>
+    </symbol>
+    <!-- Гепард -->
+    <symbol id="i-cheetah" viewBox="0 0 24 24">
+      <path d="M6.6 7.2 5.4 3.6l3.8 1.7M17.4 7.2l1.2-3.6-3.8 1.7"/>
+      <path d="M12 4.8c-4.2 0-7.2 3.2-7.2 7.3 0 4.6 3.2 7.9 7.2 7.9s7.2-3.3 7.2-7.9c0-4.1-3-7.3-7.2-7.3z"/>
+      <circle class="fill" cx="9.4" cy="11" r="1"/><circle class="fill" cx="14.6" cy="11" r="1"/>
+      <path d="M9.2 12.6 8.6 16.4M14.8 12.6l.6 3.8"/>
+      <path d="M10.9 15.6h2.2L12 16.9z"/>
+      <circle class="fill" cx="12" cy="7.6" r=".6"/><circle class="fill" cx="9.6" cy="8.1" r=".5"/><circle class="fill" cx="14.4" cy="8.1" r=".5"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 12.5h9l1-12.5"/></symbol>
+    <symbol id="i-all" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  </defs>
+</svg>
+
+<script>
+const ANIMALS = {
+  cheetah:  { name: 'Гепард', plural: 'Гепарды', hint: 'Срочное — делаем первым делом' },
+  frog:     { name: 'Лягушка', plural: 'Лягушки', hint: 'Неприятное — съешь лягушку с утра' },
+  mosquito: { name: 'Комар', plural: 'Комары', hint: 'Мелочи на 5 минут' },
+  elephant: { name: 'Слон', plural: 'Слоны', hint: 'Долгосрочное — едим по кусочку' },
+};
+const ORDER = ['cheetah', 'frog', 'mosquito', 'elephant'];
+const KEY = 'zootodo.v1';
+const uid = () => Math.random().toString(36).slice(2, 10);
+const icon = (id) => `<svg class="ico"><use href="#i-${id}"/></svg>`;
+const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function seed() {
+  const t = (title, animal, done = false) => ({ id: uid(), title, animal, done, created: Date.now() });
+  const work = { id: uid(), name: 'Работа', tasks: [
+    t('Отправить отчёт за квартал до 18:00', 'cheetah'),
+    t('Позвонить недовольному клиенту', 'frog'),
+    t('Ответить на письмо бухгалтерии', 'mosquito'),
+    t('Подготовить стратегию на следующий год', 'elephant'),
+    t('Разобрать входящие', 'mosquito', true),
+  ]};
+  const home = { id: uid(), name: 'Дом', tasks: [
+    t('Разобрать гардероб', 'frog'),
+    t('Оплатить интернет', 'mosquito'),
+    t('Ремонт на балконе', 'elephant'),
+  ]};
+  const study = { id: uid(), name: 'Английский', tasks: [
+    t('Дочитать книгу в оригинале', 'elephant'),
+    t('Повторить 20 слов', 'mosquito'),
+  ]};
+  return { projects: [work, home, study], activeId: work.id };
+}
+
+let state;
+try { state = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch { state = seed(); }
+let ui = { filter: 'all', newAnimal: 'cheetah', showDone: false, editing: null };
+
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+const active = () => state.projects.find((p) => p.id === state.activeId) || state.projects[0];
+const $ = (id) => document.getElementById(id);
+
+function plural(n, one, few, many) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+}
+
+/* ---------- Render ---------- */
+function render() {
+  const p = active();
+  if (p && state.activeId !== p.id) state.activeId = p.id;
+
+  // sidebar
+  $('projList').innerHTML = state.projects.map((pr) => {
+    const open = pr.tasks.filter((x) => !x.done).length;
+    return `<li><button class="proj ${pr.id === state.activeId ? 'active' : ''}" data-proj="${pr.id}">
+      <span class="proj-badge">${esc(pr.name.trim()[0] || '•').toUpperCase()}</span>
+      <span class="proj-name">${esc(pr.name)}</span>
+      <span class="proj-count">${open || ''}</span>
+      <span class="proj-del" data-delproj="${pr.id}" title="Удалить">${icon('x')}</span>
+    </button></li>`;
+  }).join('');
+
+  $('legend').innerHTML = ORDER.map((a) =>
+    `<div class="legend-row a-${a}"><span class="dot tinted">${icon(a)}</span><div><b>${ANIMALS[a].name}</b> · ${ANIMALS[a].hint.split(' — ')[0].toLowerCase()}</div></div>`
+  ).join('');
+
+  // mobile select
+  $('projSelect').innerHTML = state.projects.map((pr) => {
+    const open = pr.tasks.filter((x) => !x.done).length;
+    return `<option value="${pr.id}" ${pr.id === state.activeId ? 'selected' : ''}>${esc(pr.name)}${open ? ` · ${open}` : ''}</option>`;
+  }).join('');
+
+  // composer picker
+  $('pick').innerHTML = ORDER.map((a) =>
+    `<button type="button" class="a-${a} ${ui.newAnimal === a ? 'on' : ''}" data-pick="${a}" title="${ANIMALS[a].name}: ${ANIMALS[a].hint}">${icon(a)}<span>${ANIMALS[a].name}</span></button>`
+  ).join('');
+
+  if (!p) {
+    $('projTitle').textContent = 'Нет проектов';
+    $('projSub').textContent = 'Создайте первый проект';
+    $('stripe').innerHTML = ''; $('filters').innerHTML = ''; $('list').innerHTML = '';
+    $('composer').style.display = 'none';
+    return;
+  }
+  $('composer').style.display = '';
+
+  const open = p.tasks.filter((x) => !x.done);
+  const done = p.tasks.filter((x) => x.done);
+  $('projTitle').textContent = p.name;
+  $('projSub').textContent = open.length
+    ? `${open.length} ${plural(open.length, 'задача', 'задачи', 'задач')} в работе${done.length ? ` · ${done.length} готово` : ''}`
+    : done.length ? 'Всё сделано — отличная работа' : 'Пока пусто';
+
+  const counts = Object.fromEntries(ORDER.map((a) => [a, open.filter((x) => x.animal === a).length]));
+  $('stripe').innerHTML = ORDER.map((a) => `<span style="flex-grow:${counts[a]};background:var(--${a})"></span>`).join('');
+
+  $('filters').innerHTML =
+    `<button class="chip ${ui.filter === 'all' ? 'on' : ''}" data-filter="all">${icon('all')}Все <em>${open.length}</em></button>` +
+    ORDER.map((a) => `<button class="chip a-${a} ${ui.filter === a ? 'on' : ''}" data-filter="${a}">${icon(a)}${ANIMALS[a].plural} <em>${counts[a]}</em></button>`).join('');
+
+  const shown = ORDER.filter((a) => ui.filter === 'all' || ui.filter === a);
+  let html = shown.map((a) => {
+    const items = open.filter((x) => x.animal === a);
+    if (!items.length) return '';
+    return `<section class="group">
+      <div class="group-head">
+        <div class="group-icon tinted a-${a}">${icon(a)}</div>
+        <div><h3>${ANIMALS[a].plural}</h3><small>${ANIMALS[a].hint}</small></div>
+        <span class="n">${items.length}</span>
+      </div>
+      <ul class="tasks">${items.map(taskHtml).join('')}</ul>
+    </section>`;
+  }).join('');
+
+  if (!html.trim()) {
+    html = `<div class="empty">
+      <div class="animals">${ORDER.map((a) => `<div class="tinted a-${a}">${icon(a)}</div>`).join('')}</div>
+      <h4>${ui.filter === 'all' ? 'Здесь тихо' : `${ANIMALS[ui.filter].plural} не водятся`}</h4>
+      <div>Добавьте задачу и выберите ей зверя</div>
+    </div>`;
+  }
+
+  const doneShown = done.filter((x) => ui.filter === 'all' || x.animal === ui.filter);
+  if (doneShown.length) {
+    html += `<button class="done-toggle ${ui.showDone ? 'open' : ''}" data-toggledone>${icon('chev')}Выполнено · ${doneShown.length}</button>`;
+    if (ui.showDone) html += `<ul class="tasks" style="margin-top:10px">${doneShown.map(taskHtml).join('')}</ul>`;
+  }
+  $('list').innerHTML = html;
+
+  const ed = document.querySelector('[data-editinput]');
+  if (ed) { ed.focus(); ed.select(); }
+}
+
+function taskHtml(t) {
+  const a = ANIMALS[t.animal];
+  const title = ui.editing === t.id
+    ? `<input data-editinput="${t.id}" value="${esc(t.title)}" maxlength="200">`
+    : esc(t.title);
+  return `<li class="task a-${t.animal} ${t.done ? 'done' : ''}" data-task="${t.id}">
+    <button class="check" data-toggle="${t.id}" aria-label="Готово">${icon('check')}</button>
+    <div class="task-title" data-edit="${t.id}">${title}</div>
+    <button class="tag a-${t.animal}" data-cycle="${t.id}" title="Сменить зверя">${icon(t.animal)}<span>${a.name}</span></button>
+    <button class="del" data-del="${t.id}" aria-label="Удалить">${icon('trash')}</button>
+  </li>`;
+}
+
+/* ---------- Actions ---------- */
+function findTask(id) { return active().tasks.find((t) => t.id === id); }
+function commit() { save(); render(); }
+
+function addProject(name) {
+  name = (name || '').trim();
+  if (!name) return;
+  const p = { id: uid(), name, tasks: [] };
+  state.projects.push(p);
+  state.activeId = p.id;
+  ui.filter = 'all';
+  commit();
+}
+function deleteProject(id) {
+  const p = state.projects.find((x) => x.id === id);
+  if (!p || !confirm(`Удалить проект «${p.name}» со всеми задачами?`)) return;
+  state.projects = state.projects.filter((x) => x.id !== id);
+  if (state.activeId === id) state.activeId = state.projects[0]?.id;
+  commit();
+}
+function selectProject(id) { state.activeId = id; ui.filter = 'all'; ui.editing = null; commit(); }
+
+$('addProj').addEventListener('submit', (e) => {
+  e.preventDefault();
+  addProject($('projInput').value);
+  $('projInput').value = '';
+});
+$('projList').addEventListener('click', (e) => {
+  const del = e.target.closest('[data-delproj]');
+  if (del) { e.stopPropagation(); return deleteProject(del.dataset.delproj); }
+  const b = e.target.closest('[data-proj]');
+  if (b) selectProject(b.dataset.proj);
+});
+$('projSelect').addEventListener('change', (e) => selectProject(e.target.value));
+$('mAdd').addEventListener('click', () => addProject(prompt('Название проекта или области')));
+$('mDel').addEventListener('click', () => active() && deleteProject(active().id));
+
+$('projTitle').addEventListener('dblclick', () => {
+  const p = active(); if (!p) return;
+  const name = prompt('Переименовать проект', p.name);
+  if (name && name.trim()) { p.name = name.trim(); commit(); }
+});
+
+$('pick').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-pick]');
+  if (b) { ui.newAnimal = b.dataset.pick; render(); $('taskInput').focus(); }
+});
+$('composer').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = $('taskInput').value.trim();
+  if (!title || !active()) return;
+  active().tasks.unshift({ id: uid(), title, animal: ui.newAnimal, done: false, created: Date.now() });
+  $('taskInput').value = '';
+  if (ui.filter !== 'all' && ui.filter !== ui.newAnimal) ui.filter = 'all';
+  commit();
+});
+
+$('filters').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-filter]');
+  if (!b) return;
+  ui.filter = ui.filter === b.dataset.filter ? 'all' : b.dataset.filter;
+  if (ui.filter !== 'all') ui.newAnimal = ui.filter;
+  render();
+});
+
+$('list').addEventListener('click', (e) => {
+  const el = e.target.closest('[data-toggle],[data-cycle],[data-del],[data-toggledone]');
+  if (!el) return;
+  if ('toggledone' in el.dataset) { ui.showDone = !ui.showDone; return render(); }
+  if (el.dataset.toggle) { const t = findTask(el.dataset.toggle); t.done = !t.done; return commit(); }
+  if (el.dataset.cycle) {
+    const t = findTask(el.dataset.cycle);
+    t.animal = ORDER[(ORDER.indexOf(t.animal) + 1) % ORDER.length];
+    return commit();
+  }
+  if (el.dataset.del) { active().tasks = active().tasks.filter((t) => t.id !== el.dataset.del); return commit(); }
+});
+$('list').addEventListener('dblclick', (e) => {
+  const el = e.target.closest('[data-edit]');
+  if (el && !ui.editing) { ui.editing = el.dataset.edit; render(); }
+});
+function finishEdit(input, keep) {
+  const t = findTask(input.dataset.editinput);
+  if (t && keep && input.value.trim()) t.title = input.value.trim();
+  ui.editing = null;
+  commit();
+}
+$('list').addEventListener('keydown', (e) => {
+  if (!e.target.dataset.editinput) return;
+  if (e.key === 'Enter') finishEdit(e.target, true);
+  if (e.key === 'Escape') finishEdit(e.target, false);
+});
+$('list').addEventListener('focusout', (e) => {
+  if (e.target.dataset.editinput && ui.editing) finishEdit(e.target, true);
+});
+
+render();
+</script>
+</body>
+</html>
