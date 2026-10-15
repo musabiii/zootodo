@@ -32,9 +32,17 @@ docker run -d -p 8000:8000 -v zootodo-data:/data --name zootodo zootodo
 
 База лежит в томе `/data` (`/data/zootodo.db`), так что данные переживают пересборку контейнера.
 
+Готовый образ (amd64 и arm64) собирается GitHub Actions при каждом пуше в `master`:
+
+```bash
+docker run -d -p 8000:8000 -v zootodo-data:/data ghcr.io/musabiii/zootodo:latest
+```
+
+Теги: `latest` — последняя сборка `master`, `1.2.3` — git-тег `v1.2.3`, `sha-…` — конкретный коммит.
+
 ### Coolify
 
-1. Новый ресурс из Git-репозитория, Build Pack — **Dockerfile**.
+1. Новый ресурс из Git-репозитория, Build Pack — **Dockerfile**. Или ресурс **Docker Image** с готовым `ghcr.io/musabiii/zootodo:latest` — тогда Coolify ничего не собирает сам.
 2. Ports Exposes: `8000`.
 3. Storages: постоянный том с путём `/data`.
 4. Переменные окружения: `COOKIE_SECURE=1`, раз Coolify отдаёт сайт по HTTPS.
