@@ -6,7 +6,7 @@
 <title>ZooTodo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600&family=Rubik:ital,wght@0,500;0,700;1,800;1,900&family=Oswald:wght@500;600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600&family=Rubik:ital,wght@0,500;0,700;1,800;1,900&family=Oswald:wght@500;600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ---------- Theme: Зоопарк (default) ---------- */
 :root {
@@ -133,6 +133,76 @@
 
   --radius: 2px;
   --shadow: 0 0 0 1px rgba(255,255,255,.03);
+  color-scheme: dark;
+}
+
+/* ---------- Theme: Стекло (полупрозрачные панели, светлое/тёмное по системе) ---------- */
+[data-theme="glass"] {
+  --bg: rgba(120,120,128,.12);
+  --surface: rgba(255,255,255,.55);
+  --ink: #111111;
+  --on-ink: #ffffff;
+  --on-c: #ffffff;
+  --muted: rgba(60,60,67,.62);
+  --line: rgba(60,60,67,.14);
+  --side: rgba(255,255,255,.35);
+  --side-2: rgba(255,255,255,.62);
+  --side-ink: #111111;
+  --side-muted: rgba(60,60,67,.62);
+  --accent: #007aff;
+  --brand: linear-gradient(135deg, #34c759, #0a84ff);
+  --display: Inter, -apple-system, "SF Pro Display", system-ui, sans-serif;
+  --side-art: none;
+  --glass: rgba(255,255,255,.42);
+  --glass-strong: rgba(255,255,255,.66);
+  --rim: rgba(255,255,255,.75);
+  --hl: rgba(255,255,255,.6);
+  --shade: rgba(0,0,0,.08);
+  --wall:
+    radial-gradient(60% 45% at 12% 8%, #ffb3c7 0, transparent 70%),
+    radial-gradient(55% 40% at 95% 22%, #a7c7ff 0, transparent 70%),
+    radial-gradient(70% 50% at 28% 88%, #b9f0d6 0, transparent 70%),
+    radial-gradient(60% 45% at 92% 92%, #ffd8a8 0, transparent 70%),
+    #f4f1ff;
+
+  --urgent: #ff3b30;     --urgent-bg: rgba(255,59,48,.14);
+  --important: #ff9500;  --important-bg: rgba(255,149,0,.15);
+  --unpleasant: #af52de; --unpleasant-bg: rgba(175,82,222,.14);
+  --regular: #007aff;    --regular-bg: rgba(0,122,255,.13);
+  --quick: #34c759;      --quick-bg: rgba(52,199,89,.15);
+  --long: #5856d6;       --long-bg: rgba(88,86,214,.14);
+
+  --radius: 22px;
+  --shadow: none;
+}
+[data-theme="glass"][data-mode="dark"] {
+  --surface: rgba(40,40,48,.45);
+  --ink: #ffffff;
+  --on-ink: #111111;
+  --muted: rgba(235,235,245,.6);
+  --line: rgba(255,255,255,.12);
+  --side: rgba(30,30,36,.45);
+  --side-2: rgba(80,80,90,.55);
+  --side-ink: #ffffff;
+  --side-muted: rgba(235,235,245,.6);
+  --accent: #0a84ff;
+  --glass: rgba(40,40,48,.38);
+  --glass-strong: rgba(80,80,90,.55);
+  --rim: rgba(255,255,255,.2);
+  --hl: rgba(255,255,255,.22);
+  --shade: rgba(0,0,0,.35);
+  --wall:
+    radial-gradient(60% 45% at 12% 8%, #7a1f5c 0, transparent 70%),
+    radial-gradient(55% 40% at 95% 22%, #1d3f8f 0, transparent 70%),
+    radial-gradient(70% 50% at 28% 88%, #0f5e4a 0, transparent 70%),
+    radial-gradient(60% 45% at 92% 92%, #7a3d0c 0, transparent 70%),
+    #07070c;
+  --urgent: #ff453a;     --urgent-bg: rgba(255,69,58,.2);
+  --important: #ff9f0a;  --important-bg: rgba(255,159,10,.2);
+  --unpleasant: #bf5af2; --unpleasant-bg: rgba(191,90,242,.2);
+  --regular: #0a84ff;    --regular-bg: rgba(10,132,255,.2);
+  --quick: #30d158;      --quick-bg: rgba(48,209,88,.2);
+  --long: #5e5ce6;       --long-bg: rgba(94,92,230,.22);
   color-scheme: dark;
 }
 
@@ -617,6 +687,74 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .stat::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
 .stat::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
 
+/* ---------- Glass: blurred translucent panels over a soft colour wallpaper ---------- */
+[data-theme="glass"] body { font-family: var(--display); background: var(--wall) fixed; }
+[data-theme="glass"] input, [data-theme="glass"] select, [data-theme="glass"] button { font-family: var(--display); }
+[data-theme="glass"] :is(.composer, .tasks, .filters, .menu, .side, .toast, .auth-card, .theme-btn, .legend) {
+  background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.03)), var(--glass);
+  -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid var(--rim);
+  box-shadow: inset 0 1px 0 var(--hl), 0 8px 30px var(--shade);
+}
+[data-theme="glass"] .auth { background: var(--wall); }
+[data-theme="glass"] .side { border-width: 0 1px 0 0; box-shadow: inset -1px 0 0 var(--hl); }
+[data-theme="glass"] .legend, [data-theme="glass"] .theme-btn { border-radius: 18px; box-shadow: inset 0 1px 0 var(--hl); }
+[data-theme="glass"] .brand-mark { border-radius: 12px; background: var(--brand); color: #fff; }
+[data-theme="glass"] .brand h1 { font-weight: 800; letter-spacing: -.4px; }
+[data-theme="glass"] .proj { border-radius: 12px; }
+[data-theme="glass"] .proj.active { background: var(--side-2); box-shadow: 0 2px 8px var(--shade); }
+[data-theme="glass"] .proj.active::before { display: none; }
+[data-theme="glass"] .proj-badge { border-radius: 9px; background: var(--bg); }
+[data-theme="glass"] .proj.active .proj-badge { background: var(--accent); color: #fff; }
+[data-theme="glass"] .add-proj input { background: var(--bg); border-color: transparent; border-radius: 12px; }
+[data-theme="glass"] .add-proj button { border-radius: 50%; background: var(--accent); color: #fff; }
+[data-theme="glass"] .head h2 { font-weight: 800; font-size: clamp(30px, 4.5vw, 38px); letter-spacing: -.9px; }
+[data-theme="glass"] .head p { font-size: 15px; }
+[data-theme="glass"] .stripe { height: 4px; opacity: .8; }
+[data-theme="glass"] .composer { border-radius: 24px; padding: 6px 6px 6px 16px; }
+[data-theme="glass"] .composer input { font-size: 16px; }
+[data-theme="glass"] .cat-btn { border-radius: 999px; min-width: max-content; font-weight: 600; font-size: 13.5px; }
+[data-theme="glass"] .composer .go { background: var(--accent); color: #fff; border-radius: 999px; font-weight: 600; box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 40%, transparent); }
+[data-theme="glass"] .filters { border-radius: 22px; padding: 4px; gap: 2px; width: max-content; max-width: 100%; }
+[data-theme="glass"] .chip { border: 0; background: transparent; border-radius: 999px; color: var(--muted); font-weight: 600; padding: 7px 12px; }
+[data-theme="glass"] .chip.on, [data-theme="glass"] .chip.on[class*="k-"] { background: var(--glass-strong); color: var(--ink); box-shadow: 0 2px 8px var(--shade), inset 0 1px 0 var(--hl); }
+[data-theme="glass"] .chip[class*="k-"] svg.ico { color: var(--c); }
+[data-theme="glass"] .group-head { margin: 0 6px 8px; gap: 8px; }
+[data-theme="glass"] .group-icon { width: 24px; height: 24px; border-radius: 7px; background: var(--c); color: #fff; }
+[data-theme="glass"] .group-icon svg.ico { width: 14px; height: 14px; stroke-width: 2.2; }
+[data-theme="glass"] .group-head h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); }
+[data-theme="glass"] .group-head small { display: none; }
+[data-theme="glass"] .group-head .n { font-weight: 600; }
+/* one grouped list per category instead of separate cards */
+[data-theme="glass"] .tasks { gap: 0; border-radius: 22px; overflow: hidden; }
+[data-theme="glass"] .task { background: transparent; border: 0; border-radius: 0; padding: 13px 14px; }
+[data-theme="glass"] .task + .task { border-top: 1px solid var(--line); }
+[data-theme="glass"] .task::before { display: none; }
+[data-theme="glass"] .task:hover { box-shadow: none; background: rgba(255,255,255,.08); }
+[data-theme="glass"] .task-title { font-size: 16px; }
+[data-theme="glass"] .check { width: 24px; height: 24px; }
+[data-theme="glass"] .tag { border-radius: 999px; font-weight: 600; }
+[data-theme="glass"] .menu { border-radius: 18px; background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.03)), var(--glass-strong); }
+[data-theme="glass"] .menu button { border-radius: 12px; }
+[data-theme="glass"] .auth-card { border-radius: 26px; }
+[data-theme="glass"] .auth input { border-radius: 12px; border-color: transparent; }
+[data-theme="glass"] .auth-go { background: var(--accent); color: #fff; border-radius: 999px; }
+[data-theme="glass"] .auth-tabs { border-radius: 999px; }
+[data-theme="glass"] .auth-tabs button { border-radius: 999px; }
+[data-theme="glass"] .auth-tabs button.on { background: var(--glass-strong); }
+/* banner like a system notification */
+[data-theme="glass"] .toast {
+  left: 0; right: 0; top: 16px; bottom: auto; margin: 0 auto; width: min(400px, calc(100vw - 24px)); max-width: none;
+  border-radius: 24px; padding: 12px 14px; gap: 12px; color: var(--ink); text-transform: none; letter-spacing: 0; font-size: 14px;
+}
+[data-theme="glass"] .toast[hidden] { transform: translateY(-16px); }
+.g-app { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #34c759, #0a84ff); color: #fff; display: grid; place-items: center; flex: none; }
+.g-app svg.ico { stroke-width: 2.4; }
+.g-txt { flex: 1; min-width: 0; }
+.g-txt b { display: block; font-size: 14.5px; }
+.g-txt span { display: block; color: var(--muted); font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-when { align-self: flex-start; font-size: 12.5px; color: var(--muted); }
+
 /* ---------- Hacker: terminal chrome, code comments, tmux status line ---------- */
 [data-theme="hacker"] body, [data-theme="hacker"] input, [data-theme="hacker"] select, [data-theme="hacker"] button, [data-theme="hacker"] .menu {
   font-family: var(--mono); font-variant-ligatures: contextual;
@@ -931,6 +1069,18 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .mbar button.ghost { background: var(--side-2); color: var(--side-muted); }
   .mbar button.brand-mark { background: var(--brand); color: #fff; }
   .toast { left: 16px; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); }
+  [data-theme="glass"] .mbar {
+    left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom)); padding: 6px; border-radius: 999px;
+    background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.03)), var(--glass);
+    -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
+    border: 1px solid var(--rim); box-shadow: inset 0 1px 0 var(--hl), 0 8px 30px var(--shade); color: var(--ink);
+  }
+  [data-theme="glass"] .mbar select { background: transparent; border: 0; border-radius: 999px; color: var(--ink); font-weight: 600; }
+  [data-theme="glass"] .mbar .sel svg.ico { color: var(--muted); }
+  [data-theme="glass"] .mbar button { border-radius: 50%; background: transparent; color: var(--accent); }
+  [data-theme="glass"] .mbar button#mAdd { background: var(--accent); color: #fff; }
+  [data-theme="glass"] .mbar button.brand-mark { background: var(--brand); color: #fff; }
+  [data-theme="glass"] .filters { width: 100%; }
   [data-theme="hacker"] .main { padding-bottom: calc(130px + env(safe-area-inset-bottom)); }
   .sh-status { left: 0; bottom: calc(62px + env(safe-area-inset-bottom)); }
   [data-theme="hacker"] .tag span { display: inline; }
@@ -1234,6 +1384,15 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <path d="M2.5 21h19M4 21V11.5h4.5V21M8.5 21V4.5h5.5V21M14 21v-8h3V8.5h3.5V21"/>
       <path d="M10.6 8h2.3M10.6 11h2.3M10.6 14h2.3M5.7 14.5h1.1M18 12h1M18 15h1"/>
     </symbol>
+    <!-- ===== Стекло ===== -->
+    <symbol id="i-glass-brand" viewBox="0 0 24 24"><path d="m6 12.5 4 4L18 8"/></symbol>
+    <symbol id="i-glass-urgent" viewBox="0 0 24 24"><path d="M12 21c-3.6 0-6-2.4-6-5.6 0-3.3 2.4-5.2 3.6-7.4.6 1.7 1.5 2.6 2.6 3 0-2.8 1.2-5.3 3.4-7 .2 3 1.6 4.5 2.6 6 .9 1.3 1.8 2.9 1.8 5.1 0 3.5-2.4 5.9-8 5.9z"/></symbol>
+    <symbol id="i-glass-important" viewBox="0 0 24 24"><path d="M12 3.8l2.12 5.69 6.06.25-4.76 3.77 1.64 5.85L12 16l-5.06 3.36 1.64-5.85-4.76-3.77 6.06-.25z"/></symbol>
+    <symbol id="i-glass-unpleasant" viewBox="0 0 24 24"><path d="M7 15.5a4 4 0 0 1-.4-8 5 5 0 0 1 9.6 1.3A3.4 3.4 0 0 1 17 15.5z"/><path d="M8.5 18.5 8 20M12 18.5l-.5 1.5M15.5 18.5 15 20"/></symbol>
+    <symbol id="i-glass-regular" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M8.5 12.2l2.3 2.3 4.7-4.7"/></symbol>
+    <symbol id="i-glass-quick" viewBox="0 0 24 24"><path d="M13 2.8 5.5 13.5h6L11 21.2l7.5-10.7h-6z"/></symbol>
+    <symbol id="i-glass-long" viewBox="0 0 24 24"><path d="M2.5 19.5 9 8.5l3.5 5.5 2.5-3.5 6.5 9z"/><path d="M14.5 5.5V3l3 1.2-3 1.3"/></symbol>
+
     <!-- ===== Хакер ===== -->
     <!-- Терминал (логотип темы) -->
     <symbol id="i-hacker-brand" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="m7 10 3 2.5L7 15M12.5 15H17"/></symbol>
@@ -1329,6 +1488,9 @@ svg.ico .fill { fill: currentColor; stroke: none; }
     </symbol>
 
     <!-- ===== UI ===== -->
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></symbol>
+    <symbol id="i-auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path class="fill" d="M12 4a8 8 0 0 1 0 16z"/></symbol>
     <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle class="fill" cx="4.8" cy="6.5" r="1.2"/><circle class="fill" cx="4.8" cy="12" r="1.2"/><circle class="fill" cx="4.8" cy="17.5" r="1.2"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
@@ -1403,6 +1565,20 @@ const THEMES = {
       regular:    { name: 'Дрон',      plural: 'Дроны',      hint: 'Обычное — рутина на автопилоте',          done: 'Дрон вернулся на базу' },
       quick:      { name: 'Скрипт',    plural: 'Скрипты',    hint: 'Быстрое — запустил, и готово',            done: 'Скрипт отработал' },
       long:       { name: 'Мегаполис', plural: 'Мегаполисы', hint: 'Долгосрочное — строится годами',          done: 'Квартал достроен' },
+    },
+  },
+  glass: {
+    label: 'Стекло', hint: 'Полупрозрачные панели, светлое и тёмное',
+    title: 'Задачи', tagline: 'в стиле стекла', brandIcon: 'glass-brand',
+    swatch: 'linear-gradient(135deg, #ffb3c7, #a7c7ff 50%, #b9f0d6)',
+    pickWhat: 'категорию', absent: '', plainCats: true, notify: 'banner', placeholder: 'Новая задача', modes: true,
+    cats: {
+      urgent:     { name: 'Срочное',      plural: 'Срочное',      hint: 'Сделать как можно скорее' },
+      important:  { name: 'Важное',       plural: 'Важное',       hint: 'Влияет на главное' },
+      unpleasant: { name: 'Неприятное',   plural: 'Неприятное',   hint: 'Не хочется, но надо' },
+      regular:    { name: 'Обычное',      plural: 'Обычное',      hint: 'Повседневные дела' },
+      quick:      { name: 'На 5 минут',   plural: 'На 5 минут',   hint: 'Займёт пару минут' },
+      long:       { name: 'Долгосрочное', plural: 'Долгосрочное', hint: 'Большие цели по шагам' },
     },
   },
   hacker: {
@@ -1536,6 +1712,7 @@ function migrate(s) {
   s.theme = THEMES[s.theme] ? s.theme : 'zoo';
   s.stats = { ...newStats(), ...s.stats };
   s.plainNames = !!s.plainNames;
+  if (!['auto', 'light', 'dark'].includes(s.appearance)) s.appearance = 'auto';
   for (const p of s.projects) for (const t of p.tasks) {
     if (t.animal) { t.cat = LEGACY[t.animal]; delete t.animal; }
     if (!ORDER.includes(t.cat)) t.cat = DEFAULT_CAT;
@@ -1592,6 +1769,7 @@ function renderTheme() {
   document.querySelector('#composer .go').textContent = th.addLabel || 'Добавить';
   document.documentElement.style.setProperty('--mono', `"${codeFont()}", ui-monospace, monospace`);
   if (th.game === 'hacker') ensureFont(codeFont());
+  document.documentElement.dataset.mode = resolvedMode();
   $('brandIcon').setAttribute('href', `#i-${th.brandIcon}`);
   $('mThemeIcon').setAttribute('href', `#i-${th.brandIcon}`);
   $('themeBtn').innerHTML =
@@ -1615,7 +1793,7 @@ function render() {
   }).join('');
 
   $('legend').innerHTML = ORDER.map((k) =>
-    `<div class="legend-row k-${k}"><span class="dot tinted">${icon(k)}</span><div><b>${cat(k).name}</b>${state.plainNames ? '' : ` · ${SHORT[k]}`}</div></div>`
+    `<div class="legend-row k-${k}"><span class="dot tinted">${icon(k)}</span><div><b>${cat(k).name}</b>${plainMode() ? '' : ` · ${SHORT[k]}`}</div></div>`
   ).join('');
 
   // mobile select
@@ -1669,7 +1847,7 @@ function render() {
   if (!html.trim()) {
     html = `<div class="empty">
       <div class="cats">${ORDER.map((k) => `<div class="tinted k-${k}">${icon(k)}</div>`).join('')}</div>
-      <h4>${ui.filter === 'all' ? 'Здесь тихо' : state.plainNames ? `«${cat(ui.filter).name}» — задач нет` : `${cat(ui.filter).plural} ${theme().absent}`}</h4>
+      <h4>${ui.filter === 'all' ? 'Здесь тихо' : plainMode() ? `«${cat(ui.filter).name}» — задач нет` : `${cat(ui.filter).plural} ${theme().absent}`}</h4>
       <div>Добавьте задачу и выберите ей ${theme().pickWhat}</div>
     </div>`;
   }
@@ -1684,6 +1862,9 @@ function render() {
   const ed = document.querySelector('[data-editinput]');
   if (ed) { ed.focus(); ed.select(); }
 }
+
+// standard urgency names: picked by the user, or the theme simply has no characters
+const plainMode = () => state.plainNames || !!theme().plainCats;
 
 // the hacker theme labels chips and tags with code-style ids (incident:, #legacy) unless standard names are on
 const codeLabels = () => !state.plainNames && !!theme().cats.urgent.code;
@@ -1774,7 +1955,10 @@ function showToast(t, r) {
   const el = $('toast');
   el.className = `toast k-${t.cat}`;
   const game = theme().game;
-  if (game === 'coast') {
+  if (theme().notify === 'banner') {
+    el.innerHTML = `<span class="g-app">${svg('check')}</span>`
+      + `<div class="g-txt"><b>Задача выполнена</b><span>${esc(t.title)} · ${cat(t.cat).name}</span></div><span class="g-when">сейчас</span>`;
+  } else if (game === 'coast') {
     el.innerHTML = `<span class="splash-1">Миссия пройдена!</span><span class="splash-2">$${fmt(r.cr)}</span><span class="splash-3">Уважение +${r.xp}</span>`;
   } else if (game === 'hacker') {
     const { xp } = state.stats;
@@ -1804,7 +1988,7 @@ function toggleTask(t) {
     st.xp += r.xp; st.credits += r.cr;
     const today = dayKey(new Date());
     if (!st.days.includes(today)) st.days = [...st.days, today].slice(-120);
-    if (theme().game) showToast(t, r);
+    if (theme().game || theme().notify) showToast(t, r);
   } else if (!t.done && t.reward) {
     st.xp = Math.max(0, st.xp - t.reward.xp);
     st.credits = Math.max(0, st.credits - t.reward.cr);
@@ -1816,6 +2000,22 @@ function toggleTask(t) {
 /* ---------- Actions ---------- */
 function findTask(id) { return active().tasks.find((t) => t.id === id); }
 function commit() { save(); render(); }
+
+// Light/dark for themes that support both (the glass theme). 'auto' follows the device.
+const APPEARANCES = [
+  ['auto', 'Авто', 'Как на устройстве', 'auto'],
+  ['light', 'Светлое', 'Всегда светлое', 'sun'],
+  ['dark', 'Тёмное', 'Всегда тёмное', 'moon'],
+];
+const darkQuery = matchMedia('(prefers-color-scheme: dark)');
+const appearance = () => (['light', 'dark'].includes(state.appearance) ? state.appearance : 'auto');
+const resolvedMode = () => (appearance() === 'auto' ? (darkQuery.matches ? 'dark' : 'light') : appearance());
+darkQuery.addEventListener('change', () => { if (appearance() === 'auto') renderTheme(); });
+
+function setAppearance(mode) {
+  state.appearance = mode;
+  commit();
+}
 
 function setCodeFont(name) {
   state.codeFont = name;
@@ -1946,20 +2146,27 @@ addEventListener('scroll', closeMenu, true);
 function themeMenu(e) {
   openMenu(e.currentTarget, {
     title: 'Вселенная',
-    current: [state.theme, state.plainNames ? 'names:plain' : 'names:theme', `font:${codeFont()}`],
+    current: [state.theme, state.plainNames ? 'names:plain' : 'names:theme', `font:${codeFont()}`, `mode:${appearance()}`],
     onPick: (id) => id === 'logout' ? logout()
       : id.startsWith('names:') ? setPlainNames(id === 'names:plain')
       : id.startsWith('font:') ? setCodeFont(id.slice(5))
+      : id.startsWith('mode:') ? setAppearance(id.slice(5))
       : setTheme(id),
     items: [
       ...Object.entries(THEMES).map(([id, t]) => ({
         id, name: t.label, hint: t.hint, iconHtml: svg(t.brandIcon), style: `background:${t.swatch};color:#fff`,
       })),
-      { section: 'Названия срочности' },
-      { id: 'names:theme', name: 'Из вселенной', hint: ORDER.slice(0, 3).map((k) => theme().cats[k].name).join(', ') + '…',
-        iconHtml: icon('urgent'), cls: 'k-urgent' },
-      { id: 'names:plain', name: 'Стандартные', hint: 'Срочное, важное, неприятное…',
-        iconHtml: svg('list'), style: 'background:var(--bg);color:var(--ink)' },
+      ...(theme().plainCats ? [] : [
+        { section: 'Названия срочности' },
+        { id: 'names:theme', name: 'Из вселенной', hint: ORDER.slice(0, 3).map((k) => theme().cats[k].name).join(', ') + '…',
+          iconHtml: icon('urgent'), cls: 'k-urgent' },
+        { id: 'names:plain', name: 'Стандартные', hint: 'Срочное, важное, неприятное…',
+          iconHtml: svg('list'), style: 'background:var(--bg);color:var(--ink)' },
+      ]),
+      ...(theme().modes ? [
+        { section: 'Оформление' },
+        ...APPEARANCES.map(([id, name, hint, ic]) => ({ id: `mode:${id}`, name, hint, iconHtml: svg(ic), style: 'background:var(--bg);color:var(--ink)' })),
+      ] : []),
       ...(theme().game === 'hacker' ? [
         { section: 'Шрифт' },
         ...CODE_FONTS.map(([f, hint]) => {
