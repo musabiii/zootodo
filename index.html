@@ -301,6 +301,43 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .theme-btn .chev { width: 16px; height: 16px; color: var(--side-muted); transform: rotate(-90deg); transition: transform .15s; }
 .theme-btn[aria-expanded="true"] .chev { transform: rotate(90deg); }
 
+.account { display: flex; align-items: center; gap: 8px; padding: 0 6px; font-size: 12.5px; color: var(--side-muted); }
+.account[hidden] { display: none; }
+.account b { color: var(--side-ink); font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account .sync { font-size: 11px; }
+.account .sync.err { color: #ff8a7a; }
+.account button { border: 0; background: none; color: var(--side-muted); padding: 4px 6px; border-radius: 6px; font-size: 12.5px; }
+.account button:hover { color: var(--side-ink); background: rgba(255,255,255,.06); }
+
+/* ---------- Auth screen ---------- */
+.booting .app, .booting .mbar { visibility: hidden; }
+.auth {
+  position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 16px; overflow-y: auto;
+  background-color: var(--side); background-image: var(--side-art);
+}
+.auth[hidden] { display: none; }
+.auth-card {
+  width: min(380px, 100%); background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 18px; padding: 28px 24px 24px; box-shadow: 0 24px 60px rgba(0,0,0,.3);
+  display: grid; gap: 14px;
+}
+.auth-head { display: flex; align-items: center; gap: 12px; }
+.auth-head h1 { font-family: var(--display); font-size: 24px; font-weight: 600; margin: 0; }
+.auth-head small { display: block; color: var(--muted); font-size: 12.5px; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 11px; background: var(--bg); }
+.auth-tabs button { border: 0; background: none; border-radius: 8px; padding: 8px; font-weight: 600; font-size: 13.5px; color: var(--muted); }
+.auth-tabs button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.auth label { display: grid; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.auth input {
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px;
+  padding: 11px 12px; font-size: 15px; outline: none;
+}
+.auth input:focus { border-color: var(--accent); }
+.auth-err { margin: 0; min-height: 18px; font-size: 13px; color: #e0453a; }
+.auth-go { border: 0; border-radius: 10px; padding: 12px; background: var(--ink); color: var(--on-ink); font-weight: 700; font-size: 15px; }
+.auth-go:disabled { opacity: .6; cursor: wait; }
+.auth-note { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.45; }
+
 /* ---------- Main ---------- */
 .main { padding: 40px clamp(16px, 4vw, 56px) 64px; max-width: 920px; width: 100%; }
 .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
@@ -715,6 +752,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
     </form>
     <div class="legend" id="legend"></div>
     <button type="button" class="theme-btn" id="themeBtn" aria-haspopup="menu" aria-expanded="false"></button>
+    <div class="account" id="account" hidden><span>@</span><b id="accountName"></b><span class="sync" id="syncStatus"></span><button type="button" id="logoutBtn">Выйти</button></div>
   </aside>
 
   <main class="main">
@@ -750,6 +788,24 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 
 <div class="menu" id="menu" role="menu" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<div class="auth" id="auth" hidden>
+  <form class="auth-card" id="authForm" novalidate>
+    <div class="auth-head">
+      <div class="brand-mark"><svg class="ico"><use id="authIcon" href="#i-zoo-urgent"/></svg></div>
+      <div><h1 id="authTitle">ZooTodo</h1><small>Войдите, чтобы задачи были с вами на любом устройстве</small></div>
+    </div>
+    <div class="auth-tabs" role="tablist">
+      <button type="button" role="tab" data-auth-mode="login" class="on" aria-selected="true">Вход</button>
+      <button type="button" role="tab" data-auth-mode="register" aria-selected="false">Регистрация</button>
+    </div>
+    <label>Логин<input id="authUser" autocomplete="username" maxlength="32" autocapitalize="off" spellcheck="false"></label>
+    <label>Пароль<input id="authPass" type="password" autocomplete="current-password"></label>
+    <p class="auth-err" id="authErr" role="alert"></p>
+    <button class="auth-go" id="authGo">Войти</button>
+    <p class="auth-note" id="authNote" hidden>Задачи, которые уже есть на этом устройстве, перенесутся в новый аккаунт.</p>
+  </form>
+</div>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
@@ -1169,7 +1225,15 @@ try { state = JSON.parse(localStorage.getItem(KEY)); } catch {}
 state = state && Array.isArray(state.projects) ? migrate(state) : seed();
 let ui = { filter: 'all', newCat: DEFAULT_CAT, showDone: false, editing: null };
 
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+// 'local': opened as a file or no server, data lives in localStorage only.
+// 'online': signed in, data is stored on the server per user.
+let session = { mode: 'local', user: null };
+let pushTimer = null;
+
+const save = () => {
+  if (session.mode === 'online') { clearTimeout(pushTimer); pushTimer = setTimeout(pushState, 600); return; }
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
+};
 const active = () => state.projects.find((p) => p.id === state.activeId) || state.projects[0];
 const $ = (id) => document.getElementById(id);
 
@@ -1517,7 +1581,7 @@ function themeMenu(e) {
   openMenu(e.currentTarget, {
     title: 'Вселенная',
     current: [state.theme, state.plainNames ? 'names:plain' : 'names:theme'],
-    onPick: (id) => id.startsWith('names:') ? setPlainNames(id === 'names:plain') : setTheme(id),
+    onPick: (id) => id === 'logout' ? logout() : id.startsWith('names:') ? setPlainNames(id === 'names:plain') : setTheme(id),
     items: [
       ...Object.entries(THEMES).map(([id, t]) => ({
         id, name: t.label, hint: t.hint, iconHtml: svg(t.brandIcon), style: `background:${t.swatch};color:#fff`,
@@ -1527,6 +1591,10 @@ function themeMenu(e) {
         iconHtml: icon('urgent'), cls: 'k-urgent' },
       { id: 'names:plain', name: 'Стандартные', hint: 'Срочное, важное, неприятное…',
         iconHtml: svg('list'), style: 'background:var(--bg);color:var(--ink)' },
+      ...(session.mode === 'online' ? [
+        { section: 'Аккаунт' },
+        { id: 'logout', name: 'Выйти', hint: `@${session.user}`, iconHtml: svg('x'), style: 'background:var(--bg);color:var(--ink)' },
+      ] : []),
     ],
   });
 }
@@ -1585,7 +1653,121 @@ $('list').addEventListener('focusout', (e) => {
   if (e.target.dataset.editinput && ui.editing) finishEdit(e.target, true);
 });
 
-render();
+/* ---------- Auth and server sync ---------- */
+async function api(path, { method = 'GET', body } = {}) {
+  const res = await fetch(path, {
+    method, credentials: 'same-origin',
+    headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw Object.assign(new Error(data.error || 'Сервер недоступен'), { status: res.status });
+  return data;
+}
+
+function setSync(text, isError = false) {
+  $('syncStatus').textContent = text;
+  $('syncStatus').className = `sync ${isError ? 'err' : ''}`;
+}
+
+async function pushState() {
+  pushTimer = null;
+  try {
+    await api('/api/state', { method: 'PUT', body: { state } });
+    setSync('');
+  } catch (e) {
+    if (e.status === 401) return showAuth();
+    setSync('не сохранено', true);
+    pushTimer = setTimeout(pushState, 5000);
+  }
+}
+
+// don't lose the last edit if the tab closes during the save debounce
+addEventListener('pagehide', () => {
+  if (session.mode !== 'online' || !pushTimer) return;
+  fetch('/api/state', { method: 'PUT', keepalive: true, credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ state }) });
+});
+
+async function enterOnline(username) {
+  session = { mode: 'online', user: username };
+  const { state: remote } = await api('/api/state');
+  if (remote && Array.isArray(remote.projects)) state = migrate(remote);
+  $('accountName').textContent = username;
+  $('account').hidden = false;
+  $('auth').hidden = true;
+  document.documentElement.classList.remove('booting');
+  render();
+  if (!remote) pushState();
+}
+
+let authMode = 'login';
+function setAuthMode(mode) {
+  authMode = mode;
+  document.querySelectorAll('[data-auth-mode]').forEach((b) => {
+    b.classList.toggle('on', b.dataset.authMode === mode);
+    b.setAttribute('aria-selected', String(b.dataset.authMode === mode));
+  });
+  $('authGo').textContent = mode === 'login' ? 'Войти' : 'Создать аккаунт';
+  $('authPass').autocomplete = mode === 'login' ? 'current-password' : 'new-password';
+  $('authNote').hidden = mode === 'login';
+  $('authErr').textContent = '';
+}
+
+function showAuth() {
+  session = { mode: 'local', user: null };
+  renderTheme();
+  $('authIcon').setAttribute('href', `#i-${theme().brandIcon}`);
+  $('authTitle').textContent = theme().title;
+  $('auth').hidden = false;
+  document.documentElement.classList.remove('booting');
+  $('authUser').focus();
+}
+
+async function logout() {
+  try { await api('/api/logout', { method: 'POST', body: {} }); } catch {}
+  location.reload();
+}
+
+document.querySelectorAll('[data-auth-mode]').forEach((b) => b.addEventListener('click', () => setAuthMode(b.dataset.authMode)));
+$('authUser').addEventListener('input', () => { $('authErr').textContent = ''; });
+$('authPass').addEventListener('input', () => { $('authErr').textContent = ''; });
+$('logoutBtn').addEventListener('click', logout);
+
+$('authForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = $('authUser').value.trim();
+  const password = $('authPass').value;
+  if (!username) { $('authErr').textContent = 'Введите логин'; return $('authUser').focus(); }
+  if (!password) { $('authErr').textContent = 'Введите пароль'; return $('authPass').focus(); }
+  $('authGo').disabled = true;
+  try {
+    // a new account starts with whatever is already on this device
+    const body = authMode === 'register' ? { username, password, state } : { username, password };
+    const res = await api(`/api/${authMode}`, { method: 'POST', body });
+    $('authPass').value = '';
+    await enterOnline(res.username);
+  } catch (err) {
+    $('authErr').textContent = err.message;
+  } finally {
+    $('authGo').disabled = false;
+  }
+});
+
+async function boot() {
+  render();
+  if (location.protocol === 'file:') return;  // no server: plain local mode
+  document.documentElement.classList.add('booting');
+  try {
+    const me = await api('/api/me');
+    await enterOnline(me.username);
+  } catch (e) {
+    if (e.status === 401) return showAuth();
+    document.documentElement.classList.remove('booting');  // server unreachable: stay local
+  }
+}
+
+boot();
 </script>
 </body>
 </html>
