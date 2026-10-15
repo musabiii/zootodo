@@ -129,15 +129,32 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .composer input {
   flex: 1 1 240px; min-width: 0; border: 0; outline: none; padding: 10px 8px; font-size: 15px; background: transparent;
 }
-.pick { display: flex; gap: 4px; background: var(--bg); padding: 4px; border-radius: 11px; }
-.pick button {
-  border: 0; background: transparent; border-radius: 8px; padding: 7px 10px;
-  display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; font-weight: 600;
-  transition: background .15s, color .15s;
+.animal-btn {
+  border: 0; border-radius: 10px; padding: 9px 10px 9px 12px; min-width: 140px;
+  display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700;
+  color: var(--c); background: var(--cbg);
 }
-.pick button span { display: none; }
-.pick button.on { background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
-.pick button.on span { display: inline; }
+.animal-btn span { flex: 1; text-align: left; }
+.animal-btn .chev, .tag .chev { width: 14px; height: 14px; transform: rotate(90deg); opacity: .7; transition: transform .15s; }
+.animal-btn[aria-expanded="true"] .chev, .tag[aria-expanded="true"] .chev { transform: rotate(-90deg); }
+
+.menu {
+  position: fixed; z-index: 50; min-width: 250px; max-width: calc(100vw - 16px); padding: 6px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(28,35,32,.18), 0 2px 6px rgba(28,35,32,.06);
+  animation: pop .12s ease-out;
+}
+.menu[hidden] { display: none; }
+@keyframes pop { from { opacity: 0; transform: translateY(-4px); } }
+.menu button {
+  width: 100%; border: 0; background: none; border-radius: 10px; padding: 8px 10px;
+  display: flex; align-items: center; gap: 12px; text-align: left;
+}
+.menu button:hover, .menu button:focus-visible { background: var(--bg); outline: none; }
+.menu .mi { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; flex: none; }
+.menu b { display: block; font-size: 14px; }
+.menu small { display: block; color: var(--muted); font-size: 12px; }
+.menu .tick { margin-left: auto; color: var(--c); width: 18px; height: 18px; stroke-width: 2.2; }
 .composer .go {
   border: 0; border-radius: 10px; padding: 10px 18px; background: var(--ink); color: #fff; font-weight: 600;
 }
@@ -203,7 +220,6 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .a-mosquito { --c: var(--mosquito); --cbg: var(--mosquito-bg); }
 .a-cheetah  { --c: var(--cheetah);  --cbg: var(--cheetah-bg); }
 .tinted { color: var(--c); background: var(--cbg); }
-.pick button.on { color: var(--c); }
 .chip.on.a-frog, .chip.on.a-elephant, .chip.on.a-mosquito, .chip.on.a-cheetah { background: var(--c); }
 /* cheetah spots on its group icon */
 .group-icon.a-cheetah, .tag.a-cheetah {
@@ -220,10 +236,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .app { grid-template-columns: 1fr; }
   .side { display: none; }
   .main { padding: 24px 16px calc(96px + env(safe-area-inset-bottom)); }
-  .pick button.on span { display: none; }
-  .composer .go { flex: 1; }
-  .pick { flex: 1; justify-content: space-between; }
-  .pick button { flex: 1; justify-content: center; }
+  .composer .go, .animal-btn { flex: 1; }
   .del { opacity: .6; }
   .tag span { display: none; }
   .mbar {
@@ -273,7 +286,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 
     <form class="composer" id="composer">
       <input id="taskInput" placeholder="Что нужно сделать?" maxlength="200" autocomplete="off">
-      <div class="pick" id="pick"></div>
+      <button type="button" class="animal-btn" id="pickBtn" aria-haspopup="menu" aria-expanded="false"></button>
       <button class="go">Добавить</button>
     </form>
 
@@ -291,6 +304,8 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   <button class="ghost" id="mDel" aria-label="Удалить проект"><svg class="ico"><use href="#i-trash"/></svg></button>
   <button id="mAdd" aria-label="Новый проект"><svg class="ico"><use href="#i-plus"/></svg></button>
 </nav>
+
+<div class="menu" id="menu" role="menu" hidden></div>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
@@ -347,6 +362,7 @@ const ORDER = ['cheetah', 'frog', 'mosquito', 'elephant'];
 const KEY = 'zootodo.v1';
 const uid = () => Math.random().toString(36).slice(2, 10);
 const icon = (id) => `<svg class="ico"><use href="#i-${id}"/></svg>`;
+const chev = '<svg class="ico chev"><use href="#i-chev"/></svg>';
 const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 function seed() {
@@ -411,10 +427,9 @@ function render() {
     return `<option value="${pr.id}" ${pr.id === state.activeId ? 'selected' : ''}>${esc(pr.name)}${open ? ` · ${open}` : ''}</option>`;
   }).join('');
 
-  // composer picker
-  $('pick').innerHTML = ORDER.map((a) =>
-    `<button type="button" class="a-${a} ${ui.newAnimal === a ? 'on' : ''}" data-pick="${a}" title="${ANIMALS[a].name}: ${ANIMALS[a].hint}">${icon(a)}<span>${ANIMALS[a].name}</span></button>`
-  ).join('');
+  // composer animal dropdown
+  $('pickBtn').className = `animal-btn a-${ui.newAnimal}`;
+  $('pickBtn').innerHTML = `${icon(ui.newAnimal)}<span>${ANIMALS[ui.newAnimal].name}</span>${chev}`;
 
   if (!p) {
     $('projTitle').textContent = 'Нет проектов';
@@ -480,7 +495,7 @@ function taskHtml(t) {
   return `<li class="task a-${t.animal} ${t.done ? 'done' : ''}" data-task="${t.id}">
     <button class="check" data-toggle="${t.id}" aria-label="Готово">${icon('check')}</button>
     <div class="task-title" data-edit="${t.id}">${title}</div>
-    <button class="tag a-${t.animal}" data-cycle="${t.id}" title="Сменить зверя">${icon(t.animal)}<span>${a.name}</span></button>
+    <button class="tag a-${t.animal}" data-menu="${t.id}" aria-haspopup="menu" aria-expanded="false" title="Сменить зверя">${icon(t.animal)}<span>${a.name}</span>${chev}</button>
     <button class="del" data-del="${t.id}" aria-label="Удалить">${icon('trash')}</button>
   </li>`;
 }
@@ -528,9 +543,65 @@ $('projTitle').addEventListener('dblclick', () => {
   if (name && name.trim()) { p.name = name.trim(); commit(); }
 });
 
-$('pick').addEventListener('click', (e) => {
-  const b = e.target.closest('[data-pick]');
-  if (b) { ui.newAnimal = b.dataset.pick; render(); $('taskInput').focus(); }
+/* ---------- Animal dropdown ---------- */
+let menuCtx = null;
+
+function openMenu(anchor, current, onPick) {
+  if (menuCtx && menuCtx.anchor === anchor) return closeMenu();
+  closeMenu();
+  const menu = $('menu');
+  menu.innerHTML = ORDER.map((a) => `<button type="button" role="menuitem" class="a-${a}" data-animal="${a}">
+      <span class="mi tinted">${icon(a)}</span>
+      <span><b>${ANIMALS[a].name}</b><small>${ANIMALS[a].hint}</small></span>
+      ${a === current ? '<svg class="ico tick"><use href="#i-check"/></svg>' : ''}
+    </button>`).join('');
+  menu.style.left = menu.style.top = '0px';
+  menu.hidden = false;
+  anchor.setAttribute('aria-expanded', 'true');
+  menuCtx = { anchor, onPick };
+
+  // position below the anchor, flip up if it doesn't fit, keep inside viewport
+  const r = anchor.getBoundingClientRect();
+  const m = menu.getBoundingClientRect();
+  const bottomLimit = innerHeight - (document.querySelector('.mbar').offsetHeight || 0) - 8;
+  const top = r.bottom + 6 + m.height > bottomLimit ? r.top - 6 - m.height : r.bottom + 6;
+  const left = Math.min(Math.max(8, r.right - m.width), innerWidth - m.width - 8);
+  menu.style.top = `${Math.max(8, top)}px`;
+  menu.style.left = `${left}px`;
+  (menu.querySelector(`[data-animal="${current}"]`) || menu.querySelector('button')).focus({ preventScroll: true });
+}
+
+function closeMenu() {
+  if (!menuCtx) return;
+  menuCtx.anchor.setAttribute('aria-expanded', 'false');
+  $('menu').hidden = true;
+  menuCtx = null;
+}
+
+$('menu').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-animal]');
+  if (!b || !menuCtx) return;
+  const pick = menuCtx.onPick;
+  closeMenu();
+  pick(b.dataset.animal);
+});
+$('menu').addEventListener('keydown', (e) => {
+  const items = [...$('menu').querySelectorAll('button')];
+  const i = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+});
+document.addEventListener('pointerdown', (e) => {
+  if (menuCtx && !$('menu').contains(e.target) && !menuCtx.anchor.contains(e.target)) closeMenu();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && menuCtx) { const a = menuCtx.anchor; closeMenu(); a.focus(); }
+});
+addEventListener('resize', closeMenu);
+addEventListener('scroll', closeMenu, true);
+
+$('pickBtn').addEventListener('click', (e) => {
+  openMenu(e.currentTarget, ui.newAnimal, (a) => { ui.newAnimal = a; render(); $('taskInput').focus(); });
 });
 $('composer').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -551,14 +622,13 @@ $('filters').addEventListener('click', (e) => {
 });
 
 $('list').addEventListener('click', (e) => {
-  const el = e.target.closest('[data-toggle],[data-cycle],[data-del],[data-toggledone]');
+  const el = e.target.closest('[data-toggle],[data-menu],[data-del],[data-toggledone]');
   if (!el) return;
   if ('toggledone' in el.dataset) { ui.showDone = !ui.showDone; return render(); }
   if (el.dataset.toggle) { const t = findTask(el.dataset.toggle); t.done = !t.done; return commit(); }
-  if (el.dataset.cycle) {
-    const t = findTask(el.dataset.cycle);
-    t.animal = ORDER[(ORDER.indexOf(t.animal) + 1) % ORDER.length];
-    return commit();
+  if (el.dataset.menu) {
+    const t = findTask(el.dataset.menu);
+    return openMenu(el, t.animal, (a) => { t.animal = a; commit(); });
   }
   if (el.dataset.del) { active().tasks = active().tasks.filter((t) => t.id !== el.dataset.del); return commit(); }
 });
