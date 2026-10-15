@@ -23,6 +23,22 @@ python server.py
 | `ZOOTODO_DB` | `zootodo.db` рядом с `server.py` | путь к базе |
 | `COOKIE_SECURE` | — | `1`, если сервер работает за HTTPS |
 
+## Docker
+
+```bash
+docker build -t zootodo .
+docker run -d -p 8000:8000 -v zootodo-data:/data --name zootodo zootodo
+```
+
+База лежит в томе `/data` (`/data/zootodo.db`), так что данные переживают пересборку контейнера.
+
+### Coolify
+
+1. Новый ресурс из Git-репозитория, Build Pack — **Dockerfile**.
+2. Ports Exposes: `8000`.
+3. Storages: постоянный том с путём `/data`.
+4. Переменные окружения: `COOKIE_SECURE=1`, раз Coolify отдаёт сайт по HTTPS.
+
 ## Как устроена авторизация
 
 - Логин и пароль, пароль хранится как хеш `scrypt` с солью.
