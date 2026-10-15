@@ -691,40 +691,43 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <rect x="9.5" y="9.5" width="5" height="5"/>
       <path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>
     </symbol>
-    <!-- Тревога -->
+    <!-- Нео-байк -->
     <symbol id="i-cyber-urgent" viewBox="0 0 24 24">
-      <path d="M12 3.5 21.5 20h-19z"/>
-      <path d="M12 9.5v5"/>
-      <circle class="fill" cx="12" cy="17.3" r="1"/>
+      <circle cx="5.5" cy="16" r="3.2"/><circle cx="18.5" cy="16" r="3.2"/>
+      <path d="M5.5 16h5l3-5.5h-5M13.5 10.5 18.5 16M15 7h2.5l1.5 3.5"/>
+      <path d="M1.8 9.5h3.4M2.8 6.8h3.4"/>
     </symbol>
-    <!-- Контракт -->
+    <!-- Мегакорп -->
     <symbol id="i-cyber-important" viewBox="0 0 24 24">
-      <rect x="3.5" y="7.5" width="17" height="12" rx="1.5"/>
-      <path d="M9 7.5V5.2c0-.6.5-1 1-1h4c.6 0 1 .4 1 1v2.3M3.5 12.5h17M10.5 12.5v2h3v-2"/>
+      <path d="M3 21h18M5.5 21V8.5l4.5-2.8V21M10 21V3.5l8 3.8V21"/>
+      <path d="M12.8 9.5h2.4M12.8 12.5h2.4M12.8 15.5h2.4M7 11.5h1M7 14.5h1"/>
     </symbol>
-    <!-- Лёд -->
+    <!-- Вирус -->
     <symbol id="i-cyber-unpleasant" viewBox="0 0 24 24">
-      <path d="M12 3 19.5 6v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/>
-      <rect x="9" y="11" width="6" height="4.5" rx="1"/>
-      <path d="M10.2 11V9.6a1.8 1.8 0 0 1 3.6 0V11"/>
+      <circle cx="12" cy="12" r="5"/>
+      <path d="M12 7V4.2M12 19.8V17M7 12H4.2M19.8 12H17M8.5 8.5 6.5 6.5M17.5 17.5l-2-2M15.5 8.5l2-2M6.5 17.5l2-2"/>
+      <circle class="fill" cx="12" cy="3.6" r="1.1"/><circle class="fill" cx="12" cy="20.4" r="1.1"/>
+      <circle class="fill" cx="3.6" cy="12" r="1.1"/><circle class="fill" cx="20.4" cy="12" r="1.1"/>
+      <circle class="fill" cx="10.4" cy="11" r=".9"/><circle class="fill" cx="13.6" cy="13.4" r=".7"/>
     </symbol>
-    <!-- Уличный заказ -->
+    <!-- Дрон -->
     <symbol id="i-cyber-regular" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="6.5"/>
-      <path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5"/>
-      <circle class="fill" cx="12" cy="12" r="1.2"/>
+      <rect x="9" y="9.5" width="6" height="5" rx="1.2"/>
+      <path d="M9 10.5 6.5 8M15 10.5 17.5 8M9 13.5 6.5 16M15 13.5l2.5 2.5"/>
+      <ellipse cx="5.5" cy="7" rx="2.8" ry=".9"/><ellipse cx="18.5" cy="7" rx="2.8" ry=".9"/>
+      <ellipse cx="5.5" cy="17" rx="2.8" ry=".9"/><ellipse cx="18.5" cy="17" rx="2.8" ry=".9"/>
+      <circle class="fill" cx="12" cy="12" r=".9"/>
     </symbol>
-    <!-- Точка доступа -->
+    <!-- Скрипт -->
     <symbol id="i-cyber-quick" viewBox="0 0 24 24">
-      <path d="M3.5 9.5a12 12 0 0 1 17 0M6.5 12.7a7.5 7.5 0 0 1 11 0M9.5 15.8a3.3 3.3 0 0 1 5 0"/>
-      <circle class="fill" cx="12" cy="19" r="1.3"/>
+      <rect x="3" y="4.5" width="18" height="15" rx="1.5"/>
+      <path d="m7 10 3 2.5L7 15M12 15h5"/>
     </symbol>
-    <!-- Сюжетная миссия -->
+    <!-- Мегаполис -->
     <symbol id="i-cyber-long" viewBox="0 0 24 24">
-      <circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/>
-      <path d="M8.2 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.8"/>
+      <path d="M2.5 21h19M4 21V11.5h4.5V21M8.5 21V4.5h5.5V21M14 21v-8h3V8.5h3.5V21"/>
+      <path d="M10.6 8h2.3M10.6 11h2.3M10.6 14h2.3M5.7 14.5h1.1M18 12h1M18 15h1"/>
     </symbol>
-
     <!-- ===== UI ===== -->
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
@@ -788,17 +791,17 @@ const THEMES = {
     },
   },
   cyber: {
-    label: 'Киберпанк', hint: 'Заказы, опыт и репутация',
+    label: 'Киберпанк', hint: 'Неон, опыт и репутация',
     title: 'NEON//TODO', tagline: 'журнал заказов', brandIcon: 'cyber-brand',
     swatch: 'linear-gradient(135deg, #ff2e88, #7a1cff)',
-    pickWhat: 'тип заказа', absent: 'не найдены', game: true,
+    pickWhat: 'тип задачи', absent: 'не найдены', game: true,
     cats: {
-      urgent:     { name: 'Тревога',       plural: 'Тревоги',        hint: 'Срочное — киберпсих на районе',   label: 'Тревога · киберпсих', done: 'Тревога снята' },
-      important:  { name: 'Контракт',      plural: 'Контракты',      hint: 'Важное — главный заказ фиксера',  label: 'Контракт фиксера',    done: 'Контракт закрыт' },
-      unpleasant: { name: 'Лёд',           plural: 'Взломы льда',    hint: 'Неприятное — ломать противно, но надо', label: 'Взлом льда', done: 'Лёд взломан' },
-      regular:    { name: 'Заказ',         plural: 'Уличные заказы', hint: 'Обычное — рядовая работа на районе', label: 'Уличный заказ',  done: 'Заказ выполнен' },
-      quick:      { name: 'Точка доступа', plural: 'Точки доступа',  hint: 'Быстрое — взлом за 5 минут',      label: 'Точка доступа',       done: 'Точка доступа взломана' },
-      long:       { name: 'Сюжет',         plural: 'Сюжетные миссии', hint: 'Долгосрочное — путь к легенде',  label: 'Сюжетная миссия',     done: 'Миссия завершена' },
+      urgent:     { name: 'Нео‑байк',  plural: 'Нео‑байки',  hint: 'Срочное — курьер мчит через ночной город', done: 'Доставка выполнена' },
+      important:  { name: 'Мегакорп',  plural: 'Мегакорпы',  hint: 'Важное — главный контракт',               done: 'Контракт закрыт' },
+      unpleasant: { name: 'Вирус',     plural: 'Вирусы',     hint: 'Неприятное — заразно, но вычистить надо', done: 'Вирус вычищен' },
+      regular:    { name: 'Дрон',      plural: 'Дроны',      hint: 'Обычное — рутина на автопилоте',          done: 'Дрон вернулся на базу' },
+      quick:      { name: 'Скрипт',    plural: 'Скрипты',    hint: 'Быстрое — запустил, и готово',            done: 'Скрипт отработал' },
+      long:       { name: 'Мегаполис', plural: 'Мегаполисы', hint: 'Долгосрочное — строится годами',          done: 'Квартал достроен' },
     },
   },
 };
@@ -1013,7 +1016,7 @@ function hudHtml(alarms) {
       <span class="xp-n">${into}/${XP_PER_LEVEL} XP</span></div>
     <div class="stats">
       <div class="stat" style="--sc:var(--pink)">Серия<b>${streak()} дн.</b></div>
-      <div class="stat ${alarms ? 'hot' : ''}" style="--sc:var(--pink)">Тревоги<b>${alarms}</b></div>
+      <div class="stat ${alarms ? 'hot' : ''}" style="--sc:var(--pink)">Срочно<b>${alarms}</b></div>
       <div class="stat gold" style="--sc:var(--gold)">Кредиты<b>¢ ${fmt(credits)}</b></div>
     </div>`;
 }
