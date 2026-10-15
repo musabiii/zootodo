@@ -1924,6 +1924,7 @@ function render() {
 
   // composer category dropdown
   $('pickBtn').className = `cat-btn k-${ui.newCat}`;
+  $('pickBtn').title = 'Tab в поле ввода — следующая категория, Shift+Tab — предыдущая';
   $('pickBtn').innerHTML = `${icon(ui.newCat)}<span>${cat(ui.newCat).name}</span>${chev}`;
 
   if (!p) {
@@ -2373,6 +2374,14 @@ $('mTheme').addEventListener('click', openLibrary);
 
 $('pickBtn').addEventListener('click', (e) => {
   catMenu(e.currentTarget, ui.newCat, (k) => { ui.newCat = k; render(); $('taskInput').focus(); });
+});
+// Tab / Shift+Tab in the input cycles the category of the new task
+$('taskInput').addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return;
+  e.preventDefault();
+  const i = ORDER.indexOf(ui.newCat);
+  ui.newCat = ORDER[(i + (e.shiftKey ? -1 : 1) + ORDER.length) % ORDER.length];
+  render();
 });
 $('composer').addEventListener('submit', (e) => {
   e.preventDefault();
