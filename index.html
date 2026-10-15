@@ -6,12 +6,14 @@
 <title>ZooTodo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Exo+2:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ---------- Theme: Зоопарк (default) ---------- */
 :root {
   --bg: #f4f1eb;
   --surface: #ffffff;
+  --on-ink: #ffffff;     /* text on --ink fills */
+  --on-c: #ffffff;       /* text on category fills */
   --ink: #1c2320;
   --muted: #6c736f;
   --line: #e6e1d7;
@@ -97,6 +99,41 @@
   --long: #4b6a8a;       --long-bg: #e6edf4;        /* голем */
 
   --shadow: 0 1px 2px rgba(42,31,23,.06), 0 4px 16px rgba(42,31,23,.07);
+}
+
+/* ---------- Theme: Киберпанк (игровой, тёмный) ---------- */
+[data-theme="cyber"] {
+  --bg: #05050a;
+  --surface: #0c0c16;
+  --ink: #e9f6ff;
+  --on-ink: #05050a;
+  --on-c: #05050a;
+  --muted: #7b7fa6;
+  --line: #1f1f35;
+  --side: #08080f;
+  --side-2: #141428;
+  --side-ink: #e9f6ff;
+  --side-muted: #7b7fa6;
+  --accent: #00f0ff;
+  --pink: #ff2e88;
+  --gold: #fcee0a;
+  --brand: linear-gradient(135deg, #ff2e88, #7a1cff);
+  --display: "Exo 2", Manrope, sans-serif;
+  --side-art:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 3px),
+    radial-gradient(circle at 110% 0%, rgba(255,46,136,.25), transparent 50%),
+    radial-gradient(circle at -10% 100%, rgba(0,240,255,.18), transparent 50%);
+
+  --urgent: #ff2e4d;     --urgent-bg: rgba(255,46,77,.13);      /* тревога */
+  --important: #fcee0a;  --important-bg: rgba(252,238,10,.11);  /* контракт */
+  --unpleasant: #00f0ff; --unpleasant-bg: rgba(0,240,255,.11);  /* лёд */
+  --regular: #c4c8ff;    --regular-bg: rgba(196,200,255,.1);    /* заказ */
+  --quick: #3dff9a;      --quick-bg: rgba(61,255,154,.1);       /* точка доступа */
+  --long: #ff2e88;       --long-bg: rgba(255,46,136,.12);       /* сюжет */
+
+  --radius: 2px;
+  --shadow: 0 0 0 1px rgba(255,255,255,.03);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -242,7 +279,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .menu small { display: block; color: var(--muted); font-size: 12px; }
 .menu .tick { margin-left: auto; color: var(--c, var(--ink)); width: 18px; height: 18px; stroke-width: 2.2; }
 .composer .go {
-  border: 0; border-radius: 10px; padding: 10px 18px; background: var(--ink); color: #fff; font-weight: 600;
+  border: 0; border-radius: 10px; padding: 10px 18px; background: var(--ink); color: var(--on-ink); font-weight: 600;
 }
 .composer .go:hover { opacity: .88; }
 
@@ -253,8 +290,8 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 }
 .chip svg.ico { width: 16px; height: 16px; }
 .chip em { font-style: normal; font-variant-numeric: tabular-nums; opacity: .7; }
-.chip.on { color: #fff; border-color: transparent; background: var(--ink); }
-.chip.on[class*="k-"] { background: var(--c); }
+.chip.on { color: var(--on-ink); border-color: transparent; background: var(--ink); }
+.chip.on[class*="k-"] { color: var(--on-c); background: var(--c); }
 
 .group { margin-top: 26px; }
 .group-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
@@ -273,13 +310,13 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .task:hover { box-shadow: var(--shadow); }
 .check {
   width: 22px; height: 22px; border-radius: 50%; flex: none; border: 2px solid var(--c); background: transparent;
-  display: grid; place-items: center; padding: 0; color: #fff;
+  display: grid; place-items: center; padding: 0; color: var(--on-c);
 }
 .check svg.ico { width: 14px; height: 14px; stroke-width: 2.6; opacity: 0; }
 .task.done .check { background: var(--c); }
 .task.done .check svg.ico { opacity: 1; }
 .task-title { flex: 1; min-width: 0; font-size: 15px; line-height: 1.4; word-break: break-word; }
-.task.done .task-title { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(0,0,0,.25); }
+.task.done .task-title { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent); }
 .task-title input { width: 100%; border: 0; outline: none; border-bottom: 1px solid var(--c); padding: 2px 0; font-size: 15px; background: transparent; }
 .tag {
   border: 0; border-radius: 8px; padding: 5px 9px; display: flex; align-items: center; gap: 6px;
@@ -288,7 +325,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .tag svg.ico { width: 16px; height: 16px; }
 .del { border: 0; background: none; color: var(--muted); opacity: 0; padding: 4px; border-radius: 6px; display: grid; }
 .task:hover .del { opacity: .8; }
-.del:hover { color: #c0392b; background: #fbecea; }
+.del:hover { color: #e0453a; background: color-mix(in srgb, #e0453a 12%, transparent); }
 .del svg.ico { width: 17px; height: 17px; }
 
 .done-toggle { margin-top: 28px; border: 0; background: none; color: var(--muted); font-weight: 600; font-size: 13px; display: flex; gap: 6px; align-items: center; padding: 0; }
@@ -329,6 +366,97 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 [data-theme="rpg"] .head h2 { font-weight: 700; letter-spacing: .5px; }
 [data-theme="rpg"] .brand h1 { font-weight: 700; font-size: 23px; letter-spacing: .5px; }
 
+/* ---------- Game HUD, job meta, reward toast (shown in the cyber theme) ---------- */
+.hud, .job-meta { display: none; }
+.toast {
+  position: fixed; right: 24px; bottom: 24px; z-index: 60; max-width: calc(100vw - 32px);
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  font-size: 12.5px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--c); background: var(--surface); border: 1px solid var(--c);
+  box-shadow: 0 0 24px -4px var(--c);
+  transition: opacity .25s, transform .25s;
+}
+.toast[hidden] { display: flex; opacity: 0; transform: translateY(12px); pointer-events: none; }
+.toast b { color: var(--gold, var(--ink)); }
+
+[data-theme="cyber"] body { font-family: "JetBrains Mono", monospace; }
+[data-theme="cyber"] body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 3px);
+}
+[data-theme="cyber"] .task-title, [data-theme="cyber"] input { font-family: Manrope, sans-serif; }
+[data-theme="cyber"] .side { border-right: 1px solid color-mix(in srgb, var(--pink) 45%, transparent); box-shadow: 8px 0 30px -18px var(--pink); }
+[data-theme="cyber"] .brand h1 { font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; font-size: 20px; }
+[data-theme="cyber"] .head h2 {
+  font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(0,240,255,.55), 2px 0 var(--pink), -2px 0 var(--accent);
+  animation: glitch 3.5s infinite steps(1);
+}
+@keyframes glitch {
+  0%, 91%, 100% { transform: none; }
+  92% { transform: translate(2px, -1px) skewX(-6deg); }
+  94% { transform: translate(-2px, 1px); }
+  96% { transform: translate(1px, 0) skewX(4deg); }
+}
+[data-theme="cyber"] .head p { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+[data-theme="cyber"] .group-head h3 { font-family: var(--display); text-transform: uppercase; letter-spacing: 1.5px; font-size: 14px; }
+[data-theme="cyber"] .group-icon, [data-theme="cyber"] .tag, [data-theme="cyber"] .cat-btn { border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); }
+[data-theme="cyber"] .group-icon svg.ico, [data-theme="cyber"] .tag svg.ico { filter: drop-shadow(0 0 5px var(--c)); }
+[data-theme="cyber"] .chip { border-radius: 2px; text-transform: uppercase; font-size: 11.5px; letter-spacing: .5px; }
+[data-theme="cyber"] .chip.on[class*="k-"] { box-shadow: 0 0 14px -2px var(--c); }
+[data-theme="cyber"] .composer .go { background: var(--pink); color: #05050a; box-shadow: 0 0 16px -2px var(--pink); text-transform: uppercase; letter-spacing: 1px; }
+[data-theme="cyber"] .stripe span { box-shadow: 0 0 8px var(--c, transparent); }
+
+/* job cards: HUD corners instead of the left stripe */
+[data-theme="cyber"] .task {
+  border-color: color-mix(in srgb, var(--c) 40%, var(--line));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--c) 9%, var(--surface)), var(--surface) 60%);
+  box-shadow: 0 0 18px -9px var(--c); overflow: visible; align-items: flex-start;
+}
+[data-theme="cyber"] .task::before, [data-theme="cyber"] .task::after {
+  content: ""; position: absolute; width: 10px; height: 10px; border: 2px solid var(--c); background: none;
+}
+[data-theme="cyber"] .task::before { top: -1px; left: -1px; bottom: auto; border-right: 0; border-bottom: 0; }
+[data-theme="cyber"] .task::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+[data-theme="cyber"] .task:hover { box-shadow: 0 0 24px -6px var(--c); }
+[data-theme="cyber"] .task .check { border-radius: 2px; transform: rotate(45deg) scale(.85); margin-top: 2px; }
+[data-theme="cyber"] .task .check svg.ico { transform: rotate(-45deg); }
+[data-theme="cyber"] .task.done .check { box-shadow: 0 0 12px var(--c); }
+[data-theme="cyber"] .task.done { opacity: .7; }
+[data-theme="cyber"] .task .tag, [data-theme="cyber"] .task .del { margin-top: -2px; }
+
+.task-body { flex: 1; min-width: 0; }
+[data-theme="cyber"] .job-meta { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 11px; flex-wrap: wrap; }
+.threat { display: flex; gap: 2px; }
+.threat i { width: 5px; height: 10px; background: var(--c); box-shadow: 0 0 6px var(--c); }
+.threat i.off { background: var(--line); box-shadow: none; }
+.reward { color: var(--gold); text-shadow: 0 0 8px rgba(252,238,10,.45); }
+.status { margin-left: auto; padding: 2px 7px; border: 1px solid var(--c); color: var(--c); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+.status.hot { background: var(--c); color: #05050a; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: .45; } }
+
+/* HUD: level, XP, stats */
+[data-theme="cyber"] .hud { display: block; margin-top: 14px; }
+.hud-top { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+.hud-top span:last-child { color: var(--pink); }
+.lvl { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 11px; text-transform: uppercase; }
+.lvl b { color: var(--gold); text-shadow: 0 0 8px rgba(252,238,10,.6); }
+.xp { flex: 1; height: 8px; background: var(--side-2); border: 1px solid var(--line); position: relative; }
+.xp i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--pink), var(--accent)); box-shadow: 0 0 12px var(--pink); transition: width .4s; }
+.xp-n { color: var(--muted); font-variant-numeric: tabular-nums; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.stat { position: relative; border: 1px solid var(--line); padding: 8px 10px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.stat b { display: block; font-size: 17px; color: var(--ink); margin-top: 2px; letter-spacing: 0; }
+.stat.hot b { color: var(--pink); text-shadow: 0 0 10px var(--pink); }
+.stat.gold b { color: var(--gold); }
+.stat::before, .stat::after { content: ""; position: absolute; width: 8px; height: 8px; border: 2px solid var(--sc, var(--accent)); }
+.stat::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.stat::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="cyber"] .head h2, .status.hot { animation: none; }
+}
+
 /* ---------- Mobile bar ---------- */
 .mbar { display: none; }
 
@@ -356,6 +484,9 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .mbar button { border: 0; width: 42px; height: 42px; border-radius: 11px; background: var(--accent); color: var(--side); display: grid; place-items: center; flex: none; }
   .mbar button.ghost { background: var(--side-2); color: var(--side-muted); }
   .mbar button.brand-mark { background: var(--brand); color: #fff; }
+  .toast { left: 16px; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); }
+  [data-theme="cyber"] .mbar { border-top: 1px solid var(--pink); box-shadow: 0 -8px 24px -12px var(--pink); }
+  .stat b { font-size: 15px; }
 }
 </style>
 </head>
@@ -383,6 +514,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
         <p id="projSub"></p>
       </div>
     </div>
+    <div class="hud" id="hud"></div>
     <div class="stripe" id="stripe"></div>
 
     <form class="composer" id="composer">
@@ -407,6 +539,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 </nav>
 
 <div class="menu" id="menu" role="menu" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
@@ -551,6 +684,47 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <path d="M12 11.6l-1.1 2.2 1.6 1.4"/>
     </symbol>
 
+    <!-- ===== Киберпанк ===== -->
+    <!-- Чип (логотип темы) -->
+    <symbol id="i-cyber-brand" viewBox="0 0 24 24">
+      <rect x="6" y="6" width="12" height="12" rx="1.5"/>
+      <rect x="9.5" y="9.5" width="5" height="5"/>
+      <path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>
+    </symbol>
+    <!-- Тревога -->
+    <symbol id="i-cyber-urgent" viewBox="0 0 24 24">
+      <path d="M12 3.5 21.5 20h-19z"/>
+      <path d="M12 9.5v5"/>
+      <circle class="fill" cx="12" cy="17.3" r="1"/>
+    </symbol>
+    <!-- Контракт -->
+    <symbol id="i-cyber-important" viewBox="0 0 24 24">
+      <rect x="3.5" y="7.5" width="17" height="12" rx="1.5"/>
+      <path d="M9 7.5V5.2c0-.6.5-1 1-1h4c.6 0 1 .4 1 1v2.3M3.5 12.5h17M10.5 12.5v2h3v-2"/>
+    </symbol>
+    <!-- Лёд -->
+    <symbol id="i-cyber-unpleasant" viewBox="0 0 24 24">
+      <path d="M12 3 19.5 6v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/>
+      <rect x="9" y="11" width="6" height="4.5" rx="1"/>
+      <path d="M10.2 11V9.6a1.8 1.8 0 0 1 3.6 0V11"/>
+    </symbol>
+    <!-- Уличный заказ -->
+    <symbol id="i-cyber-regular" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="6.5"/>
+      <path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5"/>
+      <circle class="fill" cx="12" cy="12" r="1.2"/>
+    </symbol>
+    <!-- Точка доступа -->
+    <symbol id="i-cyber-quick" viewBox="0 0 24 24">
+      <path d="M3.5 9.5a12 12 0 0 1 17 0M6.5 12.7a7.5 7.5 0 0 1 11 0M9.5 15.8a3.3 3.3 0 0 1 5 0"/>
+      <circle class="fill" cx="12" cy="19" r="1.3"/>
+    </symbol>
+    <!-- Сюжетная миссия -->
+    <symbol id="i-cyber-long" viewBox="0 0 24 24">
+      <circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/>
+      <path d="M8.2 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.8"/>
+    </symbol>
+
     <!-- ===== UI ===== -->
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
@@ -613,7 +787,29 @@ const THEMES = {
       long:       { name: 'Голем',   plural: 'Големы',  hint: 'Долгосрочное — медленно, но верно' },
     },
   },
+  cyber: {
+    label: 'Киберпанк', hint: 'Заказы, опыт и репутация',
+    title: 'NEON//TODO', tagline: 'журнал заказов', brandIcon: 'cyber-brand',
+    swatch: 'linear-gradient(135deg, #ff2e88, #7a1cff)',
+    pickWhat: 'тип заказа', absent: 'не найдены', game: true,
+    cats: {
+      urgent:     { name: 'Тревога',       plural: 'Тревоги',        hint: 'Срочное — киберпсих на районе',   label: 'Тревога · киберпсих', done: 'Тревога снята' },
+      important:  { name: 'Контракт',      plural: 'Контракты',      hint: 'Важное — главный заказ фиксера',  label: 'Контракт фиксера',    done: 'Контракт закрыт' },
+      unpleasant: { name: 'Лёд',           plural: 'Взломы льда',    hint: 'Неприятное — ломать противно, но надо', label: 'Взлом льда', done: 'Лёд взломан' },
+      regular:    { name: 'Заказ',         plural: 'Уличные заказы', hint: 'Обычное — рядовая работа на районе', label: 'Уличный заказ',  done: 'Заказ выполнен' },
+      quick:      { name: 'Точка доступа', plural: 'Точки доступа',  hint: 'Быстрое — взлом за 5 минут',      label: 'Точка доступа',       done: 'Точка доступа взломана' },
+      long:       { name: 'Сюжет',         plural: 'Сюжетные миссии', hint: 'Долгосрочное — путь к легенде',  label: 'Сюжетная миссия',     done: 'Миссия завершена' },
+    },
+  },
 };
+
+// Game layer: every completed task pays out once; un-completing takes it back.
+const REWARDS = {
+  urgent: { xp: 40, cr: 300, threat: 5 }, important: { xp: 75, cr: 800, threat: 4 },
+  unpleasant: { xp: 50, cr: 400, threat: 3 }, regular: { xp: 25, cr: 150, threat: 2 },
+  quick: { xp: 10, cr: 50, threat: 1 }, long: { xp: 100, cr: 1000, threat: 4 },
+};
+const XP_PER_LEVEL = 500;
 
 // Data saved before themes existed stored animal names instead of categories.
 const LEGACY = { cheetah: 'urgent', bear: 'important', frog: 'unpleasant', wolf: 'regular', mosquito: 'quick', elephant: 'long' };
@@ -647,11 +843,14 @@ function seed() {
     t('Дочитать книгу в оригинале', 'long'),
     t('Повторить 20 слов', 'quick'),
   ]};
-  return { projects: [work, home, study], activeId: work.id, theme: 'zoo' };
+  return { projects: [work, home, study], activeId: work.id, theme: 'zoo', stats: newStats() };
 }
+
+function newStats() { return { xp: 0, credits: 0, days: [] }; }
 
 function migrate(s) {
   s.theme = THEMES[s.theme] ? s.theme : 'zoo';
+  s.stats = { ...newStats(), ...s.stats };
   for (const p of s.projects) for (const t of p.tasks) {
     if (t.animal) { t.cat = LEGACY[t.animal]; delete t.animal; }
     if (!ORDER.includes(t.cat)) t.cat = DEFAULT_CAT;
@@ -667,6 +866,20 @@ let ui = { filter: 'all', newCat: DEFAULT_CAT, showDone: false, editing: null };
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
 const active = () => state.projects.find((p) => p.id === state.activeId) || state.projects[0];
 const $ = (id) => document.getElementById(id);
+
+const dayKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+// Consecutive days with at least one completed task, ending today (or yesterday if nothing is done yet today).
+function streak() {
+  const days = new Set(state.stats.days);
+  const d = new Date();
+  if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
+  let n = 0;
+  while (days.has(dayKey(d))) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+
+function fmt(n) { return n.toLocaleString('ru-RU'); }
 
 function plural(n, one, few, many) {
   const m10 = n % 10, m100 = n % 100;
@@ -721,7 +934,7 @@ function render() {
   if (!p) {
     $('projTitle').textContent = 'Нет проектов';
     $('projSub').textContent = 'Создайте первый проект';
-    $('stripe').innerHTML = ''; $('filters').innerHTML = ''; $('list').innerHTML = '';
+    $('hud').innerHTML = ''; $('stripe').innerHTML = ''; $('filters').innerHTML = ''; $('list').innerHTML = '';
     $('composer').style.display = 'none';
     return;
   }
@@ -735,6 +948,7 @@ function render() {
     : done.length ? 'Всё сделано — отличная работа' : 'Пока пусто';
 
   const counts = Object.fromEntries(ORDER.map((k) => [k, open.filter((x) => x.cat === k).length]));
+  $('hud').innerHTML = theme().game ? hudHtml(counts.urgent) : '';
   $('stripe').innerHTML = ORDER.map((k) => `<span style="flex-grow:${counts[k]};background:var(--${k})"></span>`).join('');
 
   $('filters').innerHTML =
@@ -780,10 +994,67 @@ function taskHtml(t) {
     : esc(t.title);
   return `<li class="task k-${t.cat} ${t.done ? 'done' : ''}" data-task="${t.id}">
     <button class="check" data-toggle="${t.id}" aria-label="Готово">${svg('check')}</button>
-    <div class="task-title" data-edit="${t.id}">${title}</div>
+    <div class="task-body">
+      <div class="task-title" data-edit="${t.id}">${title}</div>
+      ${theme().game ? jobMetaHtml(t) : ''}
+    </div>
     <button class="tag k-${t.cat}" data-menu="${t.id}" aria-haspopup="menu" aria-expanded="false" title="Сменить категорию">${icon(t.cat)}<span>${cat(t.cat).name}</span>${chev}</button>
     <button class="del" data-del="${t.id}" aria-label="Удалить">${svg('trash')}</button>
   </li>`;
+}
+
+function hudHtml(alarms) {
+  const { xp, credits } = state.stats;
+  const level = Math.floor(xp / XP_PER_LEVEL) + 1;
+  const into = xp % XP_PER_LEVEL;
+  return `<div class="hud-top"><span>// журнал заказов</span><span>● сеть: онлайн</span></div>
+    <div class="lvl"><span>Реп. <b>ур. ${level}</b></span>
+      <div class="xp" role="progressbar" aria-valuemin="0" aria-valuemax="${XP_PER_LEVEL}" aria-valuenow="${into}"><i style="width:${(into / XP_PER_LEVEL) * 100}%"></i></div>
+      <span class="xp-n">${into}/${XP_PER_LEVEL} XP</span></div>
+    <div class="stats">
+      <div class="stat" style="--sc:var(--pink)">Серия<b>${streak()} дн.</b></div>
+      <div class="stat ${alarms ? 'hot' : ''}" style="--sc:var(--pink)">Тревоги<b>${alarms}</b></div>
+      <div class="stat gold" style="--sc:var(--gold)">Кредиты<b>¢ ${fmt(credits)}</b></div>
+    </div>`;
+}
+
+function jobMetaHtml(t) {
+  const r = REWARDS[t.cat];
+  const bars = Array.from({ length: 5 }, (_, i) => `<i class="${i < r.threat ? '' : 'off'}"></i>`).join('');
+  const status = t.done ? 'Выполнен' : t.cat === 'urgent' ? 'Срочно' : 'Активен';
+  return `<div class="job-meta">
+    <span class="threat" title="Уровень угрозы">${bars}</span>
+    <span class="reward">+${r.xp} XP · ¢ ${fmt(r.cr)}</span>
+    <span class="status ${!t.done && t.cat === 'urgent' ? 'hot' : ''}">${status}</span>
+  </div>`;
+}
+
+let toastTimer;
+function showToast(t, r) {
+  const el = $('toast');
+  el.className = `toast k-${t.cat}`;
+  el.innerHTML = `${icon(t.cat)}<span>${cat(t.cat).done || 'Выполнено'}</span><b>+${r.xp} XP · ¢ ${fmt(r.cr)}</b>`;
+  el.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.hidden = true; }, 2600);
+}
+
+function toggleTask(t) {
+  t.done = !t.done;
+  const st = state.stats;
+  if (t.done && !t.reward) {
+    const r = REWARDS[t.cat];
+    t.reward = { xp: r.xp, cr: r.cr };
+    st.xp += r.xp; st.credits += r.cr;
+    const today = dayKey(new Date());
+    if (!st.days.includes(today)) st.days = [...st.days, today].slice(-120);
+    if (theme().game) showToast(t, r);
+  } else if (!t.done && t.reward) {
+    st.xp = Math.max(0, st.xp - t.reward.xp);
+    st.credits = Math.max(0, st.credits - t.reward.cr);
+    delete t.reward;
+  }
+  commit();
 }
 
 /* ---------- Actions ---------- */
@@ -942,7 +1213,7 @@ $('list').addEventListener('click', (e) => {
   const el = e.target.closest('[data-toggle],[data-menu],[data-del],[data-toggledone]');
   if (!el) return;
   if ('toggledone' in el.dataset) { ui.showDone = !ui.showDone; return render(); }
-  if (el.dataset.toggle) { const t = findTask(el.dataset.toggle); t.done = !t.done; return commit(); }
+  if (el.dataset.toggle) return toggleTask(findTask(el.dataset.toggle));
   if (el.dataset.menu) {
     const t = findTask(el.dataset.menu);
     return catMenu(el, t.cat, (k) => { t.cat = k; commit(); });
