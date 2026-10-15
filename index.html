@@ -468,6 +468,92 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .auth-go:disabled { opacity: .6; cursor: wait; }
 .auth-note { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.45; }
 
+/* ---------- Universe library (modal with theme tiles) ---------- */
+.lib {
+  position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 24px;
+  background: rgba(0,0,0,.45); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.lib[hidden] { display: none; }
+.lib-open { overflow: hidden; }
+.lib-panel {
+  width: min(940px, 100%); max-height: min(88vh, 920px); overflow-y: auto; overscroll-behavior: contain;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.35); -webkit-backdrop-filter: blur(24px) saturate(160%); backdrop-filter: blur(24px) saturate(160%);
+}
+.lib-head {
+  position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 14px 18px;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+}
+.lib-head h2 { margin: 0; flex: 1; font-family: var(--display); font-size: 20px; }
+.lib-close { border: 0; background: var(--bg); color: var(--ink); border-radius: 999px; font-weight: 600; font-size: 13px; width: 34px; height: 34px; display: grid; place-items: center; flex: none; }
+.lib-body { padding: 18px; }
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.lib-tile {
+  text-align: left; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 16px; padding: 8px;
+  display: grid; gap: 8px; transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.lib-tile:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.18); }
+.lib-tile.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.lib-tile:focus-visible, .lib-panel button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lib-meta { display: block; padding: 0 4px 4px; }
+.lib-meta b { font-size: 14px; }
+.lib-meta em { font-style: normal; font-size: 11px; font-weight: 700; color: var(--accent); margin-left: 6px; }
+.lib-meta small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; line-height: 1.35; }
+.lib-account { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.lib-account b { color: var(--ink); }
+.lib-account button { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 6px 14px; }
+
+/* mini preview: the tile carries data-theme, so it inherits that theme's colour variables */
+.tp { position: relative; display: flex; height: 112px; border-radius: 11px; overflow: hidden; background: var(--tp-bg, var(--bg)); color: var(--ink); font-family: var(--display); }
+.tp-side { width: 28%; display: flex; flex-direction: column; gap: 6px; padding: 8px; background-color: var(--side); background-image: var(--side-art); }
+.tp-logo { width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; background: var(--brand); color: #fff; margin-bottom: 4px; }
+.tp-logo svg.ico { width: 14px; height: 14px; }
+.tp-side i { height: 5px; border-radius: 3px; background: var(--side-muted); opacity: .45; }
+.tp-side i.on { background: var(--accent); opacity: 1; }
+.tp-main { flex: 1; min-width: 0; padding: 8px 10px; display: grid; gap: 5px; align-content: start; }
+.tp-title { font-size: 13px; line-height: 1.25; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tp-row { display: flex; align-items: center; gap: 6px; height: 20px; padding: 0 6px; background: var(--surface); border-radius: min(var(--radius), 8px); border-left: 3px solid var(--c); }
+.tp-ck { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--c); flex: none; }
+.tp-line { flex: 1; height: 5px; border-radius: 3px; background: var(--muted); opacity: .45; }
+.tp-row svg.ico { width: 14px; height: 14px; color: var(--c); }
+
+/* theme detail */
+.lib-detail { display: grid; gap: 18px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
+.lib-detail-head { display: flex; align-items: center; gap: 12px; }
+.lib-detail-head .brand-mark { flex: none; }
+.lib-detail-head h3 { margin: 0; font-family: var(--display); font-size: 17px; }
+.lib-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.lib-hint { margin: 0; color: var(--muted); }
+.lib-feats { display: flex; flex-wrap: wrap; gap: 6px; }
+.lib-feats span { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--bg); }
+.lib-cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.lib-cats div { display: flex; align-items: center; gap: 10px; }
+.lib-cats .tinted { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; flex: none; }
+.lib-cats b { display: block; font-size: 13.5px; }
+.lib-cats small { display: block; color: var(--muted); font-size: 11.5px; }
+.lib-sec h3 { margin: 0 0 8px; font-size: 11.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+.lib-seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 12px; background: var(--bg); }
+.lib-seg button { border: 0; background: transparent; color: var(--muted); border-radius: 9px; padding: 8px 14px; font-weight: 600; font-size: 13.5px; }
+.lib-seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.18); }
+.lib-fonts { display: grid; gap: 8px; }
+.lib-font { text-align: left; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; }
+.lib-font span { font-size: 15px; }
+.lib-font small { color: var(--muted); font-size: 12px; }
+.lib-font.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.lib-done { border: 0; border-radius: 12px; padding: 11px 22px; background: var(--ink); color: var(--on-ink); font-weight: 700; }
+
+@media (max-width: 760px) {
+  .lib { padding: 0; place-items: end stretch; }
+  .lib-panel { width: 100%; max-height: 92vh; border-radius: 18px 18px 0 0; }
+  .lib-body { padding: 14px 14px calc(20px + env(safe-area-inset-bottom)); }
+  .lib-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .tp { height: 96px; }
+  .tp-main { gap: 4px; padding: 7px 8px; }
+  .tp-row { height: 16px; }
+  .lib-meta small { display: none; }
+}
+
 /* ---------- Main ---------- */
 .main { padding: 40px clamp(16px, 4vw, 56px) 64px; max-width: 920px; width: 100%; }
 .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
@@ -1141,7 +1227,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <button aria-label="Добавить проект"><svg class="ico"><use href="#i-plus"/></svg></button>
     </form>
     <div class="legend" id="legend"></div>
-    <button type="button" class="theme-btn" id="themeBtn" aria-haspopup="menu" aria-expanded="false"></button>
+    <button type="button" class="theme-btn" id="themeBtn" aria-haspopup="dialog" aria-expanded="false"></button>
     <div class="account" id="account" hidden><span>@</span><b id="accountName"></b><span class="sync" id="syncStatus"></span><button type="button" id="logoutBtn">Выйти</button></div>
   </aside>
 
@@ -1167,7 +1253,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 </div>
 
 <nav class="mbar">
-  <button class="brand-mark" id="mTheme" aria-label="Вселенная" aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use id="mThemeIcon" href="#i-zoo-urgent"/></svg></button>
+  <button class="brand-mark" id="mTheme" aria-label="Вселенная" aria-haspopup="dialog" aria-expanded="false"><svg class="ico"><use id="mThemeIcon" href="#i-zoo-urgent"/></svg></button>
   <div class="sel">
     <select id="projSelect" aria-label="Проект"></select>
     <svg class="ico"><use href="#i-chev"/></svg>
@@ -1178,6 +1264,16 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 
 <div class="menu" id="menu" role="menu" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<div class="lib" id="lib" role="dialog" aria-modal="true" aria-labelledby="libTitle" hidden>
+  <div class="lib-panel">
+    <header class="lib-head">
+      <h2 id="libTitle">Вселенные</h2>
+      <button type="button" class="lib-close" data-lib-close aria-label="Закрыть"><svg class="ico"><use href="#i-x"/></svg></button>
+    </header>
+    <div class="lib-body" id="libBody"></div>
+  </div>
+</div>
 
 <div class="auth" id="auth" hidden>
   <form class="auth-card" id="authForm" novalidate>
@@ -1514,7 +1610,6 @@ const THEMES = {
   zoo: {
     label: 'Зоопарк', hint: 'Животные по характеру задач',
     title: 'ZooTodo', tagline: 'задачи по характеру', brandIcon: 'zoo-urgent',
-    swatch: 'linear-gradient(135deg, #d47a1f, #b65a12)',
     pickWhat: 'зверя', absent: 'не водятся',
     cats: {
       urgent:     { name: 'Гепард',  plural: 'Гепарды',  hint: 'Срочное — делаем первым делом' },
@@ -1528,7 +1623,6 @@ const THEMES = {
   space: {
     label: 'Космос', hint: 'Небесные тела вместо зверей',
     title: 'Orbit', tagline: 'задачи на орбите', brandIcon: 'space-brand',
-    swatch: 'linear-gradient(135deg, #5b4bd6, #b8467f)',
     pickWhat: 'небесное тело', absent: 'не обнаружены',
     cats: {
       urgent:     { name: 'Комета',      plural: 'Кометы',      hint: 'Срочное — пролетает быстро, не упусти' },
@@ -1542,7 +1636,6 @@ const THEMES = {
   rpg: {
     label: 'RPG-бестиарий', hint: 'Задачи как монстры подземелья',
     title: 'QuestLog', tagline: 'журнал заданий', brandIcon: 'rpg-brand',
-    swatch: 'linear-gradient(135deg, #a52a3a, #5e1420)',
     pickWhat: 'монстра', absent: 'не встречаются',
     cats: {
       urgent:     { name: 'Феникс',  plural: 'Фениксы', hint: 'Срочное — всё горит' },
@@ -1554,9 +1647,9 @@ const THEMES = {
     },
   },
   cyber: {
+    preview: 'repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px), #05050a',
     label: 'Киберпанк', hint: 'Неон, опыт и репутация',
     title: 'NEON//TODO', tagline: 'журнал заказов', brandIcon: 'cyber-brand',
-    swatch: 'linear-gradient(135deg, #ff2e88, #7a1cff)',
     pickWhat: 'тип задачи', absent: 'не найдены', game: 'cyber',
     cats: {
       urgent:     { name: 'Нео‑байк',  plural: 'Нео‑байки',  hint: 'Срочное — курьер мчит через ночной город', done: 'Доставка выполнена' },
@@ -1568,9 +1661,9 @@ const THEMES = {
     },
   },
   glass: {
+    preview: 'var(--wall)',
     label: 'Стекло', hint: 'Полупрозрачные панели, светлое и тёмное',
     title: 'Задачи', tagline: 'в стиле стекла', brandIcon: 'glass-brand',
-    swatch: 'linear-gradient(135deg, #ffb3c7, #a7c7ff 50%, #b9f0d6)',
     pickWhat: 'категорию', absent: '', plainCats: true, notify: 'banner', placeholder: 'Новая задача', modes: true,
     cats: {
       urgent:     { name: 'Срочное',      plural: 'Срочное',      hint: 'Сделать как можно скорее' },
@@ -1584,7 +1677,6 @@ const THEMES = {
   hacker: {
     label: 'Хакер', hint: 'Терминал, git и подсветка кода',
     title: 'todo.sh', tagline: 'задачи в терминале', brandIcon: 'hacker-brand',
-    swatch: 'linear-gradient(135deg, #0d1117 55%, #3fb950)',
     pickWhat: 'тип задачи', absent: 'не найдены', game: 'hacker',
     placeholder: 'todo add "что нужно сделать"', addLabel: '⏎ run',
     cats: {
@@ -1597,9 +1689,9 @@ const THEMES = {
     },
   },
   blocks: {
+    preview: 'linear-gradient(#4f82dd, #8db8f5 76%, #5fa832 76% 81%, #8b5a2b 81%)',
     label: 'Кубический мир', hint: 'Пиксельные блоки, опыт и достижения',
     title: 'BLOCKS', tagline: 'задачи по блоку', brandIcon: 'blocks-brand',
-    swatch: 'linear-gradient(#5fa832 0 30%, #8b5a2b 30%)',
     pickWhat: 'блок', absent: 'не найдены', game: 'blocks',
     cats: {
       urgent:     { name: 'Динамит',   plural: 'Динамит',   hint: 'Срочное — фитиль уже горит',           done: 'Взрыв предотвращён' },
@@ -1611,9 +1703,9 @@ const THEMES = {
     },
   },
   coast: {
+    preview: 'linear-gradient(165deg, #2a1a3e, #a43d5a 45%, #e6773a 75%, #f6b04a)',
     label: 'Западное побережье', hint: 'Закат 90-х, миссии и розыск',
     title: 'WEST COAST', tagline: 'миссии района', brandIcon: 'coast-brand',
-    swatch: 'linear-gradient(165deg, #5b2a5e, #e6773a 55%, #f6b04a)',
     pickWhat: 'тип миссии', absent: 'не найдены', game: 'coast',
     cats: {
       urgent:     { name: 'Розыск',       plural: 'Розыск',       hint: 'Срочное — копы уже на хвосте' },
@@ -1625,9 +1717,9 @@ const THEMES = {
     },
   },
   grid: {
+    preview: 'linear-gradient(transparent 0 calc(100% - 1px), rgba(25,230,255,.22) 0) 0 0 / 100% 16px, linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(25,230,255,.22) 0) 0 0 / 16px 100%, #020407',
     label: 'Сетка', hint: 'Неоновая цифровая сетка и световые циклы',
     title: 'THE GRID', tagline: 'задачи в Сетке', brandIcon: 'grid-brand',
-    swatch: 'radial-gradient(circle, #19e6ff 0 22%, #020407 26% 48%, #19e6ff 52% 58%, #020407 62%)',
     pickWhat: 'программу', absent: 'не найдены в Сетке',
     cats: {
       urgent:     { name: 'Цикл',           plural: 'Световые циклы', hint: 'Срочное — гонка уже началась' },
@@ -2143,47 +2235,113 @@ document.addEventListener('keydown', (e) => {
 addEventListener('resize', closeMenu);
 addEventListener('scroll', closeMenu, true);
 
-function themeMenu(e) {
-  openMenu(e.currentTarget, {
-    title: 'Вселенная',
-    current: [state.theme, state.plainNames ? 'names:plain' : 'names:theme', `font:${codeFont()}`, `mode:${appearance()}`],
-    onPick: (id) => id === 'logout' ? logout()
-      : id.startsWith('names:') ? setPlainNames(id === 'names:plain')
-      : id.startsWith('font:') ? setCodeFont(id.slice(5))
-      : id.startsWith('mode:') ? setAppearance(id.slice(5))
-      : setTheme(id),
-    items: [
-      ...Object.entries(THEMES).map(([id, t]) => ({
-        id, name: t.label, hint: t.hint, iconHtml: svg(t.brandIcon), style: `background:${t.swatch};color:#fff`,
-      })),
-      ...(theme().plainCats ? [] : [
-        { section: 'Названия срочности' },
-        { id: 'names:theme', name: 'Из вселенной', hint: ORDER.slice(0, 3).map((k) => theme().cats[k].name).join(', ') + '…',
-          iconHtml: icon('urgent'), cls: 'k-urgent' },
-        { id: 'names:plain', name: 'Стандартные', hint: 'Срочное, важное, неприятное…',
-          iconHtml: svg('list'), style: 'background:var(--bg);color:var(--ink)' },
-      ]),
-      ...(theme().modes ? [
-        { section: 'Оформление' },
-        ...APPEARANCES.map(([id, name, hint, ic]) => ({ id: `mode:${id}`, name, hint, iconHtml: svg(ic), style: 'background:var(--bg);color:var(--ink)' })),
-      ] : []),
-      ...(theme().game === 'hacker' ? [
-        { section: 'Шрифт' },
-        ...CODE_FONTS.map(([f, hint]) => {
-          ensureFont(f);
-          return { id: `font:${f}`, name: f, hint,
-            iconHtml: `<span style="font-family:'${f}',monospace;font-weight:700;font-size:13px">Aa</span>`, style: 'background:var(--bg);color:var(--ink)' };
-        }),
-      ] : []),
-      ...(session.mode === 'online' ? [
-        { section: 'Аккаунт' },
-        { id: 'logout', name: 'Выйти', hint: `@${session.user}`, iconHtml: svg('x'), style: 'background:var(--bg);color:var(--ink)' },
-      ] : []),
-    ],
-  });
+/* ---------- Universe library ---------- */
+let libReturnFocus = null;
+
+function previewHtml(id) {
+  const t = THEMES[id];
+  const rows = ['urgent', 'important', 'quick'].map((k) =>
+    `<div class="tp-row k-${k}"><span class="tp-ck"></span><span class="tp-line"></span>${svg(`${id}-${k}`)}</div>`).join('');
+  return `<div class="tp" data-theme="${id}" ${t.modes ? `data-mode="${resolvedMode()}"` : ''}
+      ${t.preview ? `style="--tp-bg:${t.preview}"` : ''} aria-hidden="true">
+    <div class="tp-side"><span class="tp-logo">${svg(t.brandIcon)}</span><i class="on"></i><i></i><i></i></div>
+    <div class="tp-main"><div class="tp-title">${esc(t.title)}</div>${rows}</div>
+  </div>`;
 }
-$('themeBtn').addEventListener('click', themeMenu);
-$('mTheme').addEventListener('click', themeMenu);
+
+const libSection = (title, body) => `<section class="lib-sec"><h3>${title}</h3>${body}</section>`;
+const libSeg = (key, options, current) => `<div class="lib-seg" role="radiogroup">${options.map(([v, label]) =>
+  `<button type="button" role="radio" aria-checked="${v === current}" class="${v === current ? 'on' : ''}" data-lib-set="${key}:${v}">${label}</button>`).join('')}</div>`;
+
+function themeSettingsHtml(t) {
+  let html = '';
+  if (!t.plainCats) {
+    html += libSection('Названия срочности', libSeg('names', [['theme', 'Из вселенной'], ['plain', 'Стандартные']], state.plainNames ? 'plain' : 'theme'));
+  }
+  if (t.modes) {
+    html += libSection('Оформление', libSeg('mode', APPEARANCES.map(([id, name]) => [id, name]), appearance()));
+  }
+  if (t.game === 'hacker') {
+    html += libSection('Шрифт', `<div class="lib-fonts">${CODE_FONTS.map(([f, hint]) => {
+      ensureFont(f);
+      return `<button type="button" class="lib-font ${f === codeFont() ? 'on' : ''}" data-lib-set="font:${f}">
+        <span style="font-family:'${f}',monospace">Задача => готово !== 0</span><small>${f} · ${hint}</small></button>`;
+    }).join('')}</div>`);
+  }
+  return html;
+}
+
+function renderLibrary() {
+  const t = theme();
+  const features = [t.game && 'Опыт и награды', t.modes && 'Светлое и тёмное', t.game === 'hacker' && 'Выбор шрифта', t.plainCats && 'Стандартные названия']
+    .filter(Boolean);
+  $('libBody').innerHTML = `
+    <div class="lib-grid">${Object.entries(THEMES).map(([id, th]) => `
+      <button type="button" class="lib-tile ${id === state.theme ? 'on' : ''}" data-lib-theme="${id}" aria-pressed="${id === state.theme}">
+        ${previewHtml(id)}
+        <span class="lib-meta"><b>${th.label}</b>${id === state.theme ? '<em>Сейчас</em>' : ''}<small>${th.hint}</small></span>
+      </button>`).join('')}</div>
+    <div class="lib-detail" id="libDetail">
+      <div class="lib-detail-head"><span class="brand-mark">${svg(t.brandIcon)}</span>
+        <div><h3>Настройки: ${t.label}</h3><p class="lib-hint">${t.hint}</p></div></div>
+      ${features.length ? `<div class="lib-feats">${features.map((f) => `<span>${f}</span>`).join('')}</div>` : ''}
+      ${libSection('Категории', `<div class="lib-cats">${ORDER.map((k) =>
+        `<div class="k-${k}"><span class="tinted">${icon(k)}</span><span><b>${cat(k).name}</b><small>${SHORT[k]}</small></span></div>`).join('')}</div>`)}
+      ${themeSettingsHtml(t)}
+      <div class="lib-foot">
+        ${session.mode === 'online' ? `<span class="lib-account">Вы вошли как <b>@${esc(session.user)}</b><button type="button" data-lib-logout>Выйти</button></span>` : '<span></span>'}
+        <button type="button" class="lib-done" data-lib-close>Готово</button>
+      </div>
+    </div>`;
+}
+
+function openLibrary(e) {
+  closeMenu();
+  libReturnFocus = e?.currentTarget || document.activeElement;
+  $('lib').hidden = false;
+  document.body.classList.add('lib-open');
+  renderLibrary();
+  document.querySelector('.lib-panel').scrollTop = 0;
+  ($('libBody').querySelector('.lib-tile.on') || $('libBody').querySelector('button'))?.focus();
+}
+
+function closeLibrary() {
+  if ($('lib').hidden) return;
+  $('lib').hidden = true;
+  document.body.classList.remove('lib-open');
+  libReturnFocus?.focus?.();
+}
+
+// re-render in place and keep keyboard focus on the control that was used
+function refreshLibrary(focusSelector) {
+  renderLibrary();
+  $('libBody').querySelector(focusSelector)?.focus({ preventScroll: true });
+}
+
+$('lib').addEventListener('click', (e) => {
+  if (e.target === $('lib')) return closeLibrary();  // backdrop
+  const el = e.target.closest('[data-lib-theme],[data-lib-set],[data-lib-close],[data-lib-logout]');
+  if (!el) return;
+  if (el.dataset.libTheme) {
+    // applies right away (visible behind the dialog); the settings block below switches to this universe
+    setTheme(el.dataset.libTheme);
+    return refreshLibrary(`[data-lib-theme="${el.dataset.libTheme}"]`);
+  }
+  if (el.dataset.libSet) {
+    const [key, ...rest] = el.dataset.libSet.split(':');
+    const value = rest.join(':');
+    if (key === 'names') setPlainNames(value === 'plain');
+    if (key === 'mode') setAppearance(value);
+    if (key === 'font') setCodeFont(value);
+    return refreshLibrary(`[data-lib-set="${CSS.escape(el.dataset.libSet)}"]`);
+  }
+  if ('libClose' in el.dataset) return closeLibrary();
+  if ('libLogout' in el.dataset) return logout();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('lib').hidden) closeLibrary(); });
+
+$('themeBtn').addEventListener('click', openLibrary);
+$('mTheme').addEventListener('click', openLibrary);
 
 $('pickBtn').addEventListener('click', (e) => {
   catMenu(e.currentTarget, ui.newCat, (k) => { ui.newCat = k; render(); $('taskInput').focus(); });
