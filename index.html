@@ -269,6 +269,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .menu[hidden] { display: none; }
 @keyframes pop { from { opacity: 0; transform: translateY(-4px); } }
 .menu .menu-title { padding: 8px 10px 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; }
+.menu button + .menu-title { margin-top: 6px; padding-top: 12px; border-top: 1px solid var(--line); }
 .menu button {
   width: 100%; border: 0; background: none; border-radius: 10px; padding: 8px 10px;
   display: flex; align-items: center; gap: 12px; text-align: left;
@@ -729,6 +730,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <path d="M10.6 8h2.3M10.6 11h2.3M10.6 14h2.3M5.7 14.5h1.1M18 12h1M18 15h1"/>
     </symbol>
     <!-- ===== UI ===== -->
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle class="fill" cx="4.8" cy="6.5" r="1.2"/><circle class="fill" cx="4.8" cy="12" r="1.2"/><circle class="fill" cx="4.8" cy="17.5" r="1.2"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
@@ -820,7 +822,11 @@ const LEGACY = { cheetah: 'urgent', bear: 'important', frog: 'unpleasant', wolf:
 const KEY = 'zootodo.v1';
 const uid = () => Math.random().toString(36).slice(2, 10);
 const theme = () => THEMES[state.theme] || THEMES.zoo;
-const cat = (k) => theme().cats[k];
+// "Plain" mode keeps the theme's icons and colors but uses the standard urgency names.
+const plainName = (k) => SHORT[k][0].toUpperCase() + SHORT[k].slice(1);
+const cat = (k) => state.plainNames
+  ? { ...theme().cats[k], name: plainName(k), plural: plainName(k) }
+  : theme().cats[k];
 const svg = (id, cls = 'ico') => `<svg class="${cls}"><use href="#i-${id}"/></svg>`;
 const icon = (k) => svg(ORDER.includes(k) ? `${state.theme}-${k}` : k);
 const chev = svg('chev', 'ico chev');
@@ -854,6 +860,7 @@ function newStats() { return { xp: 0, credits: 0, days: [] }; }
 function migrate(s) {
   s.theme = THEMES[s.theme] ? s.theme : 'zoo';
   s.stats = { ...newStats(), ...s.stats };
+  s.plainNames = !!s.plainNames;
   for (const p of s.projects) for (const t of p.tasks) {
     if (t.animal) { t.cat = LEGACY[t.animal]; delete t.animal; }
     if (!ORDER.includes(t.cat)) t.cat = DEFAULT_CAT;
@@ -901,7 +908,7 @@ function renderTheme() {
   $('brandIcon').setAttribute('href', `#i-${th.brandIcon}`);
   $('mThemeIcon').setAttribute('href', `#i-${th.brandIcon}`);
   $('themeBtn').innerHTML =
-    `<span class="brand-mark">${svg(th.brandIcon)}</span><span class="label"><small>Вселенная</small><b>${th.label}</b></span>${chev}`;
+    `<span class="brand-mark">${svg(th.brandIcon)}</span><span class="label"><small>Вселенная${state.plainNames ? ' · станд. названия' : ''}</small><b>${th.label}</b></span>${chev}`;
 }
 
 function render() {
@@ -921,7 +928,7 @@ function render() {
   }).join('');
 
   $('legend').innerHTML = ORDER.map((k) =>
-    `<div class="legend-row k-${k}"><span class="dot tinted">${icon(k)}</span><div><b>${cat(k).name}</b> · ${SHORT[k]}</div></div>`
+    `<div class="legend-row k-${k}"><span class="dot tinted">${icon(k)}</span><div><b>${cat(k).name}</b>${state.plainNames ? '' : ` · ${SHORT[k]}`}</div></div>`
   ).join('');
 
   // mobile select
@@ -975,7 +982,7 @@ function render() {
   if (!html.trim()) {
     html = `<div class="empty">
       <div class="cats">${ORDER.map((k) => `<div class="tinted k-${k}">${icon(k)}</div>`).join('')}</div>
-      <h4>${ui.filter === 'all' ? 'Здесь тихо' : `${cat(ui.filter).plural} ${theme().absent}`}</h4>
+      <h4>${ui.filter === 'all' ? 'Здесь тихо' : state.plainNames ? `«${cat(ui.filter).name}» — задач нет` : `${cat(ui.filter).plural} ${theme().absent}`}</h4>
       <div>Добавьте задачу и выберите ей ${theme().pickWhat}</div>
     </div>`;
   }
@@ -1064,6 +1071,12 @@ function toggleTask(t) {
 function findTask(id) { return active().tasks.find((t) => t.id === id); }
 function commit() { save(); render(); }
 
+function setPlainNames(on) {
+  if (state.plainNames === on) return;
+  state.plainNames = on;
+  commit();
+}
+
 function setTheme(id) {
   if (!THEMES[id] || id === state.theme) return;
   state.theme = id;
@@ -1118,11 +1131,13 @@ function openMenu(anchor, { title, items, current, onPick }) {
   if (menuCtx && menuCtx.anchor === anchor) return closeMenu();
   closeMenu();
   const menu = $('menu');
-  menu.innerHTML = (title ? `<div class="menu-title">${title}</div>` : '') + items.map((it) =>
-    `<button type="button" role="menuitem" class="${it.cls || ''}" data-pick="${it.id}">
+  const checked = [].concat(current);
+  menu.innerHTML = (title ? `<div class="menu-title">${title}</div>` : '') + items.map((it) => it.section
+    ? `<div class="menu-title">${it.section}</div>`
+    : `<button type="button" role="menuitem" class="${it.cls || ''}" data-pick="${it.id}">
       <span class="mi tinted" ${it.style ? `style="${it.style}"` : ''}>${it.iconHtml}</span>
       <span><b>${it.name}</b><small>${it.hint}</small></span>
-      ${it.id === current ? svg('check', 'ico tick') : ''}
+      ${checked.includes(it.id) ? svg('check', 'ico tick') : ''}
     </button>`).join('');
   menu.style.left = menu.style.top = '0px';
   menu.hidden = false;
@@ -1138,7 +1153,7 @@ function openMenu(anchor, { title, items, current, onPick }) {
   const left = Math.min(Math.max(8, r.right - m.width), innerWidth - m.width - 8);
   menu.style.top = `${Math.max(8, top)}px`;
   menu.style.left = `${Math.max(8, Math.min(left, r.left))}px`;
-  (menu.querySelector(`[data-pick="${current}"]`) || menu.querySelector('button')).focus({ preventScroll: true });
+  (menu.querySelector(`[data-pick="${checked[0]}"]`) || menu.querySelector('button')).focus({ preventScroll: true });
 }
 
 function catMenu(anchor, current, onPick) {
@@ -1180,11 +1195,18 @@ addEventListener('scroll', closeMenu, true);
 function themeMenu(e) {
   openMenu(e.currentTarget, {
     title: 'Вселенная',
-    current: state.theme,
-    onPick: setTheme,
-    items: Object.entries(THEMES).map(([id, t]) => ({
-      id, name: t.label, hint: t.hint, iconHtml: svg(t.brandIcon), style: `background:${t.swatch};color:#fff`,
-    })),
+    current: [state.theme, state.plainNames ? 'names:plain' : 'names:theme'],
+    onPick: (id) => id.startsWith('names:') ? setPlainNames(id === 'names:plain') : setTheme(id),
+    items: [
+      ...Object.entries(THEMES).map(([id, t]) => ({
+        id, name: t.label, hint: t.hint, iconHtml: svg(t.brandIcon), style: `background:${t.swatch};color:#fff`,
+      })),
+      { section: 'Названия срочности' },
+      { id: 'names:theme', name: 'Из вселенной', hint: ORDER.slice(0, 3).map((k) => theme().cats[k].name).join(', ') + '…',
+        iconHtml: icon('urgent'), cls: 'k-urgent' },
+      { id: 'names:plain', name: 'Стандартные', hint: 'Срочное, важное, неприятное…',
+        iconHtml: svg('list'), style: 'background:var(--bg);color:var(--ink)' },
+    ],
   });
 }
 $('themeBtn').addEventListener('click', themeMenu);
