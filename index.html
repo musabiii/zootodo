@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-theme="zoo">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ZooTodo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ---------- Theme: Зоопарк (default) ---------- */
 :root {
   --bg: #f4f1eb;
   --surface: #ffffff;
@@ -19,17 +20,56 @@
   --side-ink: #e8eee9;
   --side-muted: #8fa198;
   --accent: #c9a24a;
+  --brand: linear-gradient(135deg, #d47a1f, #b65a12);
+  --display: Fraunces, serif;
+  --side-art:
+    radial-gradient(circle at 15% 105%, rgba(212,122,31,.18), transparent 45%),
+    radial-gradient(circle at 110% 0%, rgba(47,138,88,.22), transparent 50%);
 
-  --frog: #2f8a58;      --frog-bg: #e6f3eb;
-  --elephant: #56668a;  --elephant-bg: #eaeef6;
-  --mosquito: #7b52c9;  --mosquito-bg: #f0eafb;
-  --cheetah: #d47a1f;   --cheetah-bg: #fbefe1;
-  --bear: #7a5233;      --bear-bg: #f1e8df;
-  --wolf: #3d7c86;      --wolf-bg: #e3f0f1;
+  --urgent: #d47a1f;     --urgent-bg: #fbefe1;      /* гепард */
+  --important: #7a5233;  --important-bg: #f1e8df;   /* медведь */
+  --unpleasant: #2f8a58; --unpleasant-bg: #e6f3eb;  /* лягушка */
+  --regular: #3d7c86;    --regular-bg: #e3f0f1;     /* волк */
+  --quick: #7b52c9;      --quick-bg: #f0eafb;       /* комар */
+  --long: #56668a;       --long-bg: #eaeef6;        /* слон */
 
   --radius: 14px;
   --shadow: 0 1px 2px rgba(28,35,32,.05), 0 4px 16px rgba(28,35,32,.05);
 }
+
+/* ---------- Theme: Космос ---------- */
+[data-theme="space"] {
+  --bg: #eef0f7;
+  --ink: #161a33;
+  --muted: #646b85;
+  --line: #dde1ef;
+  --side: #0c1029;
+  --side-2: #1a2050;
+  --side-ink: #e7e9ff;
+  --side-muted: #8b92c6;
+  --accent: #8ad8ff;
+  --brand: linear-gradient(135deg, #5b4bd6, #b8467f);
+  --display: "Space Grotesk", Manrope, sans-serif;
+  --side-art:
+    radial-gradient(1px 1px at 24px 36px, rgba(255,255,255,.75), transparent),
+    radial-gradient(1px 1px at 96px 128px, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.5px 1.5px at 168px 64px, rgba(255,255,255,.85), transparent),
+    radial-gradient(1px 1px at 232px 188px, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 52px 214px, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.5px 1.5px at 140px 246px, rgba(138,216,255,.8), transparent),
+    radial-gradient(circle at 110% 0%, rgba(184,70,127,.35), transparent 50%),
+    radial-gradient(circle at -10% 100%, rgba(47,115,196,.4), transparent 50%);
+
+  --urgent: #e5603c;     --urgent-bg: #fdebe5;      /* комета */
+  --important: #c8961a;  --important-bg: #fbf3dc;   /* звезда */
+  --unpleasant: #4a3a8c; --unpleasant-bg: #ebe8f6;  /* чёрная дыра */
+  --regular: #2f73c4;    --regular-bg: #e5effb;     /* спутник */
+  --quick: #0f9aa6;      --quick-bg: #e0f4f5;       /* метеор */
+  --long: #b8467f;       --long-bg: #f8e6ef;        /* галактика */
+
+  --shadow: 0 1px 2px rgba(22,26,51,.06), 0 4px 16px rgba(22,26,51,.06);
+}
+
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
@@ -38,6 +78,7 @@ body {
   color: var(--ink);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  transition: background-color .3s;
 }
 button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; }
@@ -48,24 +89,23 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 
 /* ---------- Sidebar ---------- */
 .side {
-  background: var(--side);
+  background-color: var(--side);
+  background-image: var(--side-art);
   color: var(--side-ink);
   padding: 24px 16px;
   display: flex; flex-direction: column; gap: 20px;
   position: sticky; top: 0; height: 100vh;
-  background-image:
-    radial-gradient(circle at 15% 105%, rgba(212,122,31,.18), transparent 45%),
-    radial-gradient(circle at 110% 0%, rgba(47,138,88,.22), transparent 50%);
 }
+[data-theme="space"] .side { background-size: 260px 280px, 260px 280px, 260px 280px, 260px 280px, 260px 280px, 260px 280px, 100% 100%, 100% 100%; }
 .brand { display: flex; align-items: center; gap: 12px; padding: 0 8px; }
 .brand-mark {
   width: 38px; height: 38px; border-radius: 11px;
   display: grid; place-items: center;
-  background: linear-gradient(135deg, var(--cheetah), #b65a12);
+  background: var(--brand);
   color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
 }
 .brand-mark svg.ico { width: 24px; height: 24px; }
-.brand h1 { font-family: Fraunces, serif; font-weight: 600; font-size: 22px; margin: 0; letter-spacing: .2px; }
+.brand h1 { font-family: var(--display); font-weight: 600; font-size: 22px; margin: 0; letter-spacing: .2px; }
 .brand small { display: block; color: var(--side-muted); font-size: 12px; margin-top: 1px; }
 
 .side-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--side-muted); padding: 0 10px; font-weight: 600; }
@@ -115,10 +155,21 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .legend-row .dot { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; }
 .legend-row svg.ico { width: 17px; height: 17px; }
 
+.theme-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 12px; background: rgba(255,255,255,.05); }
+.theme-switch button {
+  border: 0; background: none; color: var(--side-muted); border-radius: 9px; padding: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600;
+  transition: background .15s, color .15s;
+}
+.theme-switch button:hover { color: var(--side-ink); }
+.theme-switch button.on { background: var(--side-2); color: var(--side-ink); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.theme-switch button.on svg.ico { color: var(--accent); }
+.theme-switch svg.ico { width: 18px; height: 18px; }
+
 /* ---------- Main ---------- */
 .main { padding: 40px clamp(16px, 4vw, 56px) 64px; max-width: 920px; width: 100%; }
 .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.head h2 { font-family: Fraunces, serif; font-weight: 600; font-size: clamp(28px, 4vw, 38px); margin: 0; letter-spacing: -.3px; cursor: text; }
+.head h2 { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 4vw, 38px); margin: 0; letter-spacing: -.3px; cursor: text; }
 .head p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
 .stripe { height: 4px; border-radius: 4px; margin: 20px 0 24px; display: flex; overflow: hidden; background: var(--line); }
 .stripe span { transition: flex-grow .3s; }
@@ -131,14 +182,14 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .composer input {
   flex: 1 1 240px; min-width: 0; border: 0; outline: none; padding: 10px 8px; font-size: 15px; background: transparent;
 }
-.animal-btn {
-  border: 0; border-radius: 10px; padding: 9px 10px 9px 12px; min-width: 140px;
+.cat-btn {
+  border: 0; border-radius: 10px; padding: 9px 10px 9px 12px; min-width: 150px;
   display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700;
   color: var(--c); background: var(--cbg);
 }
-.animal-btn span { flex: 1; text-align: left; }
-.animal-btn .chev, .tag .chev { width: 14px; height: 14px; transform: rotate(90deg); opacity: .7; transition: transform .15s; }
-.animal-btn[aria-expanded="true"] .chev, .tag[aria-expanded="true"] .chev { transform: rotate(-90deg); }
+.cat-btn span { flex: 1; text-align: left; white-space: nowrap; }
+.cat-btn .chev, .tag .chev { width: 14px; height: 14px; transform: rotate(90deg); opacity: .7; transition: transform .15s; }
+.cat-btn[aria-expanded="true"] .chev, .tag[aria-expanded="true"] .chev { transform: rotate(-90deg); }
 
 .menu {
   position: fixed; z-index: 50; min-width: 250px; max-width: calc(100vw - 16px); padding: 6px;
@@ -148,6 +199,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 }
 .menu[hidden] { display: none; }
 @keyframes pop { from { opacity: 0; transform: translateY(-4px); } }
+.menu .menu-title { padding: 8px 10px 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; }
 .menu button {
   width: 100%; border: 0; background: none; border-radius: 10px; padding: 8px 10px;
   display: flex; align-items: center; gap: 12px; text-align: left;
@@ -156,11 +208,11 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .menu .mi { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; flex: none; }
 .menu b { display: block; font-size: 14px; }
 .menu small { display: block; color: var(--muted); font-size: 12px; }
-.menu .tick { margin-left: auto; color: var(--c); width: 18px; height: 18px; stroke-width: 2.2; }
+.menu .tick { margin-left: auto; color: var(--c, var(--ink)); width: 18px; height: 18px; stroke-width: 2.2; }
 .composer .go {
   border: 0; border-radius: 10px; padding: 10px 18px; background: var(--ink); color: #fff; font-weight: 600;
 }
-.composer .go:hover { background: #2c3631; }
+.composer .go:hover { opacity: .88; }
 
 .filters { display: flex; gap: 8px; margin: 22px 0 8px; flex-wrap: wrap; }
 .chip {
@@ -170,6 +222,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .chip svg.ico { width: 16px; height: 16px; }
 .chip em { font-style: normal; font-variant-numeric: tabular-nums; opacity: .7; }
 .chip.on { color: #fff; border-color: transparent; background: var(--ink); }
+.chip.on[class*="k-"] { background: var(--c); }
 
 .group { margin-top: 26px; }
 .group-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
@@ -211,25 +264,31 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .done-toggle.open svg.ico { transform: rotate(90deg); }
 
 .empty { text-align: center; padding: 56px 16px; color: var(--muted); }
-.empty .animals { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
-.empty .animals div { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; }
-.empty .animals svg.ico { width: 24px; height: 24px; }
-.empty h4 { font-family: Fraunces, serif; font-weight: 600; color: var(--ink); font-size: 20px; margin: 0 0 4px; }
+.empty .cats { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.empty .cats div { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; }
+.empty .cats svg.ico { width: 24px; height: 24px; }
+.empty h4 { font-family: var(--display); font-weight: 600; color: var(--ink); font-size: 20px; margin: 0 0 4px; }
 
-/* per-animal colors */
-.a-frog     { --c: var(--frog);     --cbg: var(--frog-bg); }
-.a-elephant { --c: var(--elephant); --cbg: var(--elephant-bg); }
-.a-mosquito { --c: var(--mosquito); --cbg: var(--mosquito-bg); }
-.a-cheetah  { --c: var(--cheetah);  --cbg: var(--cheetah-bg); }
+/* per-category colors (values come from the active theme) */
+.k-urgent     { --c: var(--urgent);     --cbg: var(--urgent-bg); }
+.k-important  { --c: var(--important);  --cbg: var(--important-bg); }
+.k-unpleasant { --c: var(--unpleasant); --cbg: var(--unpleasant-bg); }
+.k-regular    { --c: var(--regular);    --cbg: var(--regular-bg); }
+.k-quick      { --c: var(--quick);      --cbg: var(--quick-bg); }
+.k-long       { --c: var(--long);       --cbg: var(--long-bg); }
 .tinted { color: var(--c); background: var(--cbg); }
-.a-bear     { --c: var(--bear);     --cbg: var(--bear-bg); }
-.a-wolf     { --c: var(--wolf);     --cbg: var(--wolf-bg); }
-.chip.on[class*="a-"] { background: var(--c); }
-/* cheetah spots on its group icon */
-.group-icon.a-cheetah, .tag.a-cheetah {
+
+/* zoo: cheetah spots */
+[data-theme="zoo"] .group-icon.k-urgent, [data-theme="zoo"] .tag.k-urgent {
   background-image: radial-gradient(circle at 20% 30%, rgba(212,122,31,.14) 2px, transparent 2.5px),
                     radial-gradient(circle at 70% 75%, rgba(212,122,31,.14) 2px, transparent 2.5px);
   background-size: 12px 12px;
+  background-color: var(--cbg);
+}
+/* space: faint starfield on group icons */
+[data-theme="space"] .group-icon {
+  background-image: radial-gradient(1px 1px at 6px 8px, var(--c), transparent),
+                    radial-gradient(1px 1px at 27px 25px, var(--c), transparent);
   background-color: var(--cbg);
 }
 
@@ -240,17 +299,16 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .app { grid-template-columns: 1fr; }
   .side { display: none; }
   .main { padding: 24px 16px calc(96px + env(safe-area-inset-bottom)); }
-  .composer .go, .animal-btn { flex: 1; }
+  .composer .go, .cat-btn { flex: 1; }
   .del { opacity: .6; }
   .tag span { display: none; }
   .mbar {
     display: flex; gap: 8px; align-items: center;
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
     padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-    background: var(--side); color: var(--side-ink);
+    background-color: var(--side); background-image: var(--side-art); color: var(--side-ink);
     box-shadow: 0 -6px 24px rgba(0,0,0,.12);
   }
-  .mbar .brand-mark { width: 40px; height: 40px; flex: none; }
   .mbar .sel { position: relative; flex: 1; min-width: 0; }
   .mbar select {
     appearance: none; -webkit-appearance: none; width: 100%;
@@ -260,6 +318,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .mbar .sel svg.ico { position: absolute; right: 12px; top: 50%; transform: translateY(-50%) rotate(90deg); color: var(--side-muted); pointer-events: none; width: 16px; height: 16px; }
   .mbar button { border: 0; width: 42px; height: 42px; border-radius: 11px; background: var(--accent); color: var(--side); display: grid; place-items: center; flex: none; }
   .mbar button.ghost { background: var(--side-2); color: var(--side-muted); }
+  .mbar button.brand-mark { background: var(--brand); color: #fff; }
 }
 </style>
 </head>
@@ -267,8 +326,8 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 <div class="app">
   <aside class="side">
     <div class="brand">
-      <div class="brand-mark"><svg class="ico"><use href="#i-cheetah"/></svg></div>
-      <div><h1>ZooTodo</h1><small>задачи по характеру</small></div>
+      <div class="brand-mark"><svg class="ico"><use id="brandIcon" href="#i-zoo-urgent"/></svg></div>
+      <div><h1 id="brandTitle">ZooTodo</h1><small id="brandTag">задачи по характеру</small></div>
     </div>
     <div class="side-label">Проекты</div>
     <ul class="proj-list" id="projList"></ul>
@@ -277,6 +336,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <button aria-label="Добавить проект"><svg class="ico"><use href="#i-plus"/></svg></button>
     </form>
     <div class="legend" id="legend"></div>
+    <div class="theme-switch" id="themeSwitch" role="radiogroup" aria-label="Оформление"></div>
   </aside>
 
   <main class="main">
@@ -290,7 +350,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 
     <form class="composer" id="composer">
       <input id="taskInput" placeholder="Что нужно сделать?" maxlength="200" autocomplete="off">
-      <button type="button" class="animal-btn" id="pickBtn" aria-haspopup="menu" aria-expanded="false"></button>
+      <button type="button" class="cat-btn" id="pickBtn" aria-haspopup="menu" aria-expanded="false"></button>
       <button class="go">Добавить</button>
     </form>
 
@@ -300,7 +360,7 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 </div>
 
 <nav class="mbar">
-  <div class="brand-mark"><svg class="ico"><use href="#i-cheetah"/></svg></div>
+  <button class="brand-mark" id="mTheme" aria-label="Оформление" aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use id="mThemeIcon" href="#i-zoo-urgent"/></svg></button>
   <div class="sel">
     <select id="projSelect" aria-label="Проект"></select>
     <svg class="ico"><use href="#i-chev"/></svg>
@@ -313,32 +373,9 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
-    <!-- Лягушка -->
-    <symbol id="i-frog" viewBox="0 0 24 24">
-      <path d="M5.2 9.3C3.8 10.5 3 12 3 13.8 3 17.8 7 20 12 20s9-2.2 9-6.2c0-1.8-.8-3.3-2.2-4.5"/>
-      <circle cx="7.8" cy="7.6" r="2.8"/><circle cx="16.2" cy="7.6" r="2.8"/>
-      <circle class="fill" cx="7.8" cy="7.6" r="1.1"/><circle class="fill" cx="16.2" cy="7.6" r="1.1"/>
-      <path d="M8 14.6c2.3 1.7 5.7 1.7 8 0"/>
-    </symbol>
-    <!-- Слон -->
-    <symbol id="i-elephant" viewBox="0 0 24 24">
-      <path d="M8 6.2C6.6 4.9 4.6 4.6 3.3 5.6 2 6.7 2 9.6 2.9 11.8c.7 1.7 2.4 2.7 4.6 2.6"/>
-      <path d="M16 6.2c1.4-1.3 3.4-1.6 4.7-.6 1.3 1.1 1.3 4 .4 6.2-.7 1.7-2.4 2.7-4.6 2.6"/>
-      <path d="M7.5 10c0-3.3 2-5.8 4.5-5.8s4.5 2.5 4.5 5.8v3.2c0 1.4-.8 2.3-1.8 2.9v3.3c0 .9-.6 1.4-1.3 1.4"/>
-      <path d="M7.5 10v3.2c0 1.4.8 2.3 1.8 2.9"/>
-      <circle class="fill" cx="10" cy="10.3" r=".95"/><circle class="fill" cx="14" cy="10.3" r=".95"/>
-    </symbol>
-    <!-- Комар -->
-    <symbol id="i-mosquito" viewBox="0 0 24 24">
-      <path d="M2.5 4.5 7 8.3"/>
-      <circle cx="8.3" cy="9.4" r="1.7"/>
-      <path d="M10 11l7.8 7.8" stroke-width="2.4"/>
-      <path d="M11.2 10.3c1-3.4 3.7-6.1 6.4-6.6 1.3-.2 1.6 1 .9 2-1.5 2.1-4 3.6-6.6 4.6"/>
-      <path d="M13.7 13c3-1.1 6.2-1 7.6.4.6.6.2 1.5-.8 1.6-2.4.2-5-.4-6.8-1.3"/>
-      <path d="M9.6 12.6 6 15.2l-1 3.6M12 14.5l-2.4 3.8.2 3.2M14.2 16.4 13.4 20l1.3 2"/>
-    </symbol>
+    <!-- ===== Зоопарк ===== -->
     <!-- Гепард -->
-    <symbol id="i-cheetah" viewBox="0 0 24 24">
+    <symbol id="i-zoo-urgent" viewBox="0 0 24 24">
       <path d="M6.6 7.2 5.4 3.6l3.8 1.7M17.4 7.2l1.2-3.6-3.8 1.7"/>
       <path d="M12 4.8c-4.2 0-7.2 3.2-7.2 7.3 0 4.6 3.2 7.9 7.2 7.9s7.2-3.3 7.2-7.9c0-4.1-3-7.3-7.2-7.3z"/>
       <circle class="fill" cx="9.4" cy="11" r="1"/><circle class="fill" cx="14.6" cy="11" r="1"/>
@@ -347,21 +384,87 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <circle class="fill" cx="12" cy="7.6" r=".6"/><circle class="fill" cx="9.6" cy="8.1" r=".5"/><circle class="fill" cx="14.4" cy="8.1" r=".5"/>
     </symbol>
     <!-- Медведь -->
-    <symbol id="i-bear" viewBox="0 0 24 24">
+    <symbol id="i-zoo-important" viewBox="0 0 24 24">
       <path d="M5.4 8.7a2.6 2.6 0 1 1 3.3-3.6M18.6 8.7a2.6 2.6 0 1 0-3.3-3.6"/>
       <path d="M12 5.2c-4.3 0-7.4 3.2-7.4 7.4 0 4.3 3.2 7.4 7.4 7.4s7.4-3.1 7.4-7.4c0-4.2-3.1-7.4-7.4-7.4z"/>
       <ellipse cx="12" cy="15.3" rx="3.1" ry="2.5"/>
       <ellipse class="fill" cx="12" cy="14.5" rx="1.2" ry=".8"/>
       <circle class="fill" cx="9" cy="11.2" r=".95"/><circle class="fill" cx="15" cy="11.2" r=".95"/>
     </symbol>
+    <!-- Лягушка -->
+    <symbol id="i-zoo-unpleasant" viewBox="0 0 24 24">
+      <path d="M5.2 9.3C3.8 10.5 3 12 3 13.8 3 17.8 7 20 12 20s9-2.2 9-6.2c0-1.8-.8-3.3-2.2-4.5"/>
+      <circle cx="7.8" cy="7.6" r="2.8"/><circle cx="16.2" cy="7.6" r="2.8"/>
+      <circle class="fill" cx="7.8" cy="7.6" r="1.1"/><circle class="fill" cx="16.2" cy="7.6" r="1.1"/>
+      <path d="M8 14.6c2.3 1.7 5.7 1.7 8 0"/>
+    </symbol>
     <!-- Волк -->
-    <symbol id="i-wolf" viewBox="0 0 24 24">
+    <symbol id="i-zoo-regular" viewBox="0 0 24 24">
       <path d="M5 3.5 8 7.7h8l3-4.2.6 7.5c0 1.5-.5 2.8-1.6 3.9l-4.5 4.6h-3L6 14.9C4.9 13.8 4.4 12.5 4.4 11z"/>
       <path d="M9 11.6l1.3-.6M15 11.6l-1.3-.6" stroke-width="1.9"/>
       <path d="M9.8 14l1.4 2.4M14.2 14l-1.4 2.4"/>
       <path class="fill" d="M10.6 16.4h2.8L12 18.2z"/>
     </symbol>
-    <symbol id="i-plus"viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <!-- Комар -->
+    <symbol id="i-zoo-quick" viewBox="0 0 24 24">
+      <path d="M2.5 4.5 7 8.3"/>
+      <circle cx="8.3" cy="9.4" r="1.7"/>
+      <path d="M10 11l7.8 7.8" stroke-width="2.4"/>
+      <path d="M11.2 10.3c1-3.4 3.7-6.1 6.4-6.6 1.3-.2 1.6 1 .9 2-1.5 2.1-4 3.6-6.6 4.6"/>
+      <path d="M13.7 13c3-1.1 6.2-1 7.6.4.6.6.2 1.5-.8 1.6-2.4.2-5-.4-6.8-1.3"/>
+      <path d="M9.6 12.6 6 15.2l-1 3.6M12 14.5l-2.4 3.8.2 3.2M14.2 16.4 13.4 20l1.3 2"/>
+    </symbol>
+    <!-- Слон -->
+    <symbol id="i-zoo-long" viewBox="0 0 24 24">
+      <path d="M8 6.2C6.6 4.9 4.6 4.6 3.3 5.6 2 6.7 2 9.6 2.9 11.8c.7 1.7 2.4 2.7 4.6 2.6"/>
+      <path d="M16 6.2c1.4-1.3 3.4-1.6 4.7-.6 1.3 1.1 1.3 4 .4 6.2-.7 1.7-2.4 2.7-4.6 2.6"/>
+      <path d="M7.5 10c0-3.3 2-5.8 4.5-5.8s4.5 2.5 4.5 5.8v3.2c0 1.4-.8 2.3-1.8 2.9v3.3c0 .9-.6 1.4-1.3 1.4"/>
+      <path d="M7.5 10v3.2c0 1.4.8 2.3 1.8 2.9"/>
+      <circle class="fill" cx="10" cy="10.3" r=".95"/><circle class="fill" cx="14" cy="10.3" r=".95"/>
+    </symbol>
+
+    <!-- ===== Космос ===== -->
+    <!-- Планета с кольцом (логотип темы) -->
+    <symbol id="i-space-brand" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="5.4"/>
+      <path d="M7.4 14.6C4.2 16.4 2.6 18.2 3.3 19.2c1.1 1.6 6.6-.2 11.9-4s8.8-8.4 7.6-10c-.7-1-2.8-.6-5.6.8"/>
+    </symbol>
+    <!-- Комета -->
+    <symbol id="i-space-urgent" viewBox="0 0 24 24">
+      <circle cx="16.3" cy="7.7" r="3.3"/>
+      <path d="M13.9 10.1 4 20M13.2 8.6 6.5 11.6M15.4 10.8l-3 6.7"/>
+    </symbol>
+    <!-- Звезда -->
+    <symbol id="i-space-important" viewBox="0 0 24 24">
+      <path d="M12 3.8l2.12 5.69 6.06.25-4.76 3.77 1.64 5.85L12 16l-5.06 3.36 1.64-5.85-4.76-3.77 6.06-.25z"/>
+    </symbol>
+    <!-- Чёрная дыра -->
+    <symbol id="i-space-unpleasant" viewBox="0 0 24 24">
+      <circle class="fill" cx="12" cy="12" r="3.3"/>
+      <circle cx="12" cy="12" r="5.6" stroke-dasharray="1.6 2"/>
+      <ellipse cx="12" cy="12" rx="10" ry="3.4" transform="rotate(-18 12 12)"/>
+    </symbol>
+    <!-- Спутник -->
+    <symbol id="i-space-regular" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3.6"/>
+      <circle cx="12" cy="12" r="8.2" stroke-dasharray="2.2 2.4"/>
+      <circle class="fill" cx="17.8" cy="6.2" r="2"/>
+    </symbol>
+    <!-- Метеор -->
+    <symbol id="i-space-quick" viewBox="0 0 24 24">
+      <path d="M13.2 13.4l2.6-2.3 3.4.6 1.3 3.1-1.6 3.1-3.3.6-2.4-2.2z"/>
+      <path d="M12.2 11.6 4.5 3.9M11.6 15 6.2 12.6M15.2 9.8 12.4 4.6"/>
+    </symbol>
+    <!-- Галактика -->
+    <symbol id="i-space-long" viewBox="0 0 24 24">
+      <circle class="fill" cx="12" cy="12" r="1.6"/>
+      <path d="M12 9.6c3.6-.8 6.6 1.6 6.4 4.6-.2 2.6-2.5 4.4-5.2 4.4"/>
+      <path d="M12 14.4c-3.6.8-6.6-1.6-6.4-4.6.2-2.6 2.5-4.4 5.2-4.4"/>
+      <path d="M17.6 6.8c1.6 1 2.7 2.4 3.1 4M6.4 17.2c-1.6-1-2.7-2.4-3.1-4"/>
+    </symbol>
+
+    <!-- ===== UI ===== -->
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
@@ -371,48 +474,93 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 </svg>
 
 <script>
-const ANIMALS = {
-  cheetah:  { name: 'Гепард', plural: 'Гепарды', hint: 'Срочное — делаем первым делом' },
-  bear:     { name: 'Медведь', plural: 'Медведи', hint: 'Важное — требует сил и внимания' },
-  wolf:     { name: 'Волк', plural: 'Волки', hint: 'Обычное — рабочий ритм' },
-  frog:    { name: 'Лягушка', plural: 'Лягушки', hint: 'Неприятное — съешь лягушку с утра' },
-  mosquito: { name: 'Комар', plural: 'Комары', hint: 'Мелочи на 5 минут' },
-  elephant: { name: 'Слон', plural: 'Слоны', hint: 'Долгосрочное — едим по кусочку' },
+// Categories are theme-independent; themes only rename and redraw them.
+const ORDER = ['urgent', 'important', 'unpleasant', 'regular', 'quick', 'long'];
+const DEFAULT_CAT = 'regular';
+const SHORT = {
+  urgent: 'срочное', important: 'важное', unpleasant: 'неприятное',
+  regular: 'обычное', quick: 'на 5 минут', long: 'долгосрочное',
 };
-const ORDER = ['cheetah', 'bear', 'frog', 'wolf', 'mosquito', 'elephant'];
-const DEFAULT_ANIMAL = 'wolf';
+
+const THEMES = {
+  zoo: {
+    label: 'Зоопарк', hint: 'Животные по характеру задач',
+    title: 'ZooTodo', tagline: 'задачи по характеру', brandIcon: 'zoo-urgent',
+    swatch: 'linear-gradient(135deg, #d47a1f, #b65a12)',
+    pickWhat: 'зверя', absent: 'не водятся',
+    cats: {
+      urgent:     { name: 'Гепард',  plural: 'Гепарды',  hint: 'Срочное — делаем первым делом' },
+      important:  { name: 'Медведь', plural: 'Медведи',  hint: 'Важное — требует сил и внимания' },
+      unpleasant: { name: 'Лягушка', plural: 'Лягушки',  hint: 'Неприятное — съешь лягушку с утра' },
+      regular:    { name: 'Волк',    plural: 'Волки',    hint: 'Обычное — рабочий ритм' },
+      quick:      { name: 'Комар',   plural: 'Комары',   hint: 'Мелочи на 5 минут' },
+      long:       { name: 'Слон',    plural: 'Слоны',    hint: 'Долгосрочное — едим по кусочку' },
+    },
+  },
+  space: {
+    label: 'Космос', hint: 'Небесные тела вместо зверей',
+    title: 'Orbit', tagline: 'задачи на орбите', brandIcon: 'space-brand',
+    swatch: 'linear-gradient(135deg, #5b4bd6, #b8467f)',
+    pickWhat: 'небесное тело', absent: 'не обнаружены',
+    cats: {
+      urgent:     { name: 'Комета',      plural: 'Кометы',      hint: 'Срочное — пролетает быстро, не упусти' },
+      important:  { name: 'Звезда',      plural: 'Звёзды',      hint: 'Важное — вокруг него всё вращается' },
+      unpleasant: { name: 'Чёрная дыра', plural: 'Чёрные дыры', hint: 'Неприятное — затягивает, но пройти надо' },
+      regular:    { name: 'Спутник',     plural: 'Спутники',    hint: 'Обычное — идёт по своей орбите' },
+      quick:      { name: 'Метеор',      plural: 'Метеоры',     hint: 'Вспышка — дела на 5 минут' },
+      long:       { name: 'Галактика',   plural: 'Галактики',   hint: 'Долгосрочное — масштаб на годы' },
+    },
+  },
+};
+
+// Data saved before themes existed stored animal names instead of categories.
+const LEGACY = { cheetah: 'urgent', bear: 'important', frog: 'unpleasant', wolf: 'regular', mosquito: 'quick', elephant: 'long' };
+
 const KEY = 'zootodo.v1';
 const uid = () => Math.random().toString(36).slice(2, 10);
-const icon = (id) => `<svg class="ico"><use href="#i-${id}"/></svg>`;
-const chev = '<svg class="ico chev"><use href="#i-chev"/></svg>';
+const theme = () => THEMES[state.theme] || THEMES.zoo;
+const cat = (k) => theme().cats[k];
+const svg = (id, cls = 'ico') => `<svg class="${cls}"><use href="#i-${id}"/></svg>`;
+const icon = (k) => svg(ORDER.includes(k) ? `${state.theme}-${k}` : k);
+const chev = svg('chev', 'ico chev');
 const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 function seed() {
-  const t = (title, animal, done = false) => ({ id: uid(), title, animal, done, created: Date.now() });
+  const t = (title, cat, done = false) => ({ id: uid(), title, cat, done, created: Date.now() });
   const work = { id: uid(), name: 'Работа', tasks: [
-    t('Отправить отчёт за квартал до 18:00', 'cheetah'),
-    t('Согласовать бюджет с директором', 'bear'),
-    t('Позвонить недовольному клиенту', 'frog'),
-    t('Провести еженедельную планёрку', 'wolf'),
-    t('Ответить на письмо бухгалтерии', 'mosquito'),
-    t('Подготовить стратегию на следующий год', 'elephant'),
-    t('Разобрать входящие', 'mosquito', true),
+    t('Отправить отчёт за квартал до 18:00', 'urgent'),
+    t('Согласовать бюджет с директором', 'important'),
+    t('Позвонить недовольному клиенту', 'unpleasant'),
+    t('Провести еженедельную планёрку', 'regular'),
+    t('Ответить на письмо бухгалтерии', 'quick'),
+    t('Подготовить стратегию на следующий год', 'long'),
+    t('Разобрать входящие', 'quick', true),
   ]};
   const home = { id: uid(), name: 'Дом', tasks: [
-    t('Разобрать гардероб', 'frog'),
-    t('Оплатить интернет', 'mosquito'),
-    t('Ремонт на балконе', 'elephant'),
+    t('Разобрать гардероб', 'unpleasant'),
+    t('Оплатить интернет', 'quick'),
+    t('Ремонт на балконе', 'long'),
   ]};
   const study = { id: uid(), name: 'Английский', tasks: [
-    t('Дочитать книгу в оригинале', 'elephant'),
-    t('Повторить 20 слов', 'mosquito'),
+    t('Дочитать книгу в оригинале', 'long'),
+    t('Повторить 20 слов', 'quick'),
   ]};
-  return { projects: [work, home, study], activeId: work.id };
+  return { projects: [work, home, study], activeId: work.id, theme: 'zoo' };
+}
+
+function migrate(s) {
+  s.theme = THEMES[s.theme] ? s.theme : 'zoo';
+  for (const p of s.projects) for (const t of p.tasks) {
+    if (t.animal) { t.cat = LEGACY[t.animal]; delete t.animal; }
+    if (!ORDER.includes(t.cat)) t.cat = DEFAULT_CAT;
+  }
+  return s;
 }
 
 let state;
-try { state = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch { state = seed(); }
-let ui = { filter: 'all', newAnimal: DEFAULT_ANIMAL, showDone: false, editing: null };
+try { state = JSON.parse(localStorage.getItem(KEY)); } catch {}
+state = state && Array.isArray(state.projects) ? migrate(state) : seed();
+let ui = { filter: 'all', newCat: DEFAULT_CAT, showDone: false, editing: null };
 
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
 const active = () => state.projects.find((p) => p.id === state.activeId) || state.projects[0];
@@ -426,9 +574,23 @@ function plural(n, one, few, many) {
 }
 
 /* ---------- Render ---------- */
+function renderTheme() {
+  const th = theme();
+  document.documentElement.dataset.theme = state.theme;
+  document.title = th.title;
+  $('brandTitle').textContent = th.title;
+  $('brandTag').textContent = th.tagline;
+  $('brandIcon').setAttribute('href', `#i-${th.brandIcon}`);
+  $('mThemeIcon').setAttribute('href', `#i-${th.brandIcon}`);
+  $('themeSwitch').innerHTML = Object.entries(THEMES).map(([id, t]) =>
+    `<button type="button" role="radio" aria-checked="${id === state.theme}" class="${id === state.theme ? 'on' : ''}" data-theme-pick="${id}">${svg(t.brandIcon)}${t.label}</button>`
+  ).join('');
+}
+
 function render() {
   const p = active();
   if (p && state.activeId !== p.id) state.activeId = p.id;
+  renderTheme();
 
   // sidebar
   $('projList').innerHTML = state.projects.map((pr) => {
@@ -437,12 +599,12 @@ function render() {
       <span class="proj-badge">${esc(pr.name.trim()[0] || '•').toUpperCase()}</span>
       <span class="proj-name">${esc(pr.name)}</span>
       <span class="proj-count">${open || ''}</span>
-      <span class="proj-del" data-delproj="${pr.id}" title="Удалить">${icon('x')}</span>
+      <span class="proj-del" data-delproj="${pr.id}" title="Удалить">${svg('x')}</span>
     </button></li>`;
   }).join('');
 
-  $('legend').innerHTML = ORDER.map((a) =>
-    `<div class="legend-row a-${a}"><span class="dot tinted">${icon(a)}</span><div><b>${ANIMALS[a].name}</b> · ${ANIMALS[a].hint.split(' — ')[0].toLowerCase()}</div></div>`
+  $('legend').innerHTML = ORDER.map((k) =>
+    `<div class="legend-row k-${k}"><span class="dot tinted">${icon(k)}</span><div><b>${cat(k).name}</b> · ${SHORT[k]}</div></div>`
   ).join('');
 
   // mobile select
@@ -451,9 +613,9 @@ function render() {
     return `<option value="${pr.id}" ${pr.id === state.activeId ? 'selected' : ''}>${esc(pr.name)}${open ? ` · ${open}` : ''}</option>`;
   }).join('');
 
-  // composer animal dropdown
-  $('pickBtn').className = `animal-btn a-${ui.newAnimal}`;
-  $('pickBtn').innerHTML = `${icon(ui.newAnimal)}<span>${ANIMALS[ui.newAnimal].name}</span>${chev}`;
+  // composer category dropdown
+  $('pickBtn').className = `cat-btn k-${ui.newCat}`;
+  $('pickBtn').innerHTML = `${icon(ui.newCat)}<span>${cat(ui.newCat).name}</span>${chev}`;
 
   if (!p) {
     $('projTitle').textContent = 'Нет проектов';
@@ -471,21 +633,21 @@ function render() {
     ? `${open.length} ${plural(open.length, 'задача', 'задачи', 'задач')} в работе${done.length ? ` · ${done.length} готово` : ''}`
     : done.length ? 'Всё сделано — отличная работа' : 'Пока пусто';
 
-  const counts = Object.fromEntries(ORDER.map((a) => [a, open.filter((x) => x.animal === a).length]));
-  $('stripe').innerHTML = ORDER.map((a) => `<span style="flex-grow:${counts[a]};background:var(--${a})"></span>`).join('');
+  const counts = Object.fromEntries(ORDER.map((k) => [k, open.filter((x) => x.cat === k).length]));
+  $('stripe').innerHTML = ORDER.map((k) => `<span style="flex-grow:${counts[k]};background:var(--${k})"></span>`).join('');
 
   $('filters').innerHTML =
-    `<button class="chip ${ui.filter === 'all' ? 'on' : ''}" data-filter="all">${icon('all')}Все <em>${open.length}</em></button>` +
-    ORDER.map((a) => `<button class="chip a-${a} ${ui.filter === a ? 'on' : ''}" data-filter="${a}">${icon(a)}${ANIMALS[a].plural} <em>${counts[a]}</em></button>`).join('');
+    `<button class="chip ${ui.filter === 'all' ? 'on' : ''}" data-filter="all">${svg('all')}Все <em>${open.length}</em></button>` +
+    ORDER.map((k) => `<button class="chip k-${k} ${ui.filter === k ? 'on' : ''}" data-filter="${k}">${icon(k)}${cat(k).plural} <em>${counts[k]}</em></button>`).join('');
 
-  const shown = ORDER.filter((a) => ui.filter === 'all' || ui.filter === a);
-  let html = shown.map((a) => {
-    const items = open.filter((x) => x.animal === a);
+  const shown = ORDER.filter((k) => ui.filter === 'all' || ui.filter === k);
+  let html = shown.map((k) => {
+    const items = open.filter((x) => x.cat === k);
     if (!items.length) return '';
     return `<section class="group">
       <div class="group-head">
-        <div class="group-icon tinted a-${a}">${icon(a)}</div>
-        <div><h3>${ANIMALS[a].plural}</h3><small>${ANIMALS[a].hint}</small></div>
+        <div class="group-icon tinted k-${k}">${icon(k)}</div>
+        <div><h3>${cat(k).plural}</h3><small>${cat(k).hint}</small></div>
         <span class="n">${items.length}</span>
       </div>
       <ul class="tasks">${items.map(taskHtml).join('')}</ul>
@@ -494,15 +656,15 @@ function render() {
 
   if (!html.trim()) {
     html = `<div class="empty">
-      <div class="animals">${ORDER.map((a) => `<div class="tinted a-${a}">${icon(a)}</div>`).join('')}</div>
-      <h4>${ui.filter === 'all' ? 'Здесь тихо' : `${ANIMALS[ui.filter].plural} не водятся`}</h4>
-      <div>Добавьте задачу и выберите ей зверя</div>
+      <div class="cats">${ORDER.map((k) => `<div class="tinted k-${k}">${icon(k)}</div>`).join('')}</div>
+      <h4>${ui.filter === 'all' ? 'Здесь тихо' : `${cat(ui.filter).plural} ${theme().absent}`}</h4>
+      <div>Добавьте задачу и выберите ей ${theme().pickWhat}</div>
     </div>`;
   }
 
-  const doneShown = done.filter((x) => ui.filter === 'all' || x.animal === ui.filter);
+  const doneShown = done.filter((x) => ui.filter === 'all' || x.cat === ui.filter);
   if (doneShown.length) {
-    html += `<button class="done-toggle ${ui.showDone ? 'open' : ''}" data-toggledone>${icon('chev')}Выполнено · ${doneShown.length}</button>`;
+    html += `<button class="done-toggle ${ui.showDone ? 'open' : ''}" data-toggledone>${svg('chev')}Выполнено · ${doneShown.length}</button>`;
     if (ui.showDone) html += `<ul class="tasks" style="margin-top:10px">${doneShown.map(taskHtml).join('')}</ul>`;
   }
   $('list').innerHTML = html;
@@ -512,21 +674,26 @@ function render() {
 }
 
 function taskHtml(t) {
-  const a = ANIMALS[t.animal];
   const title = ui.editing === t.id
     ? `<input data-editinput="${t.id}" value="${esc(t.title)}" maxlength="200">`
     : esc(t.title);
-  return `<li class="task a-${t.animal} ${t.done ? 'done' : ''}" data-task="${t.id}">
-    <button class="check" data-toggle="${t.id}" aria-label="Готово">${icon('check')}</button>
+  return `<li class="task k-${t.cat} ${t.done ? 'done' : ''}" data-task="${t.id}">
+    <button class="check" data-toggle="${t.id}" aria-label="Готово">${svg('check')}</button>
     <div class="task-title" data-edit="${t.id}">${title}</div>
-    <button class="tag a-${t.animal}" data-menu="${t.id}" aria-haspopup="menu" aria-expanded="false" title="Сменить зверя">${icon(t.animal)}<span>${a.name}</span>${chev}</button>
-    <button class="del" data-del="${t.id}" aria-label="Удалить">${icon('trash')}</button>
+    <button class="tag k-${t.cat}" data-menu="${t.id}" aria-haspopup="menu" aria-expanded="false" title="Сменить категорию">${icon(t.cat)}<span>${cat(t.cat).name}</span>${chev}</button>
+    <button class="del" data-del="${t.id}" aria-label="Удалить">${svg('trash')}</button>
   </li>`;
 }
 
 /* ---------- Actions ---------- */
 function findTask(id) { return active().tasks.find((t) => t.id === id); }
 function commit() { save(); render(); }
+
+function setTheme(id) {
+  if (!THEMES[id] || id === state.theme) return;
+  state.theme = id;
+  commit();
+}
 
 function addProject(name) {
   name = (name || '').trim();
@@ -567,17 +734,24 @@ $('projTitle').addEventListener('dblclick', () => {
   if (name && name.trim()) { p.name = name.trim(); commit(); }
 });
 
-/* ---------- Animal dropdown ---------- */
+$('themeSwitch').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-theme-pick]');
+  if (b) setTheme(b.dataset.themePick);
+});
+
+/* ---------- Dropdown menu ---------- */
 let menuCtx = null;
 
-function openMenu(anchor, current, onPick) {
+// items: [{ id, name, hint, iconHtml, cls?, style? }]
+function openMenu(anchor, { title, items, current, onPick }) {
   if (menuCtx && menuCtx.anchor === anchor) return closeMenu();
   closeMenu();
   const menu = $('menu');
-  menu.innerHTML = ORDER.map((a) => `<button type="button" role="menuitem" class="a-${a}" data-animal="${a}">
-      <span class="mi tinted">${icon(a)}</span>
-      <span><b>${ANIMALS[a].name}</b><small>${ANIMALS[a].hint}</small></span>
-      ${a === current ? '<svg class="ico tick"><use href="#i-check"/></svg>' : ''}
+  menu.innerHTML = (title ? `<div class="menu-title">${title}</div>` : '') + items.map((it) =>
+    `<button type="button" role="menuitem" class="${it.cls || ''}" data-pick="${it.id}">
+      <span class="mi tinted" ${it.style ? `style="${it.style}"` : ''}>${it.iconHtml}</span>
+      <span><b>${it.name}</b><small>${it.hint}</small></span>
+      ${it.id === current ? svg('check', 'ico tick') : ''}
     </button>`).join('');
   menu.style.left = menu.style.top = '0px';
   menu.hidden = false;
@@ -587,12 +761,20 @@ function openMenu(anchor, current, onPick) {
   // position below the anchor, flip up if it doesn't fit, keep inside viewport
   const r = anchor.getBoundingClientRect();
   const m = menu.getBoundingClientRect();
-  const bottomLimit = innerHeight - (document.querySelector('.mbar').offsetHeight || 0) - 8;
+  const bar = document.querySelector('.mbar');
+  const bottomLimit = innerHeight - (bar.contains(anchor) ? 0 : bar.offsetHeight) - 8;
   const top = r.bottom + 6 + m.height > bottomLimit ? r.top - 6 - m.height : r.bottom + 6;
   const left = Math.min(Math.max(8, r.right - m.width), innerWidth - m.width - 8);
   menu.style.top = `${Math.max(8, top)}px`;
-  menu.style.left = `${left}px`;
-  (menu.querySelector(`[data-animal="${current}"]`) || menu.querySelector('button')).focus({ preventScroll: true });
+  menu.style.left = `${Math.max(8, Math.min(left, r.left))}px`;
+  (menu.querySelector(`[data-pick="${current}"]`) || menu.querySelector('button')).focus({ preventScroll: true });
+}
+
+function catMenu(anchor, current, onPick) {
+  openMenu(anchor, {
+    current, onPick,
+    items: ORDER.map((k) => ({ id: k, cls: `k-${k}`, iconHtml: icon(k), ...cat(k) })),
+  });
 }
 
 function closeMenu() {
@@ -603,11 +785,11 @@ function closeMenu() {
 }
 
 $('menu').addEventListener('click', (e) => {
-  const b = e.target.closest('[data-animal]');
+  const b = e.target.closest('[data-pick]');
   if (!b || !menuCtx) return;
   const pick = menuCtx.onPick;
   closeMenu();
-  pick(b.dataset.animal);
+  pick(b.dataset.pick);
 });
 $('menu').addEventListener('keydown', (e) => {
   const items = [...$('menu').querySelectorAll('button')];
@@ -624,17 +806,28 @@ document.addEventListener('keydown', (e) => {
 addEventListener('resize', closeMenu);
 addEventListener('scroll', closeMenu, true);
 
+$('mTheme').addEventListener('click', (e) => {
+  openMenu(e.currentTarget, {
+    title: 'Оформление',
+    current: state.theme,
+    onPick: setTheme,
+    items: Object.entries(THEMES).map(([id, t]) => ({
+      id, name: t.label, hint: t.hint, iconHtml: svg(t.brandIcon), style: `background:${t.swatch};color:#fff`,
+    })),
+  });
+});
+
 $('pickBtn').addEventListener('click', (e) => {
-  openMenu(e.currentTarget, ui.newAnimal, (a) => { ui.newAnimal = a; render(); $('taskInput').focus(); });
+  catMenu(e.currentTarget, ui.newCat, (k) => { ui.newCat = k; render(); $('taskInput').focus(); });
 });
 $('composer').addEventListener('submit', (e) => {
   e.preventDefault();
   const title = $('taskInput').value.trim();
   if (!title || !active()) return;
-  active().tasks.unshift({ id: uid(), title, animal: ui.newAnimal, done: false, created: Date.now() });
+  active().tasks.unshift({ id: uid(), title, cat: ui.newCat, done: false, created: Date.now() });
   $('taskInput').value = '';
-  if (ui.filter !== 'all' && ui.filter !== ui.newAnimal) ui.filter = 'all';
-  ui.newAnimal = ui.filter === 'all' ? DEFAULT_ANIMAL : ui.filter;
+  if (ui.filter !== 'all' && ui.filter !== ui.newCat) ui.filter = 'all';
+  ui.newCat = ui.filter === 'all' ? DEFAULT_CAT : ui.filter;
   commit();
 });
 
@@ -642,7 +835,7 @@ $('filters').addEventListener('click', (e) => {
   const b = e.target.closest('[data-filter]');
   if (!b) return;
   ui.filter = ui.filter === b.dataset.filter ? 'all' : b.dataset.filter;
-  ui.newAnimal = ui.filter === 'all' ? DEFAULT_ANIMAL : ui.filter;
+  ui.newCat = ui.filter === 'all' ? DEFAULT_CAT : ui.filter;
   render();
 });
 
@@ -653,7 +846,7 @@ $('list').addEventListener('click', (e) => {
   if (el.dataset.toggle) { const t = findTask(el.dataset.toggle); t.done = !t.done; return commit(); }
   if (el.dataset.menu) {
     const t = findTask(el.dataset.menu);
-    return openMenu(el, t.animal, (a) => { t.animal = a; commit(); });
+    return catMenu(el, t.cat, (k) => { t.cat = k; commit(); });
   }
   if (el.dataset.del) { active().tasks = active().tasks.filter((t) => t.id !== el.dataset.del); return commit(); }
 });
