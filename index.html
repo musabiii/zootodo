@@ -6,7 +6,7 @@
 <title>ZooTodo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&family=Cormorant+SC:wght@600;700&family=Rubik:ital,wght@0,500;0,700;1,800;1,900&family=Oswald:wght@500;600;700&family=Exo+2:wght@200;300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ---------- Theme: Зоопарк (default) ---------- */
 :root {
@@ -136,8 +136,42 @@
   color-scheme: dark;
 }
 
-/* ---------- Theme: Трон (светящаяся Сетка, тёмный) ---------- */
-[data-theme="tron"] {
+/* ---------- Theme: Западное побережье (90-е, закат, тёмный) ---------- */
+[data-theme="coast"] {
+  --bg: #2f2545;
+  --surface: #1a1512;
+  --ink: #f4f1e8;
+  --on-ink: #120e0c;
+  --on-c: #120e0c;
+  --muted: #b9b1a2;
+  --line: #3a302a;
+  --side: #2a1d33;
+  --side-2: #3d2a49;
+  --side-ink: #f4f1e8;
+  --side-muted: #b8a6bf;
+  --accent: #f2c230;
+  --money: #3fbf55;
+  --gold: #f2c230;
+  --brand: radial-gradient(circle at 50% 50%, #6f8f5a 0 30%, #4f6e44 60%, #3c5636);
+  --display: Rubik, Manrope, sans-serif;
+  --side-art:
+    radial-gradient(circle at 50% 115%, rgba(230,119,58,.45), transparent 55%),
+    radial-gradient(circle at 110% -5%, rgba(138,59,74,.4), transparent 50%);
+
+  --urgent: #e23b3b;     --urgent-bg: rgba(226,59,59,.14);      /* розыск */
+  --important: #f2c230;  --important-bg: rgba(242,194,48,.13);  /* миссия */
+  --unpleasant: #a35bd6; --unpleasant-bg: rgba(163,91,214,.15); /* поезд */
+  --regular: #5fb2f0;    --regular-bg: rgba(95,178,240,.13);    /* подработка */
+  --quick: #2fa84f;      --quick-bg: rgba(47,168,79,.15);       /* граффити */
+  --long: #f08a24;       --long-bg: rgba(240,138,36,.14);       /* недвижимость */
+
+  --radius: 4px;
+  --shadow: none;
+  color-scheme: dark;
+}
+
+/* ---------- Theme: Сетка (неоновая цифровая сетка, тёмный) ---------- */
+[data-theme="grid"] {
   --bg: #020407;
   --surface: #06121a;
   --ink: #dffcff;
@@ -486,8 +520,80 @@ svg.ico .fill { fill: currentColor; stroke: none; }
 .stat::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
 .stat::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
 
-/* ---------- Tron: neon outlines, light trails, grid floor ---------- */
-[data-theme="tron"] body::before {
+/* ---------- West Coast: sunset city, outlined game type, black HUD boxes ---------- */
+[data-theme="coast"] body {
+  /* one long purple ↔ orange sunset gradient that slowly drifts across the whole screen */
+  background: linear-gradient(165deg, #2a1a3e, #5b2a5e 14%, #a43d5a 28%, #e6773a 42%, #f6b04a 50%, #e6773a 58%, #a43d5a 72%, #5b2a5e 86%, #2a1a3e) fixed;
+  background-size: 100% 200%;
+  animation: sunset-drift 40s ease-in-out infinite alternate;
+}
+@keyframes sunset-drift { from { background-position: 50% 0%; } to { background-position: 50% 100%; } }
+[data-theme="coast"] body::after {
+  content: ""; position: fixed; left: 50%; bottom: 60px; width: 260px; height: 260px; margin-left: -130px; border-radius: 50%; pointer-events: none; z-index: 0;
+  background: radial-gradient(circle, rgba(255,226,154,.85) 0 23%, rgba(255,190,90,.35) 36%, transparent 62%);
+}
+[data-theme="coast"] body::before {
+  content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 121px; pointer-events: none; z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 120' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='%233d2442' d='M0 120 V78 h18 v-30 h14 v30 h10 v-52 h22 v52 h8 v-24 h16 v24 h12 v-70 h6 v-10 h14 v10 h6 v70 h10 v-38 h20 v38 h14 v-58 h18 v58 h10 v-26 h12 v26 h16 v-84 h8 v-12 h12 v12 h8 v84 h10 v-40 h22 v40 h12 v-22 h14 v22 h10 v-48 h18 v48 h20 V120z'/%3E%3Cpath fill='%232c1a31' transform='translate(28 32) scale(1.1)' d='M20 80 C21 60 22 45 20 22 L21.5 22 C23.5 45 22.5 60 21.5 80Z M20 22 C12 14 4 16 0 22 C8 18 14 19 20 22 C14 12 16 4 22 0 C20 8 21 15 20 22 C26 13 34 12 40 18 C32 16 26 18 20 22 C28 20 34 25 36 32 C30 26 25 24 20 22Z'/%3E%3Cpath fill='%232c1a31' transform='translate(300 20) scale(1.25)' d='M20 80 C21 60 22 45 20 22 L21.5 22 C23.5 45 22.5 60 21.5 80Z M20 22 C12 14 4 16 0 22 C8 18 14 19 20 22 C14 12 16 4 22 0 C20 8 21 15 20 22 C26 13 34 12 40 18 C32 16 26 18 20 22 C28 20 34 25 36 32 C30 26 25 24 20 22Z'/%3E%3Cpath fill='%232c1a31' transform='translate(350 50) scale(.9)' d='M20 80 C21 60 22 45 20 22 L21.5 22 C23.5 45 22.5 60 21.5 80Z M20 22 C12 14 4 16 0 22 C8 18 14 19 20 22 C14 12 16 4 22 0 C20 8 21 15 20 22 C26 13 34 12 40 18 C32 16 26 18 20 22 C28 20 34 25 36 32 C30 26 25 24 20 22Z'/%3E%3C/svg%3E") center bottom / auto 120px repeat-x;
+}
+[data-theme="coast"] .app { position: relative; z-index: 2; }
+[data-theme="coast"] .main { display: flex; flex-direction: column; }
+[data-theme="coast"] .hud { display: block; order: -1; margin-bottom: 8px; }
+[data-theme="coast"] .side { border-right: 2px solid #000; }
+[data-theme="coast"] .brand-mark, [data-theme="coast"] .mbar button.brand-mark { border-radius: 50%; border: 3px solid #000; color: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,.15); }
+[data-theme="coast"] .brand h1, [data-theme="coast"] .head h2, [data-theme="coast"] .group-head h3, [data-theme="coast"] .composer .go {
+  font-family: var(--display); font-style: italic; font-weight: 900; -webkit-text-stroke: 1.5px #000; paint-order: stroke fill; text-shadow: 2px 2px 0 #000;
+}
+[data-theme="coast"] .brand h1 { text-transform: uppercase; font-size: 21px; }
+[data-theme="coast"] .head h2 { color: #fff; font-size: clamp(34px, 5vw, 46px); -webkit-text-stroke-width: 2px; text-shadow: 3px 3px 0 #000; }
+[data-theme="coast"] .head p, [data-theme="coast"] .cat-btn, [data-theme="coast"] .chip, [data-theme="coast"] .tag, [data-theme="coast"] .group-head .n, [data-theme="coast"] .mbar select {
+  font-family: Oswald, sans-serif; text-transform: uppercase; letter-spacing: .5px;
+}
+[data-theme="coast"] .head p { color: var(--gold); text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; font-size: 14px; }
+[data-theme="coast"] .stripe { height: 6px; border: 2px solid #000; border-radius: 0; }
+[data-theme="coast"] .composer, [data-theme="coast"] .task { background: rgba(0,0,0,.72); border: 2px solid rgba(0,0,0,.9); border-radius: 4px; }
+[data-theme="coast"] .composer .go { background: var(--quick); color: #fff; font-weight: 800; font-size: 17px; text-transform: uppercase; border: 2px solid #000; -webkit-text-stroke-width: 1px; }
+[data-theme="coast"] .cat-btn { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); border-radius: 3px; font-size: 14px; font-weight: 500; }
+[data-theme="coast"] .chip { border-radius: 3px; background: rgba(0,0,0,.6); border-color: rgba(255,255,255,.1); color: var(--ink); font-weight: 500; }
+[data-theme="coast"] .chip.on { background: var(--gold); color: var(--on-ink); border-color: #000; }
+[data-theme="coast"] .chip.on[class*="k-"] { background: var(--c); }
+[data-theme="coast"] .group-icon { border-radius: 4px; background: #000; border: 2px solid var(--c); }
+[data-theme="coast"] .group-head h3 { color: var(--c); text-transform: uppercase; font-size: 18px; -webkit-text-stroke-width: 1.2px; }
+[data-theme="coast"] .group-head small { color: var(--ink); text-shadow: 1px 1px 0 #000; }
+[data-theme="coast"] .group-head .n { color: #fff; text-shadow: 1px 1px 0 #000; font-size: 14px; }
+[data-theme="coast"] .check { border-radius: 2px; background: #000; }
+[data-theme="coast"] .task.done .check { background: var(--c); }
+[data-theme="coast"] .tag { border-radius: 3px; background: rgba(255,255,255,.07); font-weight: 500; font-size: 11.5px; }
+[data-theme="coast"] .legend { background: rgba(0,0,0,.35); }
+[data-theme="coast"] .empty h4, [data-theme="coast"] .empty div { text-shadow: 1px 1px 0 #000; color: #fff; }
+
+/* HUD: clock, health/armor, money, wanted stars */
+.sa-hud { display: flex; justify-content: space-between; align-items: flex-start; }
+.sa-out { -webkit-text-stroke: 1.5px #000; paint-order: stroke fill; text-shadow: 2px 2px 0 #000; }
+.sa-clock { font-family: Oswald, sans-serif; font-size: 24px; font-weight: 600; color: #fff; letter-spacing: 1px; }
+.sa-r { text-align: right; display: grid; justify-items: end; gap: 3px; }
+.sa-bar { width: 130px; height: 10px; border: 2px solid #000; background: #3a1010; }
+.sa-bar i { display: block; height: 100%; background: var(--urgent); transition: width .4s; }
+.sa-bar.armor { background: #333; } .sa-bar.armor i { background: #e9e9e9; }
+.sa-money { font-family: Oswald, sans-serif; font-weight: 700; font-size: 28px; line-height: 1.1; color: var(--money); letter-spacing: 1px; }
+.sa-stars { font-size: 19px; letter-spacing: 2px; line-height: 1; }
+.sa-stars b { color: var(--gold); } .sa-stars span { color: rgba(255,255,255,.28); -webkit-text-stroke: 0; }
+.sa-resp { font-family: Oswald, sans-serif; font-size: 11px; color: #fff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000; }
+[data-theme="coast"] .job-meta { display: flex; gap: 12px; margin-top: 4px; font-family: Oswald, sans-serif; font-size: 12.5px; }
+.pay { color: var(--money); }
+.resp { color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+
+/* "Mission passed" splash replaces the toast */
+[data-theme="coast"] .toast {
+  left: 0; right: 0; top: 38vh; bottom: auto; max-width: none; flex-direction: column; gap: 2px; padding: 22px 0 18px;
+  background: linear-gradient(transparent, rgba(0,0,0,.75) 22% 78%, transparent); border: 0; box-shadow: none; text-transform: uppercase;
+}
+.splash-1 { font-family: Rubik, sans-serif; font-style: italic; font-weight: 900; font-size: clamp(30px, 6vw, 44px); color: var(--gold); -webkit-text-stroke: 2px #000; paint-order: stroke fill; text-shadow: 3px 3px 0 #000; letter-spacing: 0; }
+.splash-2 { font-family: Oswald, sans-serif; font-weight: 700; font-size: 30px; color: var(--money); -webkit-text-stroke: 1.5px #000; paint-order: stroke fill; text-shadow: 2px 2px 0 #000; }
+.splash-3 { font-family: Oswald, sans-serif; font-weight: 600; font-size: 17px; color: #fff; letter-spacing: 1px; text-shadow: 2px 2px 0 #000; }
+
+/* ---------- Grid: neon outlines, light trails, grid floor ---------- */
+[data-theme="grid"] body::before {
   content: ""; position: fixed; left: -50%; right: -50%; bottom: -60px; height: 46vh; pointer-events: none; z-index: 0;
   background:
     linear-gradient(transparent 0 calc(100% - 1px), rgba(25,230,255,.45) 0) 0 0 / 100% 42px,
@@ -495,55 +601,55 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   transform: perspective(320px) rotateX(64deg); transform-origin: bottom;
   -webkit-mask-image: linear-gradient(transparent, #000 75%); mask-image: linear-gradient(transparent, #000 75%);
 }
-[data-theme="tron"] .app { position: relative; z-index: 1; }
-[data-theme="tron"] .side { border-right: 1px solid rgba(25,230,255,.35); box-shadow: 6px 0 26px -16px var(--accent); }
-[data-theme="tron"] .brand-mark, [data-theme="tron"] .mbar button.brand-mark {
+[data-theme="grid"] .app { position: relative; z-index: 1; }
+[data-theme="grid"] .side { border-right: 1px solid rgba(25,230,255,.35); box-shadow: 6px 0 26px -16px var(--accent); }
+[data-theme="grid"] .brand-mark, [data-theme="grid"] .mbar button.brand-mark {
   border-radius: 50%; background: var(--bg); color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent), 0 0 14px var(--accent), inset 0 0 10px -2px var(--accent);
 }
-[data-theme="tron"] .brand h1 { font-weight: 300; text-transform: uppercase; letter-spacing: 4px; font-size: 18px; text-shadow: 0 0 10px rgba(25,230,255,.6); }
-[data-theme="tron"] .proj.active::before { box-shadow: 0 0 10px var(--accent); }
-[data-theme="tron"] .head h2 {
+[data-theme="grid"] .brand h1 { font-weight: 300; text-transform: uppercase; letter-spacing: 4px; font-size: 18px; text-shadow: 0 0 10px rgba(25,230,255,.6); }
+[data-theme="grid"] .proj.active::before { box-shadow: 0 0 10px var(--accent); }
+[data-theme="grid"] .head h2 {
   font-weight: 200; text-transform: uppercase; letter-spacing: 9px; color: #fff;
   text-shadow: 0 0 6px var(--accent), 0 0 22px rgba(25,230,255,.6);
 }
-[data-theme="tron"] .head p { text-transform: uppercase; letter-spacing: 3px; font-size: 11.5px; font-family: var(--display); }
-[data-theme="tron"] .stripe { height: 2px; }
-[data-theme="tron"] .stripe span { box-shadow: 0 0 8px var(--c, var(--accent)); }
-[data-theme="tron"] .composer { border-color: var(--accent); background: rgba(2,10,14,.85); box-shadow: 0 0 14px -4px var(--accent), inset 0 0 18px -10px var(--accent); }
-[data-theme="tron"] .cat-btn, [data-theme="tron"] .composer .go, [data-theme="tron"] .chip, [data-theme="tron"] .tag {
+[data-theme="grid"] .head p { text-transform: uppercase; letter-spacing: 3px; font-size: 11.5px; font-family: var(--display); }
+[data-theme="grid"] .stripe { height: 2px; }
+[data-theme="grid"] .stripe span { box-shadow: 0 0 8px var(--c, var(--accent)); }
+[data-theme="grid"] .composer { border-color: var(--accent); background: rgba(2,10,14,.85); box-shadow: 0 0 14px -4px var(--accent), inset 0 0 18px -10px var(--accent); }
+[data-theme="grid"] .cat-btn, [data-theme="grid"] .composer .go, [data-theme="grid"] .chip, [data-theme="grid"] .tag {
   border-radius: 999px; font-family: var(--display); text-transform: uppercase;
 }
-[data-theme="tron"] .cat-btn { background: transparent; border: 1px solid var(--c); letter-spacing: 2px; font-weight: 400; box-shadow: 0 0 10px -3px var(--c); }
-[data-theme="tron"] .composer .go { background: var(--accent); color: var(--on-ink); letter-spacing: 3px; box-shadow: 0 0 18px var(--accent); }
-[data-theme="tron"] .chip { background: transparent; letter-spacing: 1.5px; font-size: 11.5px; font-weight: 400; }
-[data-theme="tron"] .chip svg.ico { filter: drop-shadow(0 0 4px var(--c, var(--accent))); }
-[data-theme="tron"] .chip[class*="k-"] svg.ico { color: var(--c); }
-[data-theme="tron"] .chip.on, [data-theme="tron"] .chip.on[class*="k-"] {
+[data-theme="grid"] .cat-btn { background: transparent; border: 1px solid var(--c); letter-spacing: 2px; font-weight: 400; box-shadow: 0 0 10px -3px var(--c); }
+[data-theme="grid"] .composer .go { background: var(--accent); color: var(--on-ink); letter-spacing: 3px; box-shadow: 0 0 18px var(--accent); }
+[data-theme="grid"] .chip { background: transparent; letter-spacing: 1.5px; font-size: 11.5px; font-weight: 400; }
+[data-theme="grid"] .chip svg.ico { filter: drop-shadow(0 0 4px var(--c, var(--accent))); }
+[data-theme="grid"] .chip[class*="k-"] svg.ico { color: var(--c); }
+[data-theme="grid"] .chip.on, [data-theme="grid"] .chip.on[class*="k-"] {
   background: transparent; color: var(--c, var(--accent)); border-color: var(--c, var(--accent)); box-shadow: 0 0 10px -3px var(--c, var(--accent));
 }
-[data-theme="tron"] .group-icon { border-radius: 50%; background: transparent; border: 1px solid var(--c); box-shadow: 0 0 10px -2px var(--c), inset 0 0 8px -3px var(--c); }
-[data-theme="tron"] .group-head h3 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 3px; color: var(--c); text-shadow: 0 0 8px var(--c); }
-[data-theme="tron"] .task {
+[data-theme="grid"] .group-icon { border-radius: 50%; background: transparent; border: 1px solid var(--c); box-shadow: 0 0 10px -2px var(--c), inset 0 0 8px -3px var(--c); }
+[data-theme="grid"] .group-head h3 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 3px; color: var(--c); text-shadow: 0 0 8px var(--c); }
+[data-theme="grid"] .task {
   background: rgba(2,10,14,.82); border-color: color-mix(in srgb, var(--c) 30%, transparent); overflow: visible;
 }
-[data-theme="tron"] .task::before {
+[data-theme="grid"] .task::before {
   left: 14px; top: -1px; bottom: auto; width: 38%; height: 2px; border-radius: 2px;
   background: linear-gradient(90deg, transparent, var(--c)); box-shadow: 0 0 8px var(--c);
 }
-[data-theme="tron"] .task::after {
+[data-theme="grid"] .task::after {
   content: ""; position: absolute; right: -1px; top: 12px; bottom: 12px; width: 2px; border-radius: 2px;
   background: var(--c); box-shadow: 0 0 8px var(--c); opacity: .8;
 }
-[data-theme="tron"] .task:hover { box-shadow: 0 0 20px -8px var(--c); }
-[data-theme="tron"] .check { box-shadow: 0 0 8px -1px var(--c), inset 0 0 6px -2px var(--c); }
-[data-theme="tron"] .task.done .check { background: radial-gradient(circle, var(--c) 0 35%, transparent 40%); }
-[data-theme="tron"] .task.done .check svg.ico { opacity: 0; }
-[data-theme="tron"] .tag { background: transparent; border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); letter-spacing: 1.5px; font-weight: 400; }
-[data-theme="tron"] .legend .dot { border-radius: 50%; background: transparent; box-shadow: inset 0 0 0 1px var(--c), 0 0 8px -3px var(--c); }
+[data-theme="grid"] .task:hover { box-shadow: 0 0 20px -8px var(--c); }
+[data-theme="grid"] .check { box-shadow: 0 0 8px -1px var(--c), inset 0 0 6px -2px var(--c); }
+[data-theme="grid"] .task.done .check { background: radial-gradient(circle, var(--c) 0 35%, transparent 40%); }
+[data-theme="grid"] .task.done .check svg.ico { opacity: 0; }
+[data-theme="grid"] .tag { background: transparent; border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); letter-spacing: 1.5px; font-weight: 400; }
+[data-theme="grid"] .legend .dot { border-radius: 50%; background: transparent; box-shadow: inset 0 0 0 1px var(--c), 0 0 8px -3px var(--c); }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-theme="cyber"] .head h2, .status.hot { animation: none; }
+  [data-theme="cyber"] .head h2, .status.hot, [data-theme="coast"] body { animation: none; }
 }
 
 /* ---------- Mobile bar ---------- */
@@ -574,11 +680,21 @@ svg.ico .fill { fill: currentColor; stroke: none; }
   .mbar button.ghost { background: var(--side-2); color: var(--side-muted); }
   .mbar button.brand-mark { background: var(--brand); color: #fff; }
   .toast { left: 16px; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); }
-  [data-theme="tron"] body::before { bottom: calc(40px + env(safe-area-inset-bottom)); height: 40vh; }
-  [data-theme="tron"] .mbar { border-top: 1px solid var(--accent); box-shadow: 0 -6px 22px -10px var(--accent); }
-  [data-theme="tron"] .mbar select { border-radius: 999px; }
-  [data-theme="tron"] .mbar button:not(.brand-mark) { border-radius: 50%; }
-  [data-theme="tron"] .mbar button#mAdd { background: transparent; color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange), 0 0 12px -2px var(--orange); }
+  [data-theme="coast"] body::before { bottom: calc(60px + env(safe-area-inset-bottom)); }
+  [data-theme="coast"] body::after { bottom: calc(110px + env(safe-area-inset-bottom)); width: 200px; height: 200px; margin-left: -100px; }
+  [data-theme="coast"] .mbar { background: linear-gradient(transparent, rgba(0,0,0,.92) 30%); box-shadow: none; }
+  [data-theme="coast"] .mbar button.brand-mark { width: 50px; height: 50px; }
+  [data-theme="coast"] .mbar select { background: rgba(0,0,0,.75); border-radius: 3px; }
+  [data-theme="coast"] .mbar button { border-radius: 3px; }
+  [data-theme="coast"] .mbar button#mAdd { background: var(--quick); color: #fff; border: 2px solid #000; }
+  [data-theme="coast"] .toast { left: 0; right: 0; bottom: auto; }
+  .sa-bar { width: 110px; }
+  .sa-money { font-size: 24px; }
+  [data-theme="grid"] body::before { bottom: calc(40px + env(safe-area-inset-bottom)); height: 40vh; }
+  [data-theme="grid"] .mbar { border-top: 1px solid var(--accent); box-shadow: 0 -6px 22px -10px var(--accent); }
+  [data-theme="grid"] .mbar select { border-radius: 999px; }
+  [data-theme="grid"] .mbar button:not(.brand-mark) { border-radius: 50%; }
+  [data-theme="grid"] .mbar button#mAdd { background: transparent; color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange), 0 0 12px -2px var(--orange); }
   [data-theme="cyber"] .mbar { border-top: 1px solid var(--pink); box-shadow: 0 -8px 24px -12px var(--pink); }
   .stat b { font-size: 15px; }
 }
@@ -822,38 +938,58 @@ svg.ico .fill { fill: currentColor; stroke: none; }
       <path d="M2.5 21h19M4 21V11.5h4.5V21M8.5 21V4.5h5.5V21M14 21v-8h3V8.5h3.5V21"/>
       <path d="M10.6 8h2.3M10.6 11h2.3M10.6 14h2.3M5.7 14.5h1.1M18 12h1M18 15h1"/>
     </symbol>
-    <!-- ===== Трон ===== -->
+    <!-- ===== Западное побережье ===== -->
+    <!-- Пальма (логотип темы) -->
+    <symbol id="i-coast-brand" viewBox="0 0 24 24">
+      <path d="M12 21c.3-3.5.4-7-.5-10.5"/>
+      <path d="M11.5 10.5C9 8 5.5 8 3.5 10c2.5-.6 5 0 8 .5zM11.5 10.5c-1-3.2.3-6 3-7.5-.8 2.5-1.6 4.8-3 7.5zM11.5 10.5c3-1.8 6.3-1.5 8.5.8-2.6-.6-5.5-.6-8.5-.8zM11.5 10.5c2.4.2 4.6 1.8 5.4 4.2-1.8-1.6-3.6-2.8-5.4-4.2z"/>
+      <path d="M7 21h10"/>
+    </symbol>
+    <!-- Розыск -->
+    <symbol id="i-coast-urgent" viewBox="0 0 24 24"><path d="M12 3.8l2.12 5.69 6.06.25-4.76 3.77 1.64 5.85L12 16l-5.06 3.36 1.64-5.85-4.76-3.77 6.06-.25z"/></symbol>
+    <!-- Миссия -->
+    <symbol id="i-coast-important" viewBox="0 0 24 24"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><path d="M9.6 12V8l2.4 2.6L14.4 8v4"/></symbol>
+    <!-- Поезд -->
+    <symbol id="i-coast-unpleasant" viewBox="0 0 24 24"><rect x="5.5" y="3.5" width="13" height="13" rx="2.5"/><path d="M5.5 10h13M8.5 16.5 7 20h10l-1.5-3.5"/><circle class="fill" cx="9" cy="13.3" r="1"/><circle class="fill" cx="15" cy="13.3" r="1"/></symbol>
+    <!-- Подработка -->
+    <symbol id="i-coast-regular" viewBox="0 0 24 24"><path d="M4 16v-3.5l2-4.5h12l2 4.5V16z"/><path d="M4 16v2.5h2.5V16M17.5 16v2.5H20V16M10 8V6h4v2M4 12.5h16"/><circle class="fill" cx="7.5" cy="14.3" r="1"/><circle class="fill" cx="16.5" cy="14.3" r="1"/></symbol>
+    <!-- Граффити -->
+    <symbol id="i-coast-quick" viewBox="0 0 24 24"><rect x="7" y="9" width="8" height="12" rx="1.5"/><path d="M9 9V6.5h4V9M10 6.5V4.5h2v2M17.5 5.5h.01M19.5 4h.01M19.5 7h.01M17.5 8.5h.01M7 13.5h8"/></symbol>
+    <!-- Недвижимость -->
+    <symbol id="i-coast-long" viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5"/><path d="M12 11.2v6.6M13.8 12.4c-.4-.6-1-.9-1.8-.9-1 0-1.8.6-1.8 1.4 0 1.9 3.7 1 3.7 3 0 .8-.8 1.4-1.9 1.4-.8 0-1.5-.3-1.9-.9"/></symbol>
+
+    <!-- ===== Сетка ===== -->
     <!-- Диск (логотип темы и «важное») -->
-    <symbol id="i-tron-brand" viewBox="0 0 24 24">
+    <symbol id="i-grid-brand" viewBox="0 0 24 24">
       <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/>
       <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"/>
       <circle class="fill" cx="12" cy="12" r="1.3"/>
     </symbol>
     <!-- Световой цикл -->
-    <symbol id="i-tron-urgent" viewBox="0 0 24 24">
+    <symbol id="i-grid-urgent" viewBox="0 0 24 24">
       <circle cx="5.5" cy="15" r="3.5"/><circle cx="18.5" cy="15" r="3.5"/>
       <path d="M5.5 11.5C8 9 11 8.2 14.5 8.6c2.3.3 4 1.4 5 2.9"/>
       <path d="M1.5 19h21"/>
     </symbol>
-    <symbol id="i-tron-important" viewBox="0 0 24 24"><use href="#i-tron-brand"/></symbol>
+    <symbol id="i-grid-important" viewBox="0 0 24 24"><use href="#i-grid-brand"/></symbol>
     <!-- Распознаватель -->
-    <symbol id="i-tron-unpleasant" viewBox="0 0 24 24">
+    <symbol id="i-grid-unpleasant" viewBox="0 0 24 24">
       <path d="M3 6h18l-2.5 4H14l-1 9h-2l-1-9H5.5z"/>
       <path d="M4 6v12M20 6v12"/>
     </symbol>
     <!-- Программа -->
-    <symbol id="i-tron-regular" viewBox="0 0 24 24">
+    <symbol id="i-grid-regular" viewBox="0 0 24 24">
       <circle cx="12" cy="6" r="2.6"/>
       <path d="M7.5 21v-6.5c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5V21"/>
       <path d="M10 14.5v6.5M14 14.5v6.5"/>
     </symbol>
     <!-- Бит -->
-    <symbol id="i-tron-quick" viewBox="0 0 24 24">
+    <symbol id="i-grid-quick" viewBox="0 0 24 24">
       <path d="M12 3.5 19.4 9l-2.8 8.7H7.4L4.6 9z"/>
       <path d="M12 3.5v6.2M4.6 9l7.4.7 7.4-.7M7.4 17.7 12 9.7l4.6 8"/>
     </symbol>
     <!-- Портал -->
-    <symbol id="i-tron-long" viewBox="0 0 24 24">
+    <symbol id="i-grid-long" viewBox="0 0 24 24">
       <path d="M12 2.8v4M12 17.2v4"/>
       <ellipse cx="12" cy="12" rx="6" ry="5.2"/>
       <ellipse cx="12" cy="12" rx="2.4" ry="2"/>
@@ -927,7 +1063,7 @@ const THEMES = {
     label: 'Киберпанк', hint: 'Неон, опыт и репутация',
     title: 'NEON//TODO', tagline: 'журнал заказов', brandIcon: 'cyber-brand',
     swatch: 'linear-gradient(135deg, #ff2e88, #7a1cff)',
-    pickWhat: 'тип задачи', absent: 'не найдены', game: true,
+    pickWhat: 'тип задачи', absent: 'не найдены', game: 'cyber',
     cats: {
       urgent:     { name: 'Нео‑байк',  plural: 'Нео‑байки',  hint: 'Срочное — курьер мчит через ночной город', done: 'Доставка выполнена' },
       important:  { name: 'Мегакорп',  plural: 'Мегакорпы',  hint: 'Важное — главный контракт',               done: 'Контракт закрыт' },
@@ -937,9 +1073,23 @@ const THEMES = {
       long:       { name: 'Мегаполис', plural: 'Мегаполисы', hint: 'Долгосрочное — строится годами',          done: 'Квартал достроен' },
     },
   },
-  tron: {
-    label: 'Трон', hint: 'Светящаяся Сетка и световые циклы',
-    title: 'THE GRID', tagline: 'задачи в Сетке', brandIcon: 'tron-brand',
+  coast: {
+    label: 'Западное побережье', hint: 'Закат 90-х, миссии и розыск',
+    title: 'WEST COAST', tagline: 'миссии района', brandIcon: 'coast-brand',
+    swatch: 'linear-gradient(165deg, #5b2a5e, #e6773a 55%, #f6b04a)',
+    pickWhat: 'тип миссии', absent: 'не найдены', game: 'coast',
+    cats: {
+      urgent:     { name: 'Розыск',       plural: 'Розыск',       hint: 'Срочное — копы уже на хвосте' },
+      important:  { name: 'Миссия',       plural: 'Миссии',       hint: 'Важное — сюжет не ждёт' },
+      unpleasant: { name: 'Поезд',        plural: 'Поезда',       hint: 'Неприятное — «просто следуй за поездом»' },
+      regular:    { name: 'Подработка',   plural: 'Подработки',   hint: 'Обычное — такси, доставка, рутина' },
+      quick:      { name: 'Граффити',     plural: 'Граффити',     hint: 'Быстро — пшикнул метку и ушёл' },
+      long:       { name: 'Недвижимость', plural: 'Недвижимость', hint: 'Долгосрочное — скупаем бизнесы' },
+    },
+  },
+  grid: {
+    label: 'Сетка', hint: 'Неоновая цифровая сетка и световые циклы',
+    title: 'THE GRID', tagline: 'задачи в Сетке', brandIcon: 'grid-brand',
     swatch: 'radial-gradient(circle, #19e6ff 0 22%, #020407 26% 48%, #19e6ff 52% 58%, #020407 62%)',
     pickWhat: 'программу', absent: 'не найдены в Сетке',
     cats: {
@@ -1003,6 +1153,7 @@ function seed() {
 function newStats() { return { xp: 0, credits: 0, days: [] }; }
 
 function migrate(s) {
+  if (s.theme === 'tron') s.theme = 'grid'; // renamed
   s.theme = THEMES[s.theme] ? s.theme : 'zoo';
   s.stats = { ...newStats(), ...s.stats };
   s.plainNames = !!s.plainNames;
@@ -1103,7 +1254,7 @@ function render() {
     : done.length ? 'Всё сделано — отличная работа' : 'Пока пусто';
 
   const counts = Object.fromEntries(ORDER.map((k) => [k, open.filter((x) => x.cat === k).length]));
-  $('hud').innerHTML = theme().game ? hudHtml(counts.urgent) : '';
+  $('hud').innerHTML = theme().game ? hudHtml(counts.urgent, open.length, done.length) : '';
   $('stripe').innerHTML = ORDER.map((k) => `<span style="flex-grow:${counts[k]};background:var(--${k})"></span>`).join('');
 
   $('filters').innerHTML =
@@ -1158,10 +1309,27 @@ function taskHtml(t) {
   </li>`;
 }
 
-function hudHtml(alarms) {
+const clock = () => new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+function hudHtml(alarms, openCount, doneCount) {
   const { xp, credits } = state.stats;
   const level = Math.floor(xp / XP_PER_LEVEL) + 1;
   const into = xp % XP_PER_LEVEL;
+  if (theme().game === 'coast') {
+    // health = share of the project done, armor = progress to the next respect level, stars = open urgent tasks
+    const health = openCount + doneCount ? Math.round((doneCount / (openCount + doneCount)) * 100) : 100;
+    const stars = Math.min(alarms, 6);
+    return `<div class="sa-hud">
+      <div class="sa-clock sa-out">${clock()}</div>
+      <div class="sa-r">
+        <div class="sa-bar" title="Проект выполнен на ${health}%"><i style="width:${health}%"></i></div>
+        <div class="sa-bar armor" title="До следующего уровня уважения"><i style="width:${(into / XP_PER_LEVEL) * 100}%"></i></div>
+        <div class="sa-money sa-out">$${String(credits).padStart(8, '0')}</div>
+        <div class="sa-stars sa-out" title="Открытых срочных задач: ${alarms}"><b>${'★'.repeat(stars)}</b><span>${'★'.repeat(6 - stars)}</span></div>
+        <div class="sa-resp">Уважение · ур. ${level}</div>
+      </div>
+    </div>`;
+  }
   return `<div class="hud-top"><span>// журнал заказов</span><span>● сеть: онлайн</span></div>
     <div class="lvl"><span>Реп. <b>ур. ${level}</b></span>
       <div class="xp" role="progressbar" aria-valuemin="0" aria-valuemax="${XP_PER_LEVEL}" aria-valuenow="${into}"><i style="width:${(into / XP_PER_LEVEL) * 100}%"></i></div>
@@ -1175,6 +1343,9 @@ function hudHtml(alarms) {
 
 function jobMetaHtml(t) {
   const r = REWARDS[t.cat];
+  if (theme().game === 'coast') {
+    return `<div class="job-meta"><span class="pay">+$${fmt(r.cr)}</span><span class="resp">Уважение +${r.xp}</span></div>`;
+  }
   const bars = Array.from({ length: 5 }, (_, i) => `<i class="${i < r.threat ? '' : 'off'}"></i>`).join('');
   const status = t.done ? 'Выполнен' : t.cat === 'urgent' ? 'Срочно' : 'Активен';
   return `<div class="job-meta">
@@ -1188,11 +1359,16 @@ let toastTimer;
 function showToast(t, r) {
   const el = $('toast');
   el.className = `toast k-${t.cat}`;
-  el.innerHTML = `${icon(t.cat)}<span>${cat(t.cat).done || 'Выполнено'}</span><b>+${r.xp} XP · ¢ ${fmt(r.cr)}</b>`;
+  el.innerHTML = theme().game === 'coast'
+    ? `<span class="splash-1">Миссия пройдена!</span><span class="splash-2">$${fmt(r.cr)}</span><span class="splash-3">Уважение +${r.xp}</span>`
+    : `${icon(t.cat)}<span>${cat(t.cat).done || 'Выполнено'}</span><b>+${r.xp} XP · ¢ ${fmt(r.cr)}</b>`;
   el.hidden = false;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { el.hidden = true; }, 2600);
 }
+
+// keep the West Coast HUD clock ticking
+setInterval(() => { const c = document.querySelector('.sa-clock'); if (c) c.textContent = clock(); }, 30000);
 
 function toggleTask(t) {
   t.done = !t.done;
